@@ -1,0 +1,56 @@
+import 'package:flutter/material.dart';
+import 'package:suveyd_ticaret/core/constans/colors.dart';
+import 'package:suveyd_ticaret/data/model/customer_bill_add/prodects_model.dart';
+import 'package:suveyd_ticaret/view/Customer_bills_view/widgets/custom_title_container.dart';
+import 'package:suveyd_ticaret/view/customer_bills_add/widgets/custom_price_container.dart';
+
+class Custom_add_product_container extends StatelessWidget {
+  const Custom_add_product_container({
+    super.key,
+    required this.billProductsModel,
+  });
+
+  final BillProductsModel billProductsModel;
+
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      physics: NeverScrollableScrollPhysics(),
+      child: Row(
+        children: [
+          Container(
+            height: 50,
+            margin: EdgeInsets.symmetric(vertical: 5),
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              color: AppColors.grey,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              spacing: 20,
+              children: [
+                Custom_title_container(
+                  title: billProductsModel.product_name!,
+                  color: AppColors.grey,
+                ),
+
+                Custom_price_container(
+                  title: billProductsModel.product_number!.toString(),
+                  width: 180,
+                ),
+                Custom_price_container(
+                  title: billProductsModel.product_price!.toString(),
+                  width: 180,
+                ),
+                Custom_price_container(
+                  title: billProductsModel.prodect_totla_price!.toString(),
+                  width: 180,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
