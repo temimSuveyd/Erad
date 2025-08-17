@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:suveyd_ticaret/controller/home_controller.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/view/home/widgets/csutom_home_gridViewBuilder.dart';
-import 'package:suveyd_ticaret/view/home/widgets/custom_home_appBar.dart';
+import 'package:Erad/controller/home/home_controller.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/view/home/widgets/csutom_home_gridViewBuilder.dart';
+import 'package:Erad/view/home/widgets/custom_home_appBar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:suveyd_ticaret/core/class/handling_data.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/core/constans/images.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_add_button.dart';
+import 'package:Erad/core/class/handling_data.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/core/constans/images.dart';
+import 'package:Erad/view/custom_widgets/custom_add_button.dart';
 
 class HandlingDataViewWithSliverBox extends StatelessWidget {
   const HandlingDataViewWithSliverBox({
@@ -54,7 +54,7 @@ class HandlingDataViewWithSliverBox extends StatelessWidget {
                     color: AppColors.primary,
                   ),
                 ),
-                Custom_button(
+                Custom_button( color: AppColors.primary,
                   icon: Icons.refresh,
                   title: "حاول ثانية",
                   onPressed: () => onPressed(),
@@ -120,12 +120,32 @@ class HandlingDataViewWithSliverBox extends StatelessWidget {
                     color: AppColors.primary,
                   ),
                 ),
-                Custom_button(
+                Custom_button( color: AppColors.primary,
                   icon: Icons.refresh,
                   title: "حاول ثانية",
                   onPressed: () => onPressed(),
                 ),
               ],
+            ),
+          ),
+        ),
+      );
+    }
+    if (statusreqest == Statusreqest.notAdded) {
+      return SliverToBoxAdapter(
+        child: Center(
+          child: SizedBox(
+            height: 300,
+            width: 400,
+            child: Center(
+              child: Text(
+                " للإضافة انقر فوق الزر إضافة +",
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primary,
+                ),
+              ),
             ),
           ),
         ),

@@ -1,15 +1,13 @@
-import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:suveyd_ticaret/core/class/handling_data.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/core/constans/sharedPreferences.dart';
-import 'package:suveyd_ticaret/core/services/app_services.dart';
-import 'package:suveyd_ticaret/data/data_score/remote/brands_data.dart';
-import 'package:suveyd_ticaret/view/brands_type_view/widgets/custom_add_brands_type_dialog.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_delete_dialog.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_textfield_erroe_snackbar.dart';
+import 'package:Erad/core/class/handling_data.dart';
+import 'package:Erad/core/constans/sharedPreferences.dart';
+import 'package:Erad/core/services/app_services.dart';
+import 'package:Erad/data/data_score/remote/brands/brands_data.dart';
+import 'package:Erad/view/brands_type_view/widgets/custom_add_brands_type_dialog.dart';
+import 'package:Erad/view/custom_widgets/custom_delete_dialog.dart';
+import 'package:Erad/view/custom_widgets/custom_textfield_erroe_snackbar.dart';
 
 abstract class BrandsTypeController extends GetxController {
   show_dialog();
@@ -76,11 +74,10 @@ class BrandsTypeControllerImp extends BrandsTypeController {
     if (product_size_controller.text.isNotEmpty ||
         product_buying_controller.text.isNotEmpty ||
         product_sales_price_controller.text.isNotEmpty) {
-          
       int product_buing_price = int.parse(product_buying_controller.text);
       int product_sales_price = int.parse(product_sales_price_controller.text);
       String product_size = product_size_controller.text;
-      int profits = (product_buing_price) - (product_sales_price);
+      int profits = product_sales_price - product_buing_price;
       try {
         brandData.addBrandsType(
           categorey_name!,
@@ -100,7 +97,7 @@ class BrandsTypeControllerImp extends BrandsTypeController {
         update();
       }
     } else {
- custom_empty_data_erroe_snackbar();
+      custom_empty_data_erroe_snackbar();
     }
   }
 
@@ -211,11 +208,10 @@ class BrandsTypeControllerImp extends BrandsTypeController {
       product_size_controller.clear();
       product_sales_price_controller.clear();
       statusreqest = Statusreqest.success;
-      update();
     } catch (e) {
       statusreqest = Statusreqest.faliure;
-      update();
     }
+    update();
   }
 
   @override
@@ -234,7 +230,6 @@ class BrandsTypeControllerImp extends BrandsTypeController {
   show_delete_dialog(String product_name) {
     custom_delete_dialog(() {
       deleteBrandsType(product_name);
-      Get.close(0);
     });
   }
 

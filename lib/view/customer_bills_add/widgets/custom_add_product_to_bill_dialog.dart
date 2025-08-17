@@ -1,9 +1,9 @@
   import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom__dropDownButton.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_search_text_field.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/view/custom_widgets/custom__dropDownButton.dart';
+import 'package:Erad/view/custom_widgets/custom_search_text_field.dart';
 
 Future<dynamic> custom_add_product_to_bill_dialog(TextEditingController controller,List<DropdownMenuItem<String>>? items,dynamic Function(String) onProductChange,void Function() onConfirm,
 

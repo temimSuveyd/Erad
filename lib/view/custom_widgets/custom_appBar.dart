@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
+import 'package:Erad/core/constans/colors.dart';
 
 AppBar Custom_appBar({required String title}) {
   return AppBar(

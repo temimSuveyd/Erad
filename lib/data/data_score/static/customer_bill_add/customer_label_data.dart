@@ -1,4 +1,4 @@
-import 'package:suveyd_ticaret/data/model/customer_bills_view/name_lable_model.dart';
+import 'package:Erad/data/model/customer_bills_view/name_lable_model.dart';
 
 List<NameLableModel> customerLabelData = [
   NameLableModel(title: "منتج"),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_add_button.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/view/custom_widgets/custom_add_button.dart';
 
 class Custom_products_heder extends StatelessWidget {
   const Custom_products_heder({super.key});
@@ -54,7 +54,7 @@ class Custom_products_heder extends StatelessWidget {
           ),
         ),
         SizedBox(width: 20),
-        Custom_button(icon: Icons.add, onPressed: () {}, title: "إضافة"),
+        Custom_button( color: AppColors.primary,icon: Icons.add, onPressed: () {}, title: "إضافة"),
       ],
     );
   }

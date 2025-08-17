@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/cupertino.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
+import 'package:Erad/core/constans/colors.dart';
 
 class Custom_debt_payment_type_heder extends StatelessWidget {
   const Custom_debt_payment_type_heder({super.key, required this.title});

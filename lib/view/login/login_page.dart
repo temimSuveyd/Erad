@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/instance_manager.dart';
-import 'package:suveyd_ticaret/controller/login_controller.dart';
-import 'package:suveyd_ticaret/core/class/handling_data_view.dart';
-import 'package:suveyd_ticaret/core/class/handling_data_view_with_sliverBox.dart';
-import 'package:suveyd_ticaret/core/constans/images.dart';
-import 'package:suveyd_ticaret/view/login/widgets/custom_account_square.dart';
+import 'package:Erad/controller/auth/login_controller.dart';
+import 'package:Erad/core/class/handling_data_view.dart';
+import 'package:Erad/core/class/handling_data_view_with_sliverBox.dart';
+import 'package:Erad/core/constans/images.dart';
+import 'package:Erad/view/login/widgets/custom_account_square.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

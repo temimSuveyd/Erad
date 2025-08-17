@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_date_text_container.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_details_button.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_price_text_container.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/view/custom_widgets/custom_date_text_container.dart';
+import 'package:Erad/view/custom_widgets/custom_details_button.dart';
+import 'package:Erad/view/custom_widgets/custom_price_text_container.dart';
 
 class Custom_debts_bills_card extends StatelessWidget {
   const Custom_debts_bills_card({super.key});

@@ -1,4 +1,4 @@
-package com.example.suveyd_ticaret
+package com.example.Erad
 
 import io.flutter.embedding.android.FlutterActivity
 

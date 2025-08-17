@@ -1,17 +1,19 @@
+import 'package:Erad/view/suppliers_view/customers_view_page.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:suveyd_ticaret/core/constans/routes.dart';
-import 'package:suveyd_ticaret/view/Customer_bills_view/customer_bills_view_page.dart';
-import 'package:suveyd_ticaret/view/Customer_debts_view/customer_debts_view_page.dart';
-import 'package:suveyd_ticaret/view/brands_type_view/brand_type_view_page.dart';
-import 'package:suveyd_ticaret/view/brands_view/brands_view_page.dart';
-import 'package:suveyd_ticaret/view/categorey_type_view/categorey_type_view_page.dart';
-import 'package:suveyd_ticaret/view/categoreys_view/categoreys_view_page.dart';
-import 'package:suveyd_ticaret/view/customer_bill_details/customer_bill_details.dart';
-import 'package:suveyd_ticaret/view/customer_bills_add/customer_bill_add.dart';
-import 'package:suveyd_ticaret/view/customer_debt_details/customer_debts_details_page.dart';
-import 'package:suveyd_ticaret/view/customers_view/customers_view_page.dart';
-import 'package:suveyd_ticaret/view/login/login_page.dart';
-import 'package:suveyd_ticaret/view/home/home_page.dart';
+import 'package:Erad/core/constans/routes.dart';
+import 'package:Erad/view/Customer_bills_view/customer_bills_view_page.dart';
+import 'package:Erad/view/Customer_debts_view/customer_debts_view_page.dart';
+import 'package:Erad/view/brands_type_view/brand_type_view_page.dart';
+import 'package:Erad/view/brands_view/brands_view_page.dart';
+import 'package:Erad/view/categorey_type_view/categorey_type_view_page.dart';
+import 'package:Erad/view/categoreys_view/categoreys_view_page.dart';
+import 'package:Erad/view/customer_bill_details/customer_bill_details_view.dart';
+import 'package:Erad/view/customer_bills_add/customer_bill_add.dart';
+import 'package:Erad/view/customer_debt_details/customer_debts_details_page.dart';
+import 'package:Erad/view/customers_view/customers_view_page.dart';
+import 'package:Erad/view/login/login_page.dart';
+import 'package:Erad/view/home/home_page.dart';
+import 'package:Erad/view/pdf_view/pdf_view_page.dart';
 
 List<GetPage<dynamic>>? getPages = [
   GetPage(name: "/", page: () => LoginPage()),
@@ -55,4 +57,13 @@ List<GetPage<dynamic>>? getPages = [
     name: AppRoutes.customers_view_page,
     page: () => CustomersViewPage(),
   ),
+    GetPage(
+    name: AppRoutes.pdf_view,
+    page: () => PdfViewPage(),
+  ),
+      GetPage(
+    name: AppRoutes.suppliers_view,
+    page: () => SuppliersViewPage(),
+  ),
+  
 ];

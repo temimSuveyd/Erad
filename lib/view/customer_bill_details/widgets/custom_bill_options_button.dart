@@ -1,20 +1,21 @@
 
 import 'package:flutter/material.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
+import 'package:Erad/core/constans/colors.dart';
 
 class Custom_bill_options_button extends StatelessWidget {
   const Custom_bill_options_button({
     super.key,
     required this.icon,
-    required this.title,
+    required this.title, required this.onPressed,
   });
 
   final IconData icon;
   final String title;
+  final Function() onPressed;
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-      onPressed: () {},
+      onPressed: () => onPressed(),
       padding: EdgeInsets.symmetric(horizontal: 20),
       height: 50,
       // minWidth: 150,

@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
+import 'package:Erad/core/constans/colors.dart';
 
 class Custom_product_text_container extends StatelessWidget {
   const Custom_product_text_container({
@@ -17,8 +17,8 @@ class Custom_product_text_container extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       height: 45,
-      width: isproductName == true ? 300 : 200,
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      width: isproductName == true ? 250 : 200,
+      padding: EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
         color: AppColors.wihet,
         borderRadius: BorderRadius.circular(10),

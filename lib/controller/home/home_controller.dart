@@ -1,10 +1,6 @@
-import 'dart:developer';
-
 import 'package:get/get.dart';
-import 'package:suveyd_ticaret/core/constans/routes.dart';
-import 'package:suveyd_ticaret/data/data_score/static/home/home_buying_data.dart';
-import 'package:suveyd_ticaret/data/data_score/static/home/home_pages.dart';
-import 'package:suveyd_ticaret/data/data_score/static/home/home_sales_data.dart';
+import 'package:Erad/data/data_score/static/home/home_pages.dart';
+import 'package:Erad/data/data_score/static/home/home_sales_data.dart';
 
 abstract class HomeController extends GetxController {
   setPage(int index);

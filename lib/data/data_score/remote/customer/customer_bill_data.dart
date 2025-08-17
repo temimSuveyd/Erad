@@ -1,0 +1,216 @@
+import 'package:Erad/core/constans/bill_status.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class CustomerBillData {
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  addCustomerBill(
+    String customer_name,
+    String customer_city,
+    String customer_id,
+    String payment_type,
+    String user_email,
+    DateTime bill_add_time,
+  ) async {
+    DocumentReference docRef = await _firestore
+        .collection("users")
+        .doc(user_email)
+        .collection("customer_bills")
+        .add({
+          "customer_name": customer_name,
+          "customer_city": customer_city,
+          "customer_id": customer_id,
+          "total_product_price": 0,
+          "total_profits": 0,
+          "bill_date": bill_add_time,
+          "paymet_type": payment_type,
+          "bill_no": "",
+          "bill_status": BillStatus.itwasFormed,
+          "discount_amount": 0,
+        });
+    return docRef.id;
+  }
+
+  addDiscount(String bill_id, String user_email, double discount_amount) {
+    _firestore
+        .collection("users")
+        .doc(user_email)
+        .collection("customer_bills")
+        .doc(bill_id)
+        .update({
+          "discount_amount": FieldValue.increment(discount_amount)
+        });
+  }
+
+  addProductToBill(
+    String product_name,
+    int product_price,
+    String product_id,
+    int product_number,
+    int total_product_price,
+    int total_product_profits,
+    int prodect_profits,
+    String user_email,
+    String bill_id,
+  ) {
+    _firestore
+        .collection("users")
+        .doc(user_email)
+        .collection("customer_bills")
+        .doc(bill_id)
+        .collection("products")
+        .add({
+          "product_name": product_name,
+
+          "product_id": product_id,
+          "product_number": product_number,
+
+          "total_product_price": total_product_price,
+          "total_product_profits": total_product_profits,
+
+          "prodect_profits": prodect_profits,
+          "product_price": product_price,
+        });
+  }
+
+  Future deleteCustomerBill(String user_email, String bill_id) async {
+    return await _firestore
+        .collection("users")
+        .doc(user_email)
+        .collection("customer_bills")
+        .doc(bill_id)
+        .delete();
+  }
+
+  Future updateCustomerBill(
+    String user_email,
+    String bill_id,
+    String bill_no,
+    double total_price,
+    double totl_profits,
+  ) async {
+    await _firestore
+        .collection("users")
+        .doc(user_email)
+        .collection("customer_bills")
+        .doc(bill_id)
+        .update({
+          "total_product_price": total_price,
+          "total_profits": totl_profits,
+          "bill_no": bill_no,
+        });
+  }
+
+  Future update_total_price(
+    String user_email,
+    String bill_id,
+    double total_price,
+    double totl_profits,
+  ) async {
+    await _firestore
+        .collection("users")
+        .doc(user_email)
+        .collection("customer_bills")
+        .doc(bill_id)
+        .update({
+          "total_product_price": total_price,
+          "total_profits": totl_profits,
+        });
+  }
+
+  Future updateProductData(
+    String product_id,
+    int product_number,
+    int total_product_price,
+    String user_email,
+    String bill_id,
+  ) async {
+    await _firestore
+        .collection("users")
+        .doc(user_email)
+        .collection("customer_bills")
+        .doc(bill_id)
+        .collection("products")
+        .doc(product_id)
+        .update({
+          "product_number": product_number,
+          "total_product_price": total_product_price,
+        });
+  }
+
+  Future updateBillStatus(
+    String user_email,
+    String bill_id,
+    String bill_status,
+  ) async {
+    return await _firestore
+        .collection("users")
+        .doc(user_email)
+        .collection("customer_bills")
+        .doc(bill_id)
+        .update({"bill_status": bill_status});
+  }
+
+  Future deleteProduct(
+    String bill_id,
+    String product_id,
+    String user_email,
+  ) async {
+    return await _firestore
+        .collection("users")
+        .doc(user_email)
+        .collection("customer_bills")
+        .doc(bill_id)
+        .collection("products")
+        .doc(product_id)
+        .delete();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getBillProdects(
+    String user_email,
+    String bill_id,
+  ) {
+    return _firestore
+        .collection("users")
+        .doc(user_email)
+        .collection("customer_bills")
+        .doc(bill_id)
+        .collection("products")
+        .snapshots();
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getBillProdectBayId(
+    String user_email,
+    String bill_id,
+    String prodcut_id,
+  ) {
+    return _firestore
+        .collection("users")
+        .doc(user_email)
+        .collection("customer_bills")
+        .doc(bill_id)
+        .collection("products")
+        .doc(prodcut_id)
+        .get();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllBils(String user_email) {
+    return _firestore
+        .collection("users")
+        .doc(user_email)
+        .collection("customer_bills")
+        .snapshots();
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getBillById(
+    String user_email,
+    String bill_id,
+  ) {
+    return _firestore
+        .collection("users")
+        .doc(user_email)
+        .collection("customer_bills")
+        .doc(bill_id)
+        .get();
+  }
+}

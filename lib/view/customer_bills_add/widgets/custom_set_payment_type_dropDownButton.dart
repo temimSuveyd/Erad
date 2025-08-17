@@ -2,7 +2,7 @@
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
+import 'package:Erad/core/constans/colors.dart';
 
 class Custom_set_payment_type_dropDownButton extends StatelessWidget {
   const Custom_set_payment_type_dropDownButton({

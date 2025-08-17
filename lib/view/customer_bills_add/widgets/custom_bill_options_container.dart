@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
-import 'package:suveyd_ticaret/controller/customer_biil_add_controller.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom__dropDownButton.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_add_button.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_date_picker_button.dart';
+import 'package:Erad/controller/customers/customer_add_bill_controller.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/view/custom_widgets/custom__dropDownButton.dart';
+import 'package:Erad/view/custom_widgets/custom_date_picker_button.dart';
 
 class CustomerBillOptionsContainer extends StatelessWidget {
   const CustomerBillOptionsContainer({super.key});
@@ -38,7 +37,7 @@ class CustomerBillOptionsContainer extends StatelessWidget {
                           onChanged: (value) {
                             controller.setCustomer(value);
                           },
-                          hint: "اسم العميل",
+                          hint: controller.customer_name ?? "اسم العميل",
                           value: "",
                         ),
 
@@ -60,15 +59,12 @@ class CustomerBillOptionsContainer extends StatelessWidget {
                                 onChanged:
                                     (value) => controller.setPaymentType(value),
 
-                                hint: "طريقة الدفع",
+                                hint:
+                                    controller.bill_payment_type == "Religion"
+                                        ? "دَين"
+                                        : "نقدي",
                                 value: "",
                               ),
-                        ),
-
-                        Custom_button(
-                          icon: Icons.save,
-                          title: "حفظ",
-                          onPressed: () => controller.addCustomerBill(),
                         ),
                       ],
                     ),

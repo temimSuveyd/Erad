@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "suveyd_ticaret" "\0"
+            VALUE "FileDescription", "Erad" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "suveyd_ticaret" "\0"
+            VALUE "InternalName", "Erad" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "suveyd_ticaret.exe" "\0"
-            VALUE "ProductName", "suveyd_ticaret" "\0"
+            VALUE "OriginalFilename", "Erad.exe" "\0"
+            VALUE "ProductName", "Erad" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

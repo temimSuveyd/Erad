@@ -1,7 +1,7 @@
   import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/snackbar/snackbar_controller.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
+import 'package:Erad/core/constans/colors.dart';
 
 SnackbarController custom_empty_data_erroe_snackbar() {
     return Get.showSnackbar(

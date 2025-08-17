@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:suveyd_ticaret/core/class/handling_data.dart';
+import 'package:Erad/core/class/handling_data.dart';
 
 // ignore: non_constant_identifier_names
  check_internet() async {

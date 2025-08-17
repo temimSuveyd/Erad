@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
+import 'package:Erad/core/constans/colors.dart';
 
 class Csutom_set_date_reng_button extends StatelessWidget {
   const Csutom_set_date_reng_button({

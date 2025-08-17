@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:suveyd_ticaret/controller/customers_controller.dart';
-import 'package:suveyd_ticaret/core/class/handling_data_view_with_sliverBox.dart';
-import 'package:suveyd_ticaret/data/model/customers/customers_model.dart';
-import 'package:suveyd_ticaret/view/customers_view/widgets/custom_brands_Card.dart';
+import 'package:Erad/controller/customers/customers_controller.dart';
+import 'package:Erad/core/class/handling_data_view_with_sliverBox.dart';
+import 'package:Erad/data/model/customers/customers_model.dart';
+import 'package:Erad/view/customers_view/widgets/custom_brands_Card.dart';
 
 class Custom_customers_listView extends StatelessWidget {
   const Custom_customers_listView({super.key});

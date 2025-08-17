@@ -1,4 +1,4 @@
-name: suveyd_ticaret
+name: Erad
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -40,6 +40,14 @@ dependencies:
   cloud_firestore: ^5.6.6
   shared_preferences: ^2.5.3
   firebase_auth: ^5.5.2
+  pdf: ^3.11.3
+  syncfusion_flutter_pdfviewer: ^29.1.41
+  path_provider: ^2.1.2
+  open_file: ^3.3.2
+  printing: ^5.11.0
+  google_fonts: ^6.2.1
+  syncfusion_flutter_pdf: ^29.2.7+1
+  share_plus: ^11.0.0
 
 dev_dependencies:
   flutter_test:
@@ -79,8 +87,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
+  fonts:
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/Cairo/Cairo-Medium.ttf
+          weight: 700
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf

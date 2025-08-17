@@ -1,14 +1,13 @@
-import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:suveyd_ticaret/core/class/handling_data.dart';
-import 'package:suveyd_ticaret/core/constans/routes.dart';
-import 'package:suveyd_ticaret/core/constans/sharedPreferences.dart';
-import 'package:suveyd_ticaret/core/services/app_services.dart';
-import 'package:suveyd_ticaret/data/data_score/remote/categoreys_data.dart';
-import 'package:suveyd_ticaret/view/categoreys_view/widgets/custom_add_categorey_dialog.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_delete_dialog.dart';
+import 'package:Erad/core/class/handling_data.dart';
+import 'package:Erad/core/constans/routes.dart';
+import 'package:Erad/core/constans/sharedPreferences.dart';
+import 'package:Erad/core/services/app_services.dart';
+import 'package:Erad/data/data_score/remote/categorey/categoreys_data.dart';
+import 'package:Erad/view/categoreys_view/widgets/custom_add_categorey_dialog.dart';
+import 'package:Erad/view/custom_widgets/custom_delete_dialog.dart';
 
 abstract class CategoreyController extends GetxController {
   // ignore: non_constant_identifier_names

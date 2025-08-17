@@ -1,1 +1,1 @@
-enum Statusreqest {loading, success, faliure, noData, noInternet }
+enum Statusreqest {loading, success, faliure, noData, noInternet, notAdded }

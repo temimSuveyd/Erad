@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
-import 'package:suveyd_ticaret/controller/login_controller.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/core/function/validatorInpot.dart';
-import 'package:suveyd_ticaret/view/login/widgets/custom_sigin_button.dart';
-import 'package:suveyd_ticaret/view/login/widgets/custom_sign_textfield.dart';
+import 'package:Erad/controller/auth/login_controller.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/core/function/validatorInpot.dart';
+import 'package:Erad/view/login/widgets/custom_sigin_button.dart';
+import 'package:Erad/view/login/widgets/custom_sign_textfield.dart';
 
 // ignore: camel_case_types
 class Account_Square extends StatelessWidget {

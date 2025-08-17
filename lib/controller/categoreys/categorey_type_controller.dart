@@ -1,17 +1,14 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:suveyd_ticaret/core/class/handling_data.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/core/constans/routes.dart';
-import 'package:suveyd_ticaret/core/constans/sharedPreferences.dart';
-import 'package:suveyd_ticaret/core/services/app_services.dart';
-import 'package:suveyd_ticaret/data/data_score/remote/categoreys_data.dart';
-import 'package:suveyd_ticaret/view/categorey_type_view/widgets/custom_add_categorey_type_dialog.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_delete_dialog.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_search_text_field.dart';
+import 'package:Erad/core/class/handling_data.dart';
+import 'package:Erad/core/constans/routes.dart';
+import 'package:Erad/core/constans/sharedPreferences.dart';
+import 'package:Erad/core/services/app_services.dart';
+import 'package:Erad/data/data_score/remote/categorey/categoreys_data.dart';
+import 'package:Erad/view/categorey_type_view/widgets/custom_add_categorey_type_dialog.dart';
+import 'package:Erad/view/custom_widgets/custom_delete_dialog.dart';
 
 abstract class CategoreyTypeController extends GetxController {
   show_dialog();

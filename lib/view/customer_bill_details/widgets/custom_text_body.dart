@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
+import 'package:Erad/core/constans/colors.dart';
 
 class Custom_text_body extends StatelessWidget {
   const Custom_text_body({super.key, required this.title});

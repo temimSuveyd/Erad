@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:suveyd_ticaret/controller/categorey_controller.dart';
-import 'package:suveyd_ticaret/core/class/handling_data_view_with_sliverBox.dart';
-import 'package:suveyd_ticaret/view/categoreys_view/widgets/custom_categorey_card.dart';
+import 'package:Erad/controller/categoreys/categorey_controller.dart';
+import 'package:Erad/core/class/handling_data_view_with_sliverBox.dart';
+import 'package:Erad/view/categoreys_view/widgets/custom_categorey_card.dart';
 
 class Custom_categoreys_listView extends StatelessWidget {
   const Custom_categoreys_listView({super.key});

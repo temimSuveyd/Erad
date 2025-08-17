@@ -2,7 +2,7 @@
 
 
 import 'package:flutter/widgets.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
+import 'package:Erad/core/constans/colors.dart';
 
 class Custom_title_text_container extends StatelessWidget {
   const Custom_title_text_container({super.key, required this.title});
@@ -12,7 +12,7 @@ final String title ;
     return Container(
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(horizontal: 5),
-      width: 300,
+      width: 280,
       height: 50,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),

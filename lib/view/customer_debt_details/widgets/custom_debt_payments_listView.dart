@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:suveyd_ticaret/view/customer_debt_details/widgets/custom_debt_payments_card.dart';
+import 'package:Erad/view/customer_debt_details/widgets/custom_debt_payments_card.dart';
 
 class Custom_debt_payments_listView extends StatelessWidget {
   const Custom_debt_payments_listView({super.key});

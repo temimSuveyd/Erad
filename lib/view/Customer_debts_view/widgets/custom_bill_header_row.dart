@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/view/Customer_bills_view/widgets/custom_title_container.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_details_button.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/view/Customer_bills_view/widgets/custom_title_container.dart';
+import 'package:Erad/view/custom_widgets/custom_details_button.dart';
 
 class BillHeaderRow extends StatelessWidget {
   const BillHeaderRow({

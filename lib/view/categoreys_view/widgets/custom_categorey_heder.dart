@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:suveyd_ticaret/controller/categorey_controller.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_add_button.dart';
+import 'package:Erad/controller/categoreys/categorey_controller.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/view/custom_widgets/custom_add_button.dart';
 
 class Custom_categorey_heder extends GetView<CategoreyControllerImp> {
   const Custom_categorey_heder({super.key});
@@ -27,7 +27,7 @@ class Custom_categorey_heder extends GetView<CategoreyControllerImp> {
             ),
           ),
         ),
-        Custom_button(
+        Custom_button( color: AppColors.primary,
           icon: Icons.add,
           title: "يضيف",
           onPressed: () => controller.show_dialog(),

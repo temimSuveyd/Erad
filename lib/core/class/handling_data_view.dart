@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:suveyd_ticaret/core/class/handling_data.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/core/constans/images.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_add_button.dart';
+import 'package:Erad/core/class/handling_data.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/core/constans/images.dart';
+import 'package:Erad/view/custom_widgets/custom_add_button.dart';
 
 class HandlingDataView extends StatelessWidget {
   const HandlingDataView({
@@ -32,7 +32,7 @@ class HandlingDataView extends StatelessWidget {
       return Center(
         child: SizedBox(
           width: 300,
-          height: 200,
+          height: 300,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,7 +51,7 @@ class HandlingDataView extends StatelessWidget {
                   color: AppColors.primary,
                 ),
               ),
-              Custom_button(
+              Custom_button( color: AppColors.primary,
                 icon: Icons.refresh,
                 title: "حاول ثانية",
                 onPressed: () => onPressed(),
@@ -113,7 +113,7 @@ class HandlingDataView extends StatelessWidget {
                   color: AppColors.primary,
                 ),
               ),
-              Custom_button(
+              Custom_button( color: AppColors.primary,
                 icon: Icons.refresh,
                 title: "حاول ثانية",
                 onPressed: () => onPressed(),

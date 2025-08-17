@@ -1,11 +1,19 @@
-
+import 'package:Erad/data/model/customer_bill_details/bill_details_product_model.dart';
 import 'package:flutter/material.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/data/data_score/static/customer_bill_add/customer_label_data.dart';
-import 'package:suveyd_ticaret/view/customer_bill_details/widgets/custom_prodect_text_container.dart';
+import 'package:get/get.dart';
+import 'package:Erad/controller/customers/customer_bill_details_controller.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:Erad/view/customer_bill_details/widgets/custom_prodect_text_container.dart';
 
-class Custom_product_details_card extends StatelessWidget {
-  const Custom_product_details_card({super.key});
+class Custom_product_details_card
+    extends GetView<CustomerBillDetailsControllerImp> {
+  const Custom_product_details_card({
+    super.key,
+    required this.billProductsModel,
+  });
+
+  final BillDetailsProductsModel billProductsModel;
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +28,33 @@ class Custom_product_details_card extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
-            spacing: 100,
+            spacing: 20,
             children: [
-              ...List.generate(
-                4,
-                (index) => Custom_product_text_container(
-                  title: customerLabelData[index].title,
-                  isproductName: index == 0,
-                ),
+              Custom_product_text_container(
+                title: billProductsModel.product_name!,
+                isproductName: true,
               ),
+              Custom_product_text_container(
+                title: billProductsModel.product_number.toString(),
+                isproductName: false,
+              ),
+              Custom_product_text_container(
+                title: billProductsModel.product_price.toString(),
+                isproductName: false,
+              ),
+              Custom_product_text_container(
+                title: billProductsModel.prodect_totla_price.toString(),
+                isproductName: false,
+              ),
+
+              Custom_button( color: AppColors.primary,
+                icon: Icons.edit,
+                title: "تعديل",
+                onPressed:
+                    () => controller.editProductData(billProductsModel.id!),
+              ),
+
+              Custom_button( color: AppColors.primary,icon: Icons.edit, title: "حذف", onPressed: () => controller.show_delete_product_dialog(billProductsModel.id!),),
             ],
           ),
         ),

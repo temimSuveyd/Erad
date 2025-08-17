@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
+import 'package:Erad/core/constans/colors.dart';
 
 // ignore: camel_case_types
 class Custom_login_textfield extends StatelessWidget {

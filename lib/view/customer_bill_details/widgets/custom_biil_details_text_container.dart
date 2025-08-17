@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
+import 'package:Erad/core/constans/colors.dart';
 
 class Custom_biil_details_text_container extends StatelessWidget {
-  const Custom_biil_details_text_container({super.key});
+  const Custom_biil_details_text_container({
+    super.key,
+    required this.title_1,
+    required this.title_2,
+    required this.color,
+  });
+  final String title_1;
+  final String title_2;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +23,25 @@ class Custom_biil_details_text_container extends StatelessWidget {
         color: AppColors.wihet,
       ),
 
-      child: Text(
-        "Muhamed hikmet sevim",
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-          color: AppColors.grey,
-        ),
+      child: Row(
+        children: [
+          Text(
+            "$title_2 : ",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: AppColors.grey,
+            ),
+          ),
+          Text(
+            title_1,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: color,
+            ),
+          ),
+        ],
       ),
     );
   }

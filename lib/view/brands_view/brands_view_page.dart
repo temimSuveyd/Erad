@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:suveyd_ticaret/controller/brands_controller.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/view/brands_view/widgets/custom_brands_heder.dart';
-import 'package:suveyd_ticaret/view/brands_view/widgets/custom_brands_listView.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_appBar.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_search_text_field.dart';
+import 'package:Erad/controller/brands/brands_controller.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/view/brands_view/widgets/custom_brands_heder.dart';
+import 'package:Erad/view/brands_view/widgets/custom_brands_listView.dart';
+import 'package:Erad/view/custom_widgets/custom_appBar.dart';
+import 'package:Erad/view/custom_widgets/custom_search_text_field.dart';
 
 class BrandsViewPage extends GetView<BrandsControllerImp> {
   const BrandsViewPage({super.key});

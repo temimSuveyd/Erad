@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/core/function/validatorInpot.dart';
-import 'package:suveyd_ticaret/view/customer_bills_add/widgets/custom_amout_dropDown_button.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/core/function/validatorInpot.dart';
+import 'package:Erad/view/customer_bills_add/widgets/custom_amout_dropDown_button.dart';
 
 // ignore: non_constant_identifier_names
 Future<dynamic> custom_add_brands_type_dialog(
@@ -33,19 +33,12 @@ Future<dynamic> custom_add_brands_type_dialog(
                 Csutom_count_textField(
                   suffixIcon: Icons.attach_money_outlined,
                   hintText: hintText_buying,
-                  controller: sales_controller,
-          //         validator: (p0) {
-          //  return validatorInput(p0, 1, 20, "int");
-          //         },
+                  controller: buying_controller,
                 ),
                 Csutom_count_textField(
                   suffixIcon: Icons.attach_money_outlined,
-
                   hintText: hintText_sales,
-                  controller: buying_controller,
-            //       validator: (p0) {
-            //  return validatorInput(p0, 1, 20, "int");
-            //       },
+                  controller: sales_controller,
                 ),
                 Csutom_count_textField(
                   suffixIcon: Icons.scale_outlined,

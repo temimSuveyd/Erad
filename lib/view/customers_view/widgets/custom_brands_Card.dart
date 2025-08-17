@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:suveyd_ticaret/controller/customers_controller.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/data/model/customers/customers_model.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_title_text_container.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_add_button.dart';
-import 'package:suveyd_ticaret/view/customer_bills_add/widgets/custom_price_container.dart';
+import 'package:Erad/controller/customers/customers_controller.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/data/model/customers/customers_model.dart';
+import 'package:Erad/view/custom_widgets/custom_title_text_container.dart';
+import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:Erad/view/customer_bills_add/widgets/custom_price_container.dart';
 
 class Custom_customers_Card extends GetView<CustomersControllerImp> {
   const Custom_customers_Card({super.key, required this.customersModel});
@@ -34,8 +34,8 @@ class Custom_customers_Card extends GetView<CustomersControllerImp> {
                 width: 190,
               ),
 
-              Custom_button(icon: Icons.edit, onPressed:() => controller.show_edit_dialog(customersModel.customer_id!, customersModel.customer_city!, customersModel.customer_name!), title: "حرر"),
-              Custom_button(
+              Custom_button( color: AppColors.primary,icon: Icons.edit, onPressed:() => controller.show_edit_dialog(customersModel.customer_id!, customersModel.customer_city!, customersModel.customer_name!), title: "حرر"),
+              Custom_button( color: AppColors.primary,
                 icon: Icons.delete_forever,
                 onPressed:
                     () => controller.show_delete_dialog(
@@ -43,7 +43,7 @@ class Custom_customers_Card extends GetView<CustomersControllerImp> {
                     ),
                 title: "حذف",
               ),
-              Custom_button(
+              Custom_button( color: AppColors.primary,
                 icon: Icons.document_scanner,
                 onPressed: () {},
                 title: "فواتير",

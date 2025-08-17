@@ -1,9 +1,11 @@
+import 'package:Erad/controller/suppliers/suppliers_view_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_add_button.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:get/state_manager.dart';
 
-class Custom_suppliers_heder extends StatelessWidget {
+class Custom_suppliers_heder extends GetView<SuppliersControllerImp> {
   const Custom_suppliers_heder({super.key});
 
   @override
@@ -14,7 +16,7 @@ class Custom_suppliers_heder extends StatelessWidget {
         Container(
           alignment: Alignment.center,
           height: 40,
-          width: 320,
+          width: 300,
           decoration: BoxDecoration(color: AppColors.primary),
           child: Text(
             "اسم",
@@ -40,7 +42,12 @@ class Custom_suppliers_heder extends StatelessWidget {
           ),
         ),
         SizedBox(width: 20),
-        Custom_button(icon: Icons.add, onPressed: () {}, title: "إضافة"),
+        Custom_button(
+          color: AppColors.primary,
+          icon: Icons.add,
+          onPressed: () => controller.show_add_Suppliers_dialog(),
+          title: "إضافة",
+        ),
       ],
     );
   }

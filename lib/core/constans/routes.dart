@@ -13,6 +13,11 @@ class AppRoutes {
       "/customer_debt_details_page";
   static const String customer_debts_view_page = "/customer_debts_view_page";
   static const String customers_view_page = "/customers_view_page";
+  static const String pdf_view = "/pdf_view";
+  static const String suppliers_view = "/suppliers_view";
+
+
+
 
 
 }

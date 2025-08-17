@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:suveyd_ticaret/controller/customer_biil_add_controller.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_add_button.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_appBar.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_total_price_container.dart';
-import 'package:suveyd_ticaret/view/customer_bills_add/widgets/custom_bill_add_listView.dart';
-import 'package:suveyd_ticaret/view/customer_bills_add/widgets/custom_bill_options_container.dart';
-import 'package:suveyd_ticaret/view/customer_bills_add/widgets/custom_label_row.dart';
+import 'package:Erad/controller/customers/customer_add_bill_controller.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:Erad/view/custom_widgets/custom_appBar.dart';
+import 'package:Erad/view/customer_bills_add/widgets/custom_bill_add_listView.dart';
+import 'package:Erad/view/customer_bills_add/widgets/custom_bill_options_container.dart';
+import 'package:Erad/view/customer_bills_add/widgets/custom_label_row.dart';
 
 class CustomerBillAddPage extends GetView<CustomerBiilAddControllerImp> {
   const CustomerBillAddPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => CustomerBiilAddControllerImp());
+    Get.put(CustomerBiilAddControllerImp());
     return WillPopScope(
       onWillPop: () => controller.onWillPop(),
       child: Scaffold(
@@ -25,36 +24,30 @@ class CustomerBillAddPage extends GetView<CustomerBiilAddControllerImp> {
           child: CustomScrollView(
             slivers: [
               CustomerBillOptionsContainer(),
-              SliverToBoxAdapter(child: SizedBox(height: 10)),
+              SliverToBoxAdapter(child: SizedBox(height: 30)),
               Custom_label_row(),
               Custom_bill_add_listView(),
-      
+
               SliverToBoxAdapter(child: SizedBox(height: 30)),
-      
+
               SliverToBoxAdapter(
                 child: Row(
                   spacing: 30,
                   children: [
-                    GetBuilder<CustomerBiilAddControllerImp>(
-                      builder:
-                          (controller) => Custom_total_price_container(
-                            title: controller.total_product_price.toString(),
-                          ),
-                    ),
-                    Custom_button(
+                    Custom_button( color: AppColors.primary,
                       icon: Icons.save,
                       title: "حفظ الفاتورة",
-                      onPressed: () {},
+                      onPressed: () => controller.saveBillData(),
                     ),
-                    Custom_button(
+                    Custom_button( color: AppColors.primary,
                       icon: Icons.print,
                       title: "طباعة",
-                      onPressed: () {},
+                      onPressed:() => controller.createPdf(),
                     ),
-                    Custom_button(
+                    Custom_button( color: AppColors.primary,
                       icon: Icons.delete_forever,
                       title: "حذف",
-                      onPressed: () {},
+                      onPressed: () => controller.showDleteBillDialog(),
                     ),
                   ],
                 ),

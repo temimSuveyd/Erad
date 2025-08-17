@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
+import 'package:Erad/core/constans/colors.dart';
 
 class CustomerNameLabel extends StatelessWidget {
   const CustomerNameLabel({super.key, required this.title});

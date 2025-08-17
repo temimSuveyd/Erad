@@ -1,9 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
-import 'package:suveyd_ticaret/core/services/app_services.dart';
-import 'package:suveyd_ticaret/firebase_options.dart';
-import 'package:suveyd_ticaret/routes.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:Erad/core/services/app_services.dart';
+import 'package:Erad/firebase_options.dart';
+import 'package:Erad/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +19,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(getPages: getPages, locale: Locale("ar"));
+    return GetMaterialApp(
+      getPages: getPages,
+      locale: Locale("ar"),
+      theme: ThemeData(fontFamily: GoogleFonts.cairo().fontFamily),
+    );
   }
 }

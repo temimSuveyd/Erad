@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
-import 'package:suveyd_ticaret/controller/categorey_controller.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_title_text_container.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_add_button.dart';
-import 'package:suveyd_ticaret/view/customer_bills_add/widgets/custom_price_container.dart';
+import 'package:Erad/controller/categoreys/categorey_controller.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/view/custom_widgets/custom_title_text_container.dart';
+import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:Erad/view/customer_bills_add/widgets/custom_price_container.dart';
 
 // ignore: camel_case_types
 class Custom_categorey_card extends GetView<CategoreyControllerImp> {
@@ -33,13 +33,13 @@ class Custom_categorey_card extends GetView<CategoreyControllerImp> {
             spacing: 25,
             children: [
               Custom_title_text_container(title: title),
-              Custom_button(icon: Icons.edit, onPressed: () {}, title: "تحرير"),
-              Custom_button(
+              Custom_button( color: AppColors.primary,icon: Icons.edit, onPressed: () {}, title: "تحرير"),
+              Custom_button( color: AppColors.primary,
                 icon: Icons.delete_forever,
                 onPressed: () => controller.show_delete_dialog(title),
                 title: "حذف",
               ),
-              Custom_button(
+              Custom_button( color: AppColors.primary,
                 icon: Icons.open_in_browser_outlined,
                 onPressed: () => controller.go_to_gategorey_type_page(title),
 

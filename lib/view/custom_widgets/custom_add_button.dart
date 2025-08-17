@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
+import 'package:Erad/core/constans/colors.dart';
 
 class Custom_button extends StatelessWidget {
   const Custom_button({
@@ -7,25 +7,29 @@ class Custom_button extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.onPressed,
+    required this.color,
   });
 
   final IconData icon;
   final String title;
   final Function() onPressed;
+  final Color color;
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
       onPressed: () {
         onPressed();
       },
+      padding: EdgeInsets.symmetric(horizontal: 5),
       minWidth: 120,
       height: 45,
       shape: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
         borderSide: BorderSide.none,
       ),
-      color: AppColors.primary,
+      color: color,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             title,
@@ -36,7 +40,7 @@ class Custom_button extends StatelessWidget {
             ),
           ),
 
-          SizedBox(width: 10),
+          SizedBox(width: 5),
 
           Icon(icon, color: AppColors.wihet),
         ],

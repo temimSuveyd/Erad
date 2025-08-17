@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:suveyd_ticaret/controller/home_controller.dart';
-import 'package:suveyd_ticaret/data/model/home/home_modle.dart';
-import 'package:suveyd_ticaret/view/home/widgets/custom_home_card.dart';
+import 'package:Erad/controller/home/home_controller.dart';
+import 'package:Erad/data/model/home/home_modle.dart';
+import 'package:Erad/view/home/widgets/custom_home_card.dart';
 
 class Custom_home_gridViewBuilder extends StatelessWidget {
   const Custom_home_gridViewBuilder({super.key});
@@ -12,10 +12,10 @@ class Custom_home_gridViewBuilder extends StatelessWidget {
     return GetBuilder<HomeControllerImp>(
       builder: (controller) => 
      GridView.builder(
-        physics: NeverScrollableScrollPhysics(),
+        // physics: NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 320,
-          mainAxisExtent: 250,
+          mainAxisExtent: 200,
           crossAxisSpacing: 100,
           mainAxisSpacing: 100,
         ),

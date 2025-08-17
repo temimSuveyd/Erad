@@ -5,7 +5,7 @@ class CustomersModel {
   String? customer_city;
   String? customer_id;
 
-  CustomersModel(this.customer_city, this.customer_name,this.customer_id);
+  CustomersModel(this.customer_city, this.customer_name, this.customer_id);
 
   CustomersModel.formatJson(QueryDocumentSnapshot mapToJson) {
     customer_city = mapToJson["customer_city"];

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
-import 'package:suveyd_ticaret/controller/brands_type_controller.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_add_button.dart';
+import 'package:Erad/controller/brands/brands_type_controller.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/view/custom_widgets/custom_add_button.dart';
 
 class Custom_brands_type_heder extends GetView<BrandsTypeControllerImp> {
   const Custom_brands_type_heder({super.key});
@@ -15,7 +15,7 @@ class Custom_brands_type_heder extends GetView<BrandsTypeControllerImp> {
         Container(
           alignment: Alignment.center,
           height: 40,
-          width: 320,
+          width: 240,
           decoration: BoxDecoration(color: AppColors.primary),
           child: Text(
             "نوع المنتج",
@@ -29,7 +29,7 @@ class Custom_brands_type_heder extends GetView<BrandsTypeControllerImp> {
         Container(
           alignment: Alignment.center,
           height: 40,
-          width: 270,
+          width: 210,
           decoration: BoxDecoration(color: AppColors.primary),
           child: Text(
             "حجم المنتج",
@@ -43,7 +43,7 @@ class Custom_brands_type_heder extends GetView<BrandsTypeControllerImp> {
         Container(
           alignment: Alignment.center,
           height: 40,
-          width: 200,
+          width: 170,
           decoration: BoxDecoration(color: AppColors.primary),
           child: Text(
             "سعر الشراء",
@@ -57,7 +57,7 @@ class Custom_brands_type_heder extends GetView<BrandsTypeControllerImp> {
         Container(
           alignment: Alignment.center,
           height: 40,
-          width: 190,
+          width: 155,
           decoration: BoxDecoration(color: AppColors.primary),
           child: Text(
             "سعر البيع",
@@ -71,7 +71,7 @@ class Custom_brands_type_heder extends GetView<BrandsTypeControllerImp> {
              Container(
           alignment: Alignment.center,
           height: 40,
-          width: 200,
+          width: 160,
           decoration: BoxDecoration(color: AppColors.primary),
           child: Text(
             "أرباح هذا المنتج",
@@ -83,7 +83,7 @@ class Custom_brands_type_heder extends GetView<BrandsTypeControllerImp> {
           ),
         ),
         SizedBox(width: 20),
-        Custom_button(
+        Custom_button( color: AppColors.primary,
           icon: Icons.add,
           onPressed: () => controller.show_dialog(),
           title: "إضافة",

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/state_manager.dart';
-import 'package:suveyd_ticaret/controller/customers_controller.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_add_button.dart';
+import 'package:Erad/controller/customers/customers_controller.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/view/custom_widgets/custom_add_button.dart';
 
 class Custom_customers_heder extends GetView<CustomersControllerImp> {
   const Custom_customers_heder({super.key});
@@ -42,7 +42,7 @@ class Custom_customers_heder extends GetView<CustomersControllerImp> {
           ),
         ),
         SizedBox(width: 20),
-        Custom_button(
+        Custom_button( color: AppColors.primary,
           icon: Icons.add,
           onPressed: () => controller.show_add_customer_dialog(),
           title: "إضافة",

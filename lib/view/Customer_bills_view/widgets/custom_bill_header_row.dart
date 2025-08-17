@@ -1,19 +1,19 @@
+import 'dart:developer';
+
+import 'package:Erad/view/Customer_bills_view/widgets/custom_bill_status_button.dart';
+import 'package:Erad/view/custom_widgets/custom_bill_status_dialog.dart';
+import 'package:Erad/view/custom_widgets/handling_bill_status.dart';
 import 'package:flutter/material.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/view/Customer_bills_view/widgets/custom_title_container.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_details_button.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_title_text_container.dart';
-import 'package:suveyd_ticaret/view/customer_bills_add/widgets/custom_price_container.dart';
+import 'package:get/get.dart';
+import 'package:Erad/controller/customers/customer_bill_view_controller.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/data/model/customer_bills_view/bill_model.dart';
+import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:Erad/view/customer_bills_add/widgets/custom_price_container.dart';
 
-
-class Custom_bill_view_card extends StatelessWidget {
-  const Custom_bill_view_card({
-    super.key,
-
-  });
-
-  
-
+class Custom_bill_view_card extends GetView<CustomerBillViewControllerImp> {
+  const Custom_bill_view_card({super.key, required this.billModel});
+  final BillModel billModel;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -26,19 +26,51 @@ class Custom_bill_view_card extends StatelessWidget {
             color: AppColors.grey,
             borderRadius: BorderRadius.circular(10),
           ),
-        
-          child: Row(
-            spacing: 30,
-            children: [
-   Custom_title_text_container(title: ""),
-   Custom_price_container(title: "", width: 250),
-   Custom_price_container(title: "", width: 200),
-   Custom_price_container(title: "", width: 200),
-   Custom_price_container(title: "", width: 200),
 
+          child: Row(
+            spacing: 10,
+            children: [
+              Custom_price_container(
+                title: billModel.customer_name!,
+                width: 200,
+              ),
+              Custom_price_container(
+                title: billModel.customer_city!,
+                width: 200,
+              ),
+
+              Custom_price_container(
+                title:
+                    "${billModel.bill_date!.day}/${billModel.bill_date!.month}/${billModel.bill_date!.year}",
+                width: 160,
+              ),
+              Custom_price_container(
+                title: billModel.total_price!.toString(),
+                width: 160,
+              ),
+              Custom_price_container(
+                title: billModel.payment_type == "Religion" ? "دِين" : "نقدي",
+                width: 160,
+              ),
 
               // Spacer(),
-              Custom_details_button(),
+              // Custom_details_button(),
+              Custom_button(
+                color: AppColors.primary,
+                icon: Icons.open_in_new,
+                title: "تفاصيل",
+                onPressed: () {
+                  controller.goToDetailsPage(billModel.bill_id!);
+                },
+              ),
+              Bill_status_button(
+                billStatus: billModel.bill_status!,
+                onPressed: () {
+                  custom_bill_status_dialog(billModel.bill_status!, (value) {
+                    controller.updateBillStaus(value, billModel.bill_id!);
+                  });
+                },
+              ),
             ],
           ),
         ),

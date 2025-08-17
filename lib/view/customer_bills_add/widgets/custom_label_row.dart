@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
-import 'package:suveyd_ticaret/controller/customer_biil_add_controller.dart';
-import 'package:suveyd_ticaret/data/data_score/static/customer_bill_add/customer_label_data.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_add_button.dart';
-import 'package:suveyd_ticaret/view/customer_bills_add/widgets/custom_label_container.dart';
+import 'package:Erad/controller/customers/customer_add_bill_controller.dart';
+import 'package:Erad/data/data_score/static/customer_bill_add/customer_label_data.dart';
+import 'package:Erad/view/customer_bills_add/widgets/custom_label_container.dart';
 
 class Custom_label_row extends GetView<CustomerBiilAddControllerImp> {
   Custom_label_row({super.key});
@@ -27,13 +26,7 @@ class Custom_label_row extends GetView<CustomerBiilAddControllerImp> {
                 width: widthList[index],
               ),
             ),
-        
-            SizedBox(width: 5),
-                  Custom_button(
-                  icon: Icons.add,
-                  onPressed:() => controller.showAddProdectDialog(),
-                  title: "إضافة",
-                )
+
           ],
         ),
       ),

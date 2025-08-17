@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:suveyd_ticaret/core/class/handling_data.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/core/constans/sharedPreferences.dart';
-import 'package:suveyd_ticaret/core/function/validatorInpot.dart';
-import 'package:suveyd_ticaret/core/services/app_services.dart';
-import 'package:suveyd_ticaret/data/data_score/remote/customers_data.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom__dropDownButton.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_delete_dialog.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_search_text_field.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_textfield_erroe_snackbar.dart';
-import 'package:suveyd_ticaret/view/customers_view/widgets/custom_add_customer_dialog.dart';
+import 'package:Erad/core/class/handling_data.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/core/constans/sharedPreferences.dart';
+import 'package:Erad/core/function/validatorInpot.dart';
+import 'package:Erad/core/services/app_services.dart';
+import 'package:Erad/data/data_score/remote/customer/customers_data.dart';
+import 'package:Erad/view/custom_widgets/custom__dropDownButton.dart';
+import 'package:Erad/view/custom_widgets/custom_delete_dialog.dart';
+import 'package:Erad/view/custom_widgets/custom_search_text_field.dart';
+import 'package:Erad/view/custom_widgets/custom_textfield_erroe_snackbar.dart';
+import 'package:Erad/view/customers_view/widgets/custom_add_customer_dialog.dart';
 
 abstract class CustomersController extends GetxController {
   addCustomer();
@@ -38,7 +38,7 @@ class CustomersControllerImp extends CustomersController {
   Services services = Get.find();
   TextEditingController search_controller = TextEditingController();
   TextEditingController customer_name_controller = TextEditingController();
-  String customer_city = "";
+  String customer_city = "مدينة العميل";
 
   @override
   addCustomer() {
@@ -194,6 +194,7 @@ class CustomersControllerImp extends CustomersController {
 
   @override
   searchForCustomersBayCity(String city_name) {
+    customer_city = city_name;
     if (city_name.isEmpty || city_name == "جميع المدن") {
       getCustomers();
     } else {

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/view/categorey_type_view/widgets/custom_categoreyType_heder.dart';
-import 'package:suveyd_ticaret/view/categorey_type_view/widgets/custom_categoreyType_listView.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_appBar.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom_search_text_field.dart';
-import 'package:suveyd_ticaret/view/custom_widgets/custom__dropDownButton.dart';
-import 'package:suveyd_ticaret/view/customer_bills_add/widgets/custom_amout_dropDown_button.dart';
-import 'package:suveyd_ticaret/view/products_view/widgets/custom_categoreyType_listView.dart';
-import 'package:suveyd_ticaret/view/products_view/widgets/custom_podects_heder.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/view/categorey_type_view/widgets/custom_categoreyType_heder.dart';
+import 'package:Erad/view/categorey_type_view/widgets/custom_categoreyType_listView.dart';
+import 'package:Erad/view/custom_widgets/custom_appBar.dart';
+import 'package:Erad/view/custom_widgets/custom_search_text_field.dart';
+import 'package:Erad/view/custom_widgets/custom__dropDownButton.dart';
+import 'package:Erad/view/customer_bills_add/widgets/custom_amout_dropDown_button.dart';
+import 'package:Erad/view/products_view/widgets/custom_categoreyType_listView.dart';
+import 'package:Erad/view/products_view/widgets/custom_podects_heder.dart';
 
 class productsViewPage extends StatelessWidget {
   const productsViewPage({super.key});

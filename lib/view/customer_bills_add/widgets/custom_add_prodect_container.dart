@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/data/model/customer_bill_add/prodects_model.dart';
-import 'package:suveyd_ticaret/view/Customer_bills_view/widgets/custom_title_container.dart';
-import 'package:suveyd_ticaret/view/customer_bills_add/widgets/custom_price_container.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/data/model/customer_bill_add/prodects_model.dart';
+import 'package:Erad/view/Customer_bills_view/widgets/custom_title_container.dart';
+import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:Erad/view/customer_bills_add/widgets/custom_price_container.dart';
 
+// ignore: camel_case_types
 class Custom_add_product_container extends StatelessWidget {
   const Custom_add_product_container({
     super.key,
     required this.billProductsModel,
+    required this.onPressed, 
   });
 
   final BillProductsModel billProductsModel;
+  final Function() onPressed ;
 
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -46,6 +50,10 @@ class Custom_add_product_container extends StatelessWidget {
                   title: billProductsModel.prodect_totla_price!.toString(),
                   width: 180,
                 ),
+
+                Custom_button( color: AppColors.primary,icon: Icons.delete, title: "حذف", onPressed: () {
+                  onPressed();
+                },)
               ],
             ),
           ),

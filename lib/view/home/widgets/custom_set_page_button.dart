@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:suveyd_ticaret/controller/home_controller.dart';
-import 'package:suveyd_ticaret/core/constans/colors.dart';
-import 'package:suveyd_ticaret/data/data_score/static/home/home_pages_data.dart';
+import 'package:Erad/controller/home/home_controller.dart';
+import 'package:Erad/core/constans/colors.dart';
+import 'package:Erad/data/data_score/static/home/home_pages_data.dart';
 
 // ignore: camel_case_types
 class Custom_set_page_container extends StatelessWidget {
@@ -65,7 +65,7 @@ class Custom_set_page_button extends StatelessWidget {
         onPressed();
       },
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 400),
+        duration: Duration(milliseconds: 150),
         width: 90,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
