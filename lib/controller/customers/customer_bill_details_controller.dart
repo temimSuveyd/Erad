@@ -1,11 +1,13 @@
-import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:Erad/core/constans/routes.dart';
 import 'package:Erad/core/function/pdf_maker.dart';
-import 'package:Erad/data/data_score/remote/depts/customer_depts.dart';
+import 'package:Erad/data/data_score/remote/depts/customer_depts_data.dart';
 import 'package:Erad/data/model/customer_bill_details/bill_details_product_model.dart';
-import 'package:Erad/view/custom_widgets/custom_textfield_erroe_snackbar.dart';
+import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:Erad/view/custom_widgets/custom_snackBar.dart';
+import 'package:Erad/view/custom_widgets/custom_snackbar.dart'
+    hide custom_snackBar;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:Erad/core/class/handling_data.dart';
@@ -41,7 +43,7 @@ abstract class CustomerBillDetailsController extends GetxController {
   // ignore: non_constant_identifier_names
   show_discount_dialog(Function() onConfirm);
   // ignore: non_constant_identifier_names
-  update_bill_brice(double discountAmount);
+  update_bill_total_brice(double discountAmount);
   // ignore: non_constant_identifier_names
   discount_on_bill();
   deleteBill();
@@ -49,8 +51,11 @@ abstract class CustomerBillDetailsController extends GetxController {
   show_delete_bill_dialog();
   goToPdfViewPage(Uint8List pdfBytes);
   createPdf();
-
   addDiscount(double discount);
+  updatePaymentType(String bill_status);
+  showEditPaymentTypeDailog();
+  addDept();
+  addBillToDepts();
 }
 
 class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
@@ -318,7 +323,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
   }
 
   @override
-  update_bill_brice(double discount) async {
+  update_bill_total_brice(double discount) async {
     try {
       statusreqest = Statusreqest.loading;
       update();
@@ -331,7 +336,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
         total_price!,
         total_earn!,
       );
-      await updateBillInDepts(total_price! - discount * 2);
+      await updateBillInDepts(total_price!);
       statusreqest = Statusreqest.success;
       update();
     } catch (e) {
@@ -347,40 +352,21 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
         if (discount_controller.text.isEmpty ||
             double.tryParse(discount_controller.text) == null) {
           discount_controller.clear();
-          Get.showSnackbar(
-            GetSnackBar(
-              backgroundColor: AppColors.red,
-              animationDuration: Duration(milliseconds: 400),
-              duration: Duration(seconds: 3),
-              title: "خطأ",
-              message: "لقد أدخلت قيمة خاطئة",
-              snackStyle: SnackStyle.GROUNDED,
-              dismissDirection: DismissDirection.endToStart,
-              snackPosition: SnackPosition.TOP,
-            ),
-          );
+
+          custom_snackBar(Colors.red, "خطأ", "لقد أدخلت قيمة خاطئة");
+
           update();
         } else {
           if (total_price! - double.parse(discount_controller.text) < 0) {
             discount_controller.clear();
-            Get.showSnackbar(
-              GetSnackBar(
-                backgroundColor: AppColors.primary,
-                animationDuration: Duration(milliseconds: 400),
-                duration: Duration(seconds: 3),
-                title: "خطأ",
-                message: "لا يمكن جعل إجمالي الفاتورة أقل من صفر",
-                snackStyle: SnackStyle.GROUNDED,
-                dismissDirection: DismissDirection.endToStart,
-                snackPosition: SnackPosition.TOP,
-              ),
-            );
+
+            custom_snackBar(Colors.red, "خطأ", "! قيمة أقل من صفر");
           } else {
             final double discount =
                 double.tryParse(discount_controller.text) ?? 0;
             statusreqest = Statusreqest.loading;
             update();
-            await update_bill_brice(discount);
+            await update_bill_total_brice(discount);
             Get.back();
             discount_controller.clear();
             statusreqest = Statusreqest.success;
@@ -400,7 +386,8 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
       statusreqest = Statusreqest.loading;
       update();
       await customerBillData.deleteCustomerBill(user_email!, bill_id!);
-      deleteBillFromDepts();
+
+      await deleteBillFromDepts();
       statusreqest = Statusreqest.success;
     } catch (e) {
       statusreqest = Statusreqest.faliure;
@@ -505,6 +492,105 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
       statusreqest = Statusreqest.faliure;
       update();
     }
+  }
+
+  @override
+  addBillToDepts() async {
+    String user_email =
+        services.sharedPreferences.getString(AppShared.user_email)!;
+    try {
+      await customerDeptsData.addBillToDepts(
+        billModel!.bill_no!,
+        bill_id!,
+        billModel!.customer_id!,
+        billModel!.payment_type!,
+        user_email,
+        billModel!.total_price!,
+        billModel!.bill_date!,
+      );
+
+      statusreqest = Statusreqest.success;
+      update();
+    } catch (e) {
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
+  }
+
+  @override
+  addDept() async {
+    String user_email =
+        services.sharedPreferences.getString(AppShared.user_email)!;
+    try {
+      await customerDeptsData.addDepts(
+        billModel!.customer_id!,
+        billModel!.customer_name!,
+        billModel!.customer_city!,
+        user_email,
+        billModel!.total_price!,
+        billModel!.bill_date!,
+      );
+      statusreqest = Statusreqest.success;
+      update();
+    } catch (e) {
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
+  }
+
+  @override
+  updatePaymentType(String paymentType) {
+    statusreqest = Statusreqest.loading;
+    update();
+    try {
+      final String user_email =
+          services.sharedPreferences.getString(AppShared.user_email)!;
+      customerBillData.updatePaymentType(user_email, bill_id!, paymentType);
+      if (billModel!.payment_type == "monetary") {
+        addBillToDepts();
+        addDept();
+      } else {
+        deleteBillFromDepts();
+      }
+      billModel!.payment_type = paymentType;
+      statusreqest = Statusreqest.success;
+    } catch (e) {
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
+  }
+
+  @override
+  showEditPaymentTypeDailog() {
+    Get.defaultDialog(
+      title: "تغيير طريقة الدفع",
+      backgroundColor: AppColors.backgroundColor,
+      content: Row(
+        spacing: 20,
+        children: [
+          Custom_button(
+            icon: Icons.attach_money_rounded,
+            title: "نقدي",
+            onPressed: () {
+              updatePaymentType("monetary");
+              Get.back();
+            },
+            color: AppColors.primary,
+          ),
+          Custom_button(
+            icon: Icons.money_off_csred_outlined,
+            title: "دَين",
+            onPressed: () {
+              updatePaymentType("Religion");
+              Get.back();
+            },
+            color: AppColors.red,
+          ),
+        ],
+      ),
+      textCancel: "إلغاء",
+      onCancel: () {},
+    );
   }
 
   @override

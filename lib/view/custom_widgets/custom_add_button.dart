@@ -20,11 +20,11 @@ class Custom_button extends StatelessWidget {
       onPressed: () {
         onPressed();
       },
-      padding: EdgeInsets.symmetric(horizontal: 5),
+      padding: EdgeInsets.symmetric(horizontal: 20),
       minWidth: 120,
       height: 45,
       shape: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(5),
         borderSide: BorderSide.none,
       ),
       color: color,

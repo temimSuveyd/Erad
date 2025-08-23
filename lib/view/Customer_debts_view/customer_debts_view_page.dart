@@ -1,11 +1,12 @@
 import 'package:Erad/controller/customers/customer_depts_view_controller.dart';
 import 'package:Erad/core/constans/colors.dart';
 import 'package:Erad/data/data_score/static/city_data.dart';
+import 'package:Erad/view/Customer_debts_view/widgets/custom_dept_name_list.dart';
 import 'package:Erad/view/Customer_debts_view/widgets/custom_list_view_builder.dart';
 import 'package:Erad/view/custom_widgets/custom_add_button.dart';
 import 'package:Erad/view/custom_widgets/show_date_range_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:Erad/view/Customer_bills_view/widgets/custom_name_list.dart';
+import 'package:Erad/view/Customer_bills_view/widgets/custom_bill_name_list.dart';
 import 'package:Erad/view/custom_widgets/custom_appBar.dart';
 import 'package:Erad/view/custom_widgets/custom_search_text_field.dart';
 import 'package:Erad/view/custom_widgets/custom__dropDownButton.dart';
@@ -18,7 +19,7 @@ class CustomerDebtsViewPage extends GetView<CustomerDeptsViewControllerImp> {
   final List<double> width = [300, 200, 200, 200, 200];
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => CustomerDeptsViewControllerImp());
+    Get.put(CustomerDeptsViewControllerImp());
 
     return Scaffold(
       appBar: Custom_appBar(title: "ديون العملاء"),
@@ -28,9 +29,9 @@ class CustomerDebtsViewPage extends GetView<CustomerDeptsViewControllerImp> {
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: Wrap(
+              child: Row(
                 spacing: 20, // Horizontal space between children
-                runSpacing: 20, // Vertical space between lines
+                // runSpacing: 20, // Vertical space between lines
                 children: [
                   Custom_textfield(
                     hintText: 'اسم او رقم الفاتورة',
@@ -42,6 +43,7 @@ class CustomerDebtsViewPage extends GetView<CustomerDeptsViewControllerImp> {
                     onChanged:
                         (value) => controller.searchForBillsBayCustomerName(),
                   ),
+
                   GetBuilder<CustomerDeptsViewControllerImp>(
                     builder:
                         (controller) => Custom_set_date_button(
@@ -60,16 +62,18 @@ class CustomerDebtsViewPage extends GetView<CustomerDeptsViewControllerImp> {
                         ),
                   ),
                   Custom_dropDownButton(
-                    value: controller.selectedCustomerCity, // Use the controller's selected value
+                    value:
+                        controller
+                            .selectedCustomerCity, // Use the controller's selected value
                     onChanged:
                         (value) => controller.searchForBillBayCity(value),
                     hint: 'اختر المدينة',
                     items: city_data,
                   ),
-             Custom_button(
+                  Custom_button(
                     icon: Icons.filter_list_off_outlined,
                     title: "إزالة جميع الفلاتر",
-                    onPressed: () => controller.getBills(),
+                    onPressed: () => controller.getDepts(),
                     color: AppColors.red,
                   ),
                 ],
@@ -77,7 +81,7 @@ class CustomerDebtsViewPage extends GetView<CustomerDeptsViewControllerImp> {
             ),
 
             SliverToBoxAdapter(child: SizedBox(height: 30)),
-            CustomerNameList(),
+            CustomerDeptNameList(),
             SliverToBoxAdapter(child: SizedBox(height: 10)),
             Custom_deptsListView(),
           ],

@@ -1,15 +1,14 @@
-
+import 'package:Erad/controller/customers/customer_depts_view_controller.dart';
+import 'package:Erad/data/model/customer_depts/customer_depts_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:Erad/controller/customers/customer_bill_view_controller.dart';
 import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/data/model/customer_bills_view/bill_model.dart';
 import 'package:Erad/view/custom_widgets/custom_add_button.dart';
 import 'package:Erad/view/customer_bills_add/widgets/custom_price_container.dart';
 
-class Custom_depts_view_card extends GetView<CustomerBillViewControllerImp> {
-  const Custom_depts_view_card({super.key, required this.billModel});
-  final BillModel billModel;
+class Custom_depts_view_card extends GetView<CustomerDeptsViewControllerImp> {
+  const Custom_depts_view_card({super.key, required this.deptModel});
+  final DeptsModel deptModel;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -27,28 +26,26 @@ class Custom_depts_view_card extends GetView<CustomerBillViewControllerImp> {
             spacing: 10,
             children: [
               Custom_price_container(
-                title: billModel.customer_name!,
-                width: 200,
-              ),
-              Custom_price_container(
-                title: billModel.customer_city!,
+                title: deptModel.customer_name!,
                 width: 200,
               ),
 
-
               Custom_price_container(
-                title: billModel.total_price!.toString(),
+                title:
+                    "${deptModel.bill_date!.year}/${deptModel.bill_date!.month}/${deptModel.bill_date!.day}",
+                width: 200,
+              ),
+              Custom_price_container(
+                title: deptModel.total_price!.toString(),
                 width: 160,
               ),
 
-              // Spacer(),
-              // Custom_details_button(),
               Custom_button(
                 color: AppColors.primary,
                 icon: Icons.open_in_new,
                 title: "تفاصيل",
                 onPressed: () {
-                  controller.goToDetailsPage(billModel.bill_id!);
+                  controller.goTODetailsPage(deptModel.id!);
                 },
               ),
             ],

@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'dart:typed_data';
-import 'package:Erad/data/data_score/remote/depts/customer_depts.dart';
+import 'package:Erad/data/data_score/remote/depts/customer_depts_data.dart';
 import 'package:Erad/view/customer_bills_add/widgets/custom_show_popupMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,11 +14,12 @@ import 'package:Erad/core/services/app_services.dart';
 import 'package:Erad/data/data_score/remote/customer/customers_data.dart';
 import 'package:Erad/data/data_score/remote/customer/customer_bill_data.dart';
 import 'package:Erad/data/data_score/remote/brands/product_data.dart';
-import 'package:Erad/view/custom_widgets/custom_textfield_erroe_snackbar.dart';
+import 'package:Erad/view/custom_widgets/custom_snackbar.dart';
 import 'package:Erad/view/customer_bills_add/widgets/custom_willPop_dailog.dart';
 
 abstract class CustomerAddBiilController extends GetxController {
   addCustomerBill();
+  addDept();
   addBillToDepts();
   getCustomerById();
   getAllCustomers();
@@ -94,7 +95,7 @@ class CustomerBiilAddControllerImp extends CustomerAddBiilController {
         customer_city == null ||
         customer_id == null ||
         bill_payment_type == null) {
-      custom_empty_data_erroe_snackbar();
+      custom_snackBar();
       statusreqest = Statusreqest.success;
       update();
     } else {
@@ -293,7 +294,7 @@ class CustomerBiilAddControllerImp extends CustomerAddBiilController {
         update();
       }
     } else {
-      custom_empty_data_erroe_snackbar();
+      custom_snackBar();
     }
   }
 
@@ -365,7 +366,7 @@ class CustomerBiilAddControllerImp extends CustomerAddBiilController {
       if (bill_id != null) {
         saveBillData();
       } else {
-        custom_empty_data_erroe_snackbar();
+        custom_snackBar();
         Get.back();
       }
     });
@@ -415,12 +416,13 @@ class CustomerBiilAddControllerImp extends CustomerAddBiilController {
             total_product_profits,
           );
           if (bill_payment_type == "Religion") {
-            await addBillToDepts();
+            await addDept();
+            addBillToDepts();
           }
           Get.back();
           custom_success_snackbar();
         } else {
-          custom_empty_data_erroe_snackbar();
+          custom_snackBar();
           statusreqest = Statusreqest.success;
           update();
         }
@@ -519,7 +521,7 @@ class CustomerBiilAddControllerImp extends CustomerAddBiilController {
         update();
       }
     } else {
-      custom_empty_data_erroe_snackbar();
+      custom_snackBar();
     }
   }
 
@@ -568,14 +570,37 @@ class CustomerBiilAddControllerImp extends CustomerAddBiilController {
   }
 
   @override
+  addDept() async {
+    String user_email =
+        services.sharedPreferences.getString(AppShared.user_email)!;
+    try {
+      if (customer_name != null && customer_id != null) {
+        await customerDeptsData.addDepts(
+          customer_id!,
+          customer_name!,
+          customer_city!,
+          user_email,
+          total_product_price,
+          bill_add_date,
+        );
+      } else {
+        statusreqest = Statusreqest.faliure;
+        update();
+      }
+      statusreqest = Statusreqest.success;
+      update();
+    } catch (e) {
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
+  }
+
+  @override
   addBillToDepts() async {
     String user_email =
         services.sharedPreferences.getString(AppShared.user_email)!;
     try {
-      if (bill_id != null &&
-          customer_id != null &&
-          bill_payment_type != null &&
-          bill_no != null) {
+      if (customer_name != null && customer_id != null) {
         await customerDeptsData.addBillToDepts(
           bill_no!,
           bill_id!,

@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:Erad/core/constans/colors.dart';
 
 class Custom_price_text_container extends StatelessWidget {
-  const Custom_price_text_container({super.key});
-
+  const Custom_price_text_container({super.key, required this.price});
+final String price;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,7 +15,7 @@ class Custom_price_text_container extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Text(
-        "13000000000",
+       price,
         style: TextStyle(
           color: AppColors.green,
           fontSize: 18,

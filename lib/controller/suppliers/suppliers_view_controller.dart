@@ -7,7 +7,7 @@ import 'package:Erad/core/class/handling_data.dart';
 import 'package:Erad/core/constans/sharedPreferences.dart';
 import 'package:Erad/core/services/app_services.dart';
 import 'package:Erad/view/custom_widgets/custom_delete_dialog.dart';
-import 'package:Erad/view/custom_widgets/custom_textfield_erroe_snackbar.dart';
+import 'package:Erad/view/custom_widgets/custom_snackbar.dart';
 
 abstract class SuppliersController extends GetxController {
   addSuppliers();
@@ -44,7 +44,7 @@ class SuppliersControllerImp extends SuppliersController {
   addSuppliers() {
     String suppliers_name = suppliers_name_controller.text;
     if (suppliers_city.isEmpty || suppliers_name.isEmpty) {
-      custom_empty_data_erroe_snackbar();
+      custom_snackBar();
     } else {
       statusreqest = Statusreqest.loading;
       update();

@@ -100,7 +100,18 @@ class CustomerBillData {
           "bill_no": bill_no,
         });
   }
-
+  Future updatePaymentType(
+    String user_email,
+    String bill_id,
+    String payment_type,
+  ) async {
+    return await _firestore
+        .collection("users")
+        .doc(user_email)
+        .collection("customer_bills")
+        .doc(bill_id)
+        .update({"paymet_type": payment_type});
+  }
   Future update_total_price(
     String user_email,
     String bill_id,

@@ -7,7 +7,7 @@ import 'package:Erad/core/constans/sharedPreferences.dart';
 import 'package:Erad/core/function/handling_signin_errors.dart';
 import 'package:Erad/core/services/app_services.dart';
 import 'package:Erad/data/data_score/remote/user_data.dart';
-import 'package:Erad/view/custom_widgets/custom_textfield_erroe_snackbar.dart';
+import 'package:Erad/view/custom_widgets/custom_snackbar.dart';
 
 abstract class LoginController extends GetxController {
   login();
@@ -45,7 +45,7 @@ class LoginControllerImp extends LoginController {
         return handling_sigin_errors(e);
       }
     } else {
-      custom_empty_data_erroe_snackbar();
+      custom_snackBar();
     }
   }
 

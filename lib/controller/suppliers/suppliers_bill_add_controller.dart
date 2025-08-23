@@ -12,7 +12,7 @@ import 'package:Erad/core/function/convertToDropdownItems.dart';
 import 'package:Erad/core/function/pdf_maker.dart';
 import 'package:Erad/core/services/app_services.dart';
 import 'package:Erad/data/data_score/remote/brands/product_data.dart';
-import 'package:Erad/view/custom_widgets/custom_textfield_erroe_snackbar.dart';
+import 'package:Erad/view/custom_widgets/custom_snackbar.dart';
 import 'package:Erad/view/customer_bills_add/widgets/custom_willPop_dailog.dart';
 
 abstract class SupplierBiilAddController extends GetxController {
@@ -90,7 +90,7 @@ class SupplierBiilAddControllerImp extends SupplierBiilAddController {
         supplier_city == null ||
         supplier_id == null ||
         bill_payment_type == null) {
-      custom_empty_data_erroe_snackbar();
+      custom_snackBar();
       statusreqest = Statusreqest.success;
       update();
     } else {
@@ -285,7 +285,7 @@ class SupplierBiilAddControllerImp extends SupplierBiilAddController {
         update();
       }
     } else {
-      custom_empty_data_erroe_snackbar();
+      custom_snackBar();
     }
   }
 
@@ -357,7 +357,7 @@ class SupplierBiilAddControllerImp extends SupplierBiilAddController {
       if (bill_id != null) {
         saveBillData();
       } else {
-        custom_empty_data_erroe_snackbar();
+        custom_snackBar();
         Get.back();
       }
     });
@@ -409,7 +409,7 @@ class SupplierBiilAddControllerImp extends SupplierBiilAddController {
           Get.back();
           custom_success_snackbar();
         } else {
-          custom_empty_data_erroe_snackbar();
+          custom_snackBar();
           statusreqest = Statusreqest.success;
           update();
         }
@@ -503,7 +503,7 @@ class SupplierBiilAddControllerImp extends SupplierBiilAddController {
         update();
       }
     } else {
-      custom_empty_data_erroe_snackbar();
+      custom_snackBar();
     }
   }
 

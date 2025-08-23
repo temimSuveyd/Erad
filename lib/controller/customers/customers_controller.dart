@@ -10,7 +10,7 @@ import 'package:Erad/data/data_score/remote/customer/customers_data.dart';
 import 'package:Erad/view/custom_widgets/custom__dropDownButton.dart';
 import 'package:Erad/view/custom_widgets/custom_delete_dialog.dart';
 import 'package:Erad/view/custom_widgets/custom_search_text_field.dart';
-import 'package:Erad/view/custom_widgets/custom_textfield_erroe_snackbar.dart';
+import 'package:Erad/view/custom_widgets/custom_snackbar.dart';
 import 'package:Erad/view/customers_view/widgets/custom_add_customer_dialog.dart';
 
 abstract class CustomersController extends GetxController {
@@ -44,7 +44,7 @@ class CustomersControllerImp extends CustomersController {
   addCustomer() {
     String customer_name = customer_name_controller.text;
     if (customer_city.isEmpty || customer_name.isEmpty) {
-      custom_empty_data_erroe_snackbar();
+      custom_snackBar();
     } else {
       statusreqest = Statusreqest.loading;
       update();

@@ -1,29 +1,24 @@
 import 'package:Erad/core/class/handling_data.dart';
+import 'package:Erad/core/constans/routes.dart';
 import 'package:Erad/core/constans/sharedPreferences.dart';
 import 'package:Erad/core/services/app_services.dart';
-import 'package:Erad/data/data_score/remote/depts/customer_depts.dart';
+import 'package:Erad/data/data_score/remote/depts/customer_depts_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 abstract class CustomerDeptsViewController extends GetxController {
-  getBills();
-  getCustomers();
   searchForBillsBayCustomerName();
   searchForBillBayCity(String city_name);
   searchByDate(DateTime searchStartDate, DateTime searchEndDate);
   getDepts();
+  goTODetailsPage(String dept_id);
 }
 
 class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
   final CustomerDeptsData _customerDeptsData = CustomerDeptsData();
   final Services services = Get.find();
-  var customerBillsList = [].obs;
-  var customersList  = [].obs;
   var customersDeptsList = [].obs;
-  
-
-  
   String selectedCustomerCity = "حدد المدينة";
   Statusreqest statusreqest = Statusreqest.success;
   final TextEditingController searchDeptsTextController =
@@ -32,64 +27,36 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
   String? selectedEndDate;
 
   @override
-  getBills() {
-    statusreqest = Statusreqest.loading;
-    update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
-    try {
-      _customerDeptsData.getAllDepts(user_email).listen((event) {
-        customerBillsList.value = event.docs;
-        if (customerBillsList.isEmpty) {
-          statusreqest = Statusreqest.noData;
-        } else {
-          statusreqest = Statusreqest.success;
-        }
-        update();
-      });
-    } on Exception catch (e) {
-      statusreqest = Statusreqest.faliure;
-      update();
-    }
-  }
-
-  @override
-  getCustomers() {
-    statusreqest = Statusreqest.loading;
-    update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
-    try {
-      _customerDeptsData.getCustomers(user_email).listen((event) {
-        customerBillsList.value = event.docs;
-        if (customerBillsList.isEmpty) {
-          statusreqest = Statusreqest.noData;
-        } else {
-          statusreqest = Statusreqest.success;
-        }
-        update();
-      });
-    } on Exception catch (e) {
-      statusreqest = Statusreqest.faliure;
-      update();
-    }
-  }
-
-  @override
   getDepts() {
-  
+    statusreqest = Statusreqest.loading;
+    update();
+    try {
+      final String user_email =
+          services.sharedPreferences.getString(AppShared.user_email)!;
+      _customerDeptsData.getAllDepts(user_email).listen((event) {
+        customersDeptsList.value = event.docs;
 
+        if (customersDeptsList.isEmpty) {
+          statusreqest = Statusreqest.noData;
+        } else {
+          statusreqest = Statusreqest.success;
+        }
+        update();
+      });
+    } catch (e) {
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
   }
-
 
   @override
   searchForBillsBayCustomerName() {
     String search = searchDeptsTextController.text;
     if (search.isEmpty) {
-      getBills();
+      getDepts();
     } else {
-      customerBillsList.value =
-          customerBillsList.where((doc) {
+      customersDeptsList.value =
+          customersDeptsList.where((doc) {
             final data = doc.data();
             final customer_name =
                 data["customer_name"].toString().toLowerCase();
@@ -101,7 +68,7 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
               return false;
             }
           }).toList();
-      if (customerBillsList.isEmpty) {
+      if (customersDeptsList.isEmpty) {
         statusreqest = Statusreqest.noData;
       }
       update();
@@ -111,15 +78,15 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
   @override
   searchForBillBayCity(String city_name) {
     if (city_name.isEmpty || city_name == "جميع المدن") {
-      getBills();
+      getDepts();
     } else {
-      customerBillsList.value =
-          customerBillsList.where((doc) {
+      customersDeptsList.value =
+          customersDeptsList.where((doc) {
             final data = doc.data();
             final fileView = data["customer_city"].toLowerCase();
             return fileView.contains(city_name.toLowerCase());
           }).toList();
-      if (customerBillsList.isEmpty) {
+      if (customersDeptsList.isEmpty) {
         statusreqest = Statusreqest.noData;
       }
       selectedCustomerCity = city_name;
@@ -134,8 +101,8 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
       selectedEndDate = _formatDate(searchEndDate);
 
       // Filter bills within date range
-      customerBillsList.value =
-          customerBillsList.where((doc) {
+      customersDeptsList.value =
+          customersDeptsList.where((doc) {
             final data = doc.data();
             final DateTime billDate = (data["bill_date"] as Timestamp).toDate();
 
@@ -147,7 +114,7 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
           }).toList();
 
       // Update status if no results found
-      if (customerBillsList.isEmpty) {
+      if (customersDeptsList.isEmpty) {
         statusreqest = Statusreqest.noData;
       }
 
@@ -163,11 +130,16 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
   }
 
   @override
-  void onInit() {
-    getBills();
+  goTODetailsPage(String dept_id) {
+    Get.toNamed(
+      AppRoutes.customer_debt_details_page,
+      arguments: {"dept_id": dept_id},
+    );
+  }
 
+  @override
+  void onInit() {
+    getDepts();
     super.onInit();
   }
-  
-
 }

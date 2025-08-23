@@ -30,7 +30,7 @@ class Custom_products_Card extends StatelessWidget {
         
             children: [
               Custom_title_text_container(title: "title"),
-         Custom_date_text_container(),
+         Custom_date_text_container(title: '',width: 100,),
               Custom_price_container(title: "123", width: 120),
       SizedBox(width: 100,)
             ],
