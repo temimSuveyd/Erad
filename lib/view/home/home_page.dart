@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:Erad/controller/home/home_controller.dart';
 import 'package:Erad/core/constans/colors.dart';
 import 'package:Erad/view/home/widgets/csutom_home_gridViewBuilder.dart';
-import 'package:Erad/view/home/widgets/custom_home_appBar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,7 +12,7 @@ class HomePage extends StatelessWidget {
     Get.put(HomeControllerImp());
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: Custom_home_appBar(),
+      // appBar: Custom_home_appBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 20),
         child: Custom_home_gridViewBuilder(),

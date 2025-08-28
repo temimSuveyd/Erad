@@ -251,7 +251,7 @@ class CustomerDeptsDetailsControllerImp extends CustomerDeptsDetailsController {
       _customerDeptsData.updateTotalDept(
         deptId!,
         user_email,
-        remainingDebtAamount!,
+        remainingDebtAamount,
       );
     } catch (e) {
       statusreqest = Statusreqest.faliure;

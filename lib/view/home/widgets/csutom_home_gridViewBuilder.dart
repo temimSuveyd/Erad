@@ -12,18 +12,18 @@ class Custom_home_gridViewBuilder extends StatelessWidget {
     return GetBuilder<HomeControllerImp>(
       builder: (controller) => 
      GridView.builder(
-        // physics: NeverScrollableScrollPhysics(),
+  
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 320,
-          mainAxisExtent: 200,
-          crossAxisSpacing: 100,
-          mainAxisSpacing: 100,
+          maxCrossAxisExtent: 200,
+          mainAxisExtent: 250,
+          crossAxisSpacing: 50,
+          mainAxisSpacing: 50,
         ),
         itemCount: controller.homeData.length,
         itemBuilder:
             (context, index) => Custom_home_card(
               homeModle: HomeModle(
-                controller.homeData[index].icon,
+                controller.homeData[index].imagePath,
                 controller.homeData[index].pageName,
                 controller.homeData[index].title,
               ),

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:Erad/core/constans/routes.dart';
@@ -145,8 +146,9 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
     total_price = 0;
     for (var responce in productList) {
       int price = responce["total_product_price"];
-      total_price = total_price! + price - discount_amount;
+      total_price = total_price! + price;
     }
+    total_price = total_price! - discount_amount;
   }
 
   @override
@@ -155,8 +157,9 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
     for (var responce in productList) {
       int earn = responce["prodect_profits"];
       int numper = responce["product_number"];
-      total_earn = total_earn! + earn * numper - discount_amount;
+      total_earn = total_earn! + earn * numper;
     }
+    total_earn = total_earn! - discount_amount;
   }
 
   @override
@@ -473,7 +476,6 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
           services.sharedPreferences.getString(AppShared.user_email)!;
       final String customer_id = billModel!.customer_id!;
       final String bill_id = billModel!.bill_id!;
-
       customerDeptsData.delteBillFromDepts(bill_id, customer_id, user_email);
     } catch (e) {
       statusreqest = Statusreqest.faliure;
@@ -546,9 +548,9 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
       final String user_email =
           services.sharedPreferences.getString(AppShared.user_email)!;
       customerBillData.updatePaymentType(user_email, bill_id!, paymentType);
-      if (billModel!.payment_type == "monetary") {
-        addBillToDepts();
+      if (paymentType != "monetary") {
         addDept();
+        addBillToDepts();
       } else {
         deleteBillFromDepts();
       }

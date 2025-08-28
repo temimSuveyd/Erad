@@ -2,7 +2,7 @@
 
 
 import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/Customer_bills_view/widgets/custom_bill_status_button.dart';
+import 'package:Erad/view/customer/Customer_bills_view/widgets/custom_bill_status_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

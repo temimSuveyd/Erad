@@ -15,6 +15,12 @@ class AppRoutes {
   static const String customers_view_page = "/customers_view_page";
   static const String pdf_view = "/pdf_view";
   static const String suppliers_view = "/suppliers_view";
+  static const String supplier_bill_details_page = "/supplier_bill_details_page";
+  static const String supplier_bills_view_page = "/supplier_bills_view_page";
+  static const String supplier_bills_add_page = "/supplier_bills_add_page";
+
+
+
 
 
 

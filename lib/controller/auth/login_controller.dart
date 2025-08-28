@@ -29,9 +29,8 @@ class LoginControllerImp extends LoginController {
     if (validator!.validate()) {
       statusreqest = Statusreqest.loading;
       update();
-
-      String email = user_email.text;
-      String password = user_password.text;
+      String email = user_email.text.trim();
+      String password = user_password.text.trim();
       try {
         await auth.signInWithEmailAndPassword(email: email, password: password);
         userData.add_user(email);

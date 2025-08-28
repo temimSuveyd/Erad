@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:Erad/data/data_score/remote/depts/customer_depts_data.dart';
-import 'package:Erad/view/customer_bills_add/widgets/custom_show_popupMenu.dart';
+import 'package:Erad/view/customer/customer_bills_add/widgets/custom_show_popupMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:Erad/core/class/handling_data.dart';
@@ -15,7 +15,7 @@ import 'package:Erad/data/data_score/remote/customer/customers_data.dart';
 import 'package:Erad/data/data_score/remote/customer/customer_bill_data.dart';
 import 'package:Erad/data/data_score/remote/brands/product_data.dart';
 import 'package:Erad/view/custom_widgets/custom_snackbar.dart';
-import 'package:Erad/view/customer_bills_add/widgets/custom_willPop_dailog.dart';
+import 'package:Erad/view/customer/customer_bills_add/widgets/custom_willPop_dailog.dart';
 
 abstract class CustomerAddBiilController extends GetxController {
   addCustomerBill();

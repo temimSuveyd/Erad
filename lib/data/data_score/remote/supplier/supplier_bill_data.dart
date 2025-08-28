@@ -26,16 +26,30 @@ class SupplierBillData {
           "paymet_type": payment_type,
           "bill_no": "",
           "bill_status": BillStatus.itwasFormed,
+          "discount_amount": 0,
+          "bill_id": ""
         });
     return docRef.id;
   }
 
+
+  addDiscount(String bill_id, String user_email, double discount_amount) {
+    _firestore
+        .collection("users")
+        .doc(user_email)
+        .collection("suppliers_bills")
+        .doc(bill_id)
+        .update({
+          "discount_amount": FieldValue.increment(discount_amount)
+        });
+  }
   addProductToBill(
-    String product_name,
+     String product_name,
     int product_price,
     String product_id,
     int product_number,
     int total_product_price,
+    int total_product_profits,
     int prodect_profits,
     String user_email,
     String bill_id,
@@ -65,12 +79,12 @@ class SupplierBillData {
         .delete();
   }
 
-  Future updatesupplierBill(
+  Future updateSupplierBill(
     String user_email,
     String bill_id,
     String bill_no,
-    int total_price,
-    int totl_profits,
+    double total_price,
+    double totl_profits,
   ) async {
     await _firestore
         .collection("users")
@@ -87,8 +101,8 @@ class SupplierBillData {
   Future update_total_price(
     String user_email,
     String bill_id,
-    int total_price,
-    int totl_profits,
+    double total_price,
+    double totl_profits,
   ) async {
     await _firestore
         .collection("users")
@@ -133,7 +147,18 @@ class SupplierBillData {
         .doc(bill_id)
         .update({"bill_status": bill_status});
   }
-
+  Future updatePaymentType(
+    String user_email,
+    String bill_id,
+    String payment_type,
+  ) async {
+    return await _firestore
+        .collection("users")
+        .doc(user_email)
+        .collection("supplier_bills")
+        .doc(bill_id)
+        .update({"paymet_type": payment_type});
+  }
   Future deleteProduct(
     String bill_id,
     String product_id,

@@ -1,9 +1,7 @@
-import 'package:flutter/widgets.dart';
-
 class HomeModle {
   final String? title;
-  final IconData? icon;
+  final String? imagePath;
   final String? pageName;
 
-  HomeModle(this.icon, this.pageName, this.title);
+  HomeModle(this.imagePath, this.pageName, this.title);
 }

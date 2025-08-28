@@ -5,7 +5,7 @@ import 'package:Erad/core/constans/routes.dart';
 import 'package:Erad/core/constans/sharedPreferences.dart';
 import 'package:Erad/core/services/app_services.dart';
 import 'package:Erad/data/data_score/remote/brands/brands_data.dart';
-import 'package:Erad/view/brands_view/widgets/custom_brands_add_diaolg.dart';
+import 'package:Erad/view/prodects/brands_view/widgets/custom_brands_add_diaolg.dart';
 import 'package:Erad/view/custom_widgets/custom_delete_dialog.dart';
 
 abstract class BrandsController extends GetxController {

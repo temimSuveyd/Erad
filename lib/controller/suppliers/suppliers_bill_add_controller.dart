@@ -1,7 +1,9 @@
 import 'dart:math';
 import 'dart:typed_data';
+import 'package:Erad/data/data_score/remote/depts/customer_depts_data.dart';
+import 'package:Erad/data/data_score/remote/depts/supplier_depts_data.dart';
 import 'package:Erad/data/data_score/remote/supplier/supplier_bill_data.dart';
-import 'package:Erad/data/data_score/remote/supplier/suppliers_data.dart';
+import 'package:Erad/view/customer/customer_bills_add/widgets/custom_willPop_dailog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:Erad/core/class/handling_data.dart';
@@ -11,15 +13,18 @@ import 'package:Erad/core/constans/sharedPreferences.dart';
 import 'package:Erad/core/function/convertToDropdownItems.dart';
 import 'package:Erad/core/function/pdf_maker.dart';
 import 'package:Erad/core/services/app_services.dart';
+import 'package:Erad/data/data_score/remote/Supplier/Suppliers_data.dart';
+import 'package:Erad/data/data_score/remote/Supplier/Supplier_bill_data.dart' hide SupplierBillData;
 import 'package:Erad/data/data_score/remote/brands/product_data.dart';
 import 'package:Erad/view/custom_widgets/custom_snackbar.dart';
-import 'package:Erad/view/customer_bills_add/widgets/custom_willPop_dailog.dart';
 
-abstract class SupplierBiilAddController extends GetxController {
+abstract class SupplierAddBiilController extends GetxController {
   addSupplierBill();
+  addDept();
+  addBillToDepts();
   getSupplierById();
   getAllSuppliers();
-  setSupplier(String id);
+  setSupplierId(String id);
   setDate(DateTime bill_date);
   setPaymentType(String payment_type);
   getAllProducts();
@@ -42,19 +47,20 @@ abstract class SupplierBiilAddController extends GetxController {
   generateRandomInvoiceId(String username);
 }
 
-class SupplierBiilAddControllerImp extends SupplierBiilAddController {
+class SupplierBiilAddControllerImp extends SupplierAddBiilController {
   Statusreqest statusreqest = Statusreqest.notAdded;
   Services services = Get.find();
   // bill data
   bool is_saved = false;
   SupplierBillData supplierBillData = SupplierBillData();
+  SupplierDeptsData supplierDeptsData = SupplierDeptsData();
   DateTime bill_add_date = DateTime.now();
   String? bill_id;
   String? bill_no;
-  // supplier data
+  // Supplier data
   SuppliersData suppliersData = SuppliersData();
   Map<String, dynamic>? supplierData;
-  var suppliersList = [].obs;
+  var SuppliersList = [].obs;
   List<DropdownMenuItem<String>>? suppliers_list_dropdownItrm;
   String? supplier_name;
   String? supplier_city;
@@ -78,8 +84,8 @@ class SupplierBiilAddControllerImp extends SupplierBiilAddController {
   int? product_price;
   int? product_number;
   int? prodect_profits;
-  int total_product_price = 0;
-  int total_product_profits = 0;
+  double total_product_price = 0;
+  double total_product_profits = 0;
   bool show_search_popupMenu = false;
   bool isSecondEnabled = false;
 
@@ -107,6 +113,7 @@ class SupplierBiilAddControllerImp extends SupplierBiilAddController {
           user_email,
           bill_add_date,
         );
+
         statusreqest = Statusreqest.success;
         update();
       } catch (e) {
@@ -165,7 +172,7 @@ class SupplierBiilAddControllerImp extends SupplierBiilAddController {
   }
 
   @override
-  setSupplier(String id) {
+  setSupplierId(String id) {
     supplier_id = id;
     update();
     getSupplierById();
@@ -179,12 +186,12 @@ class SupplierBiilAddControllerImp extends SupplierBiilAddController {
         services.sharedPreferences.getString(AppShared.user_email)!;
     try {
       suppliersData.getAllSuppliers(user_email).listen((event) {
-        suppliersList.value = event.docs;
+        SuppliersList.value = event.docs;
         suppliers_list_dropdownItrm = convertToDropdownItems(
           event.docs,
           'supplier_name',
         );
-        if (suppliersList.isEmpty) {
+        if (SuppliersList.isEmpty) {
           statusreqest = Statusreqest.faliure;
         } else {
           statusreqest = Statusreqest.success;
@@ -268,11 +275,14 @@ class SupplierBiilAddControllerImp extends SupplierBiilAddController {
       try {
         bill_prodects_list.add({
           "product_name": product_name!,
-          "product_price": product_price!,
           "product_id": product_id,
           "product_number": numper_of_numper,
+
           "total_product_price": numper_of_numper * product_price!,
-          "total_earn": numper_of_numper * prodect_profits!,
+          "total_product_profits": numper_of_numper * prodect_profits!,
+
+          "product_price": product_price!,
+          "product_profits": prodect_profits!,
         });
         number_of_products_controller.clear();
         serach_for_product_controller.clear();
@@ -346,8 +356,8 @@ class SupplierBiilAddControllerImp extends SupplierBiilAddController {
   totalProfits() {
     total_product_profits = 0;
     for (var responce in bill_prodects_list) {
-      int price = responce["total_earn"];
-      total_product_profits = total_product_profits + price;
+      int profits = responce["total_product_profits"];
+      total_product_profits = total_product_profits + profits;
     }
   }
 
@@ -399,13 +409,17 @@ class SupplierBiilAddControllerImp extends SupplierBiilAddController {
           await addProductListToFirebase(user_email, bill_id!);
           totalPriceAccount();
           totalProfits();
-          supplierBillData.updatesupplierBill(
+          supplierBillData.updateSupplierBill(
             user_email,
             bill_id!,
             bill_no!,
             total_product_price,
             total_product_profits,
           );
+          if (bill_payment_type == "Religion") {
+            await addDept();
+            addBillToDepts();
+          }
           Get.back();
           custom_success_snackbar();
         } else {
@@ -420,7 +434,7 @@ class SupplierBiilAddControllerImp extends SupplierBiilAddController {
     } else {
       totalPriceAccount();
       totalProfits();
-      supplierBillData.updatesupplierBill(
+      supplierBillData.updateSupplierBill(
         user_email,
         bill_id!,
         bill_no!,
@@ -438,19 +452,24 @@ class SupplierBiilAddControllerImp extends SupplierBiilAddController {
   ) async {
     for (var product in bill_prodects_list) {
       String product_name = product["product_name"];
-      int product_price = product["product_price"];
+
       String product_id = product["product_id"];
       int product_number = product["product_number"];
-      int prodect_profits = product["total_earn"];
-      int total_price = product["total_product_price"];
+
+      int product_profits = product["product_profits"];
+      int product_price = product["product_price"];
+
+      int total_product_price = product["total_product_price"];
+      int total_product_profits = product["total_product_profits"];
 
       supplierBillData.addProductToBill(
         product_name,
         product_price,
         product_id,
         product_number,
-        total_price,
-        prodect_profits,
+        total_product_price,
+        total_product_profits,
+        product_profits,
         user_email,
         bill_id,
       );
@@ -489,10 +508,10 @@ class SupplierBiilAddControllerImp extends SupplierBiilAddController {
           "${bill_add_date.day.toString().padLeft(2, '0')}/${bill_add_date.month.toString().padLeft(2, '0')}/${bill_add_date.year}",
           "سويد للتجارة",
           bill_no!,
-          total_product_price.toDouble(),
+          total_product_price,
           "شراء",
           supplier_name!,
-          supplier_name!,
+          supplier_city!,
           05395443779,
         );
         goToPdfViewPage(pdfBytes);
@@ -549,6 +568,59 @@ class SupplierBiilAddControllerImp extends SupplierBiilAddController {
     }
 
     bill_no = generateRandomInvoiceId(username);
+  }
+
+  @override
+  addDept() async {
+    String user_email =
+        services.sharedPreferences.getString(AppShared.user_email)!;
+    try {
+      if (supplier_name != null && supplier_id != null) {
+        await supplierDeptsData.addDepts(
+          supplier_id!,
+          supplier_name!,
+          supplier_city!,
+          user_email,
+          total_product_price,
+          bill_add_date,
+        );
+      } else {
+        statusreqest = Statusreqest.faliure;
+        update();
+      }
+      statusreqest = Statusreqest.success;
+      update();
+    } catch (e) {
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
+  }
+
+  @override
+  addBillToDepts() async {
+    String user_email =
+        services.sharedPreferences.getString(AppShared.user_email)!;
+    try {
+      if (supplier_name != null && supplier_id != null) {
+        await supplierDeptsData.addBillToDepts(
+          bill_no!,
+          bill_id!,
+          supplier_id!,
+          bill_payment_type!,
+          user_email,
+          total_product_price,
+          bill_add_date,
+        );
+      } else {
+        statusreqest = Statusreqest.faliure;
+        update();
+      }
+      statusreqest = Statusreqest.success;
+      update();
+    } catch (e) {
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
   }
 
   @override

@@ -1,5 +1,5 @@
 import 'package:Erad/data/data_score/remote/supplier/suppliers_data.dart';
-import 'package:Erad/view/suppliers_view/widgets/custom_add_suppliers_dialog.dart';
+import 'package:Erad/view/supplier/suppliers_view/widgets/custom_add_suppliers_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';

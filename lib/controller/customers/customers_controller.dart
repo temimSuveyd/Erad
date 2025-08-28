@@ -11,7 +11,7 @@ import 'package:Erad/view/custom_widgets/custom__dropDownButton.dart';
 import 'package:Erad/view/custom_widgets/custom_delete_dialog.dart';
 import 'package:Erad/view/custom_widgets/custom_search_text_field.dart';
 import 'package:Erad/view/custom_widgets/custom_snackbar.dart';
-import 'package:Erad/view/customers_view/widgets/custom_add_customer_dialog.dart';
+import 'package:Erad/view/customer/customers_view/widgets/custom_add_customer_dialog.dart';
 
 abstract class CustomersController extends GetxController {
   addCustomer();
