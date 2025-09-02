@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Erad/core/constans/colors.dart';
+import 'package:erad/core/constans/colors.dart';
 import 'package:get/get.dart';
 
 void custom_snackBar([Color? color, String? title, String? message]) {
@@ -34,4 +34,4 @@ void custom_snackBar([Color? color, String? title, String? message]) {
 // MaterialApp(navigatorKey: navigatorKey, ...)
 //
 // Then import it here:
-// import 'package:Erad/main.dart';
+// import 'package:erad/main.dart';

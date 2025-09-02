@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
-import 'package:Erad/controller/brands/brands_type_controller.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/data/model/prodect/prodect_model.dart';
-import 'package:Erad/view/custom_widgets/custom_title_text_container.dart';
-import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:erad/controller/brands/brands_type_controller.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/data/model/prodect/prodect_model.dart';
+import 'package:erad/view/custom_widgets/custom_title_text_container.dart';
+import 'package:erad/view/custom_widgets/custom_add_button.dart';
 
-import '../../../supplier/suppliers_bills_add/widgets/custom_price_container.dart';
+import '../../../supplier/bills/suppliers_bills_add/widgets/custom_price_container.dart';
 
 // ignore: camel_case_types
 class Custom_brands_type_Card extends GetView<BrandsTypeControllerImp> {

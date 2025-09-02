@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Erad/core/constans/colors.dart';
+import 'package:erad/core/constans/colors.dart';
 
 class Custom_button extends StatelessWidget {
   const Custom_button({

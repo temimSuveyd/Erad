@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/custom_widgets/custom_add_button.dart';
 
 class Custom_products_heder extends StatelessWidget {
   const Custom_products_heder({super.key});

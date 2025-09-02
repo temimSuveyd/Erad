@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:Erad/core/constans/colors.dart';
+import 'package:erad/core/constans/colors.dart';
 
 class Custom_price_text_container extends StatelessWidget {
   const Custom_price_text_container({super.key, required this.price});

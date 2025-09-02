@@ -1,13 +1,13 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:Erad/core/class/handling_data.dart';
-import 'package:Erad/core/constans/sharedPreferences.dart';
-import 'package:Erad/core/services/app_services.dart';
-import 'package:Erad/data/data_score/remote/brands/brands_data.dart';
-import 'package:Erad/view/prodects/brands_type_view/widgets/custom_add_brands_type_dialog.dart';
-import 'package:Erad/view/custom_widgets/custom_delete_dialog.dart';
-import 'package:Erad/view/custom_widgets/custom_snackbar.dart';
+import 'package:erad/core/class/handling_data.dart';
+import 'package:erad/core/constans/sharedPreferences.dart';
+import 'package:erad/core/services/app_services.dart';
+import 'package:erad/data/data_score/remote/brands/brands_data.dart';
+import 'package:erad/view/prodects/brands_type_view/widgets/custom_add_brands_type_dialog.dart';
+import 'package:erad/view/custom_widgets/custom_delete_dialog.dart';
+import 'package:erad/view/custom_widgets/custom_snackbar.dart';
 
 abstract class BrandsTypeController extends GetxController {
   show_dialog();

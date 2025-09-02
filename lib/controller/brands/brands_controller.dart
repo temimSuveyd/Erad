@@ -1,12 +1,12 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:Erad/core/class/handling_data.dart';
-import 'package:Erad/core/constans/routes.dart';
-import 'package:Erad/core/constans/sharedPreferences.dart';
-import 'package:Erad/core/services/app_services.dart';
-import 'package:Erad/data/data_score/remote/brands/brands_data.dart';
-import 'package:Erad/view/prodects/brands_view/widgets/custom_brands_add_diaolg.dart';
-import 'package:Erad/view/custom_widgets/custom_delete_dialog.dart';
+import 'package:erad/core/class/handling_data.dart';
+import 'package:erad/core/constans/routes.dart';
+import 'package:erad/core/constans/sharedPreferences.dart';
+import 'package:erad/core/services/app_services.dart';
+import 'package:erad/data/data_score/remote/brands/brands_data.dart';
+import 'package:erad/view/prodects/brands_view/widgets/custom_brands_add_diaolg.dart';
+import 'package:erad/view/custom_widgets/custom_delete_dialog.dart';
 
 abstract class BrandsController extends GetxController {
   show_dialog();

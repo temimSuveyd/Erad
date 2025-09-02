@@ -1,13 +1,13 @@
-import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:erad/view/custom_widgets/custom_add_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:Erad/controller/customers/customer_bill_details_controller.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/custom_widgets/custom_appBar.dart';
-import 'package:Erad/view/customer/customer_bill_details/widgets/csutom_lable_details.dart';
-import 'package:Erad/view/customer/customer_bill_details/widgets/custom_bill_details_heder.dart';
-import 'package:Erad/view/customer/customer_bill_details/widgets/custom_prodects_details_sliverListBuilder.dart';
-import 'package:Erad/view/customer/customer_bill_details/widgets/custom_text_body.dart';
+import 'package:erad/controller/customers/bills/customer_bill_details_controller.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/custom_widgets/custom_appBar.dart';
+import 'package:erad/view/customer/customer_bill_details/widgets/csutom_lable_details.dart';
+import 'package:erad/view/customer/customer_bill_details/widgets/custom_bill_details_heder.dart';
+import 'package:erad/view/customer/customer_bill_details/widgets/custom_prodects_details_sliverListBuilder.dart';
+import 'package:erad/view/customer/customer_bill_details/widgets/custom_text_body.dart';
 
 class CustomerBillDetailsPage extends GetView<CustomerBillDetailsControllerImp> {
   const CustomerBillDetailsPage({super.key});

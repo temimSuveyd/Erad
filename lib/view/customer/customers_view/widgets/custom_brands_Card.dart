@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:Erad/controller/customers/customers_controller.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/data/model/customers/customers_model.dart';
-import 'package:Erad/view/custom_widgets/custom_title_text_container.dart';
-import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:erad/controller/customers/customers_view/customers_controller.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/data/model/customers/customers_model.dart';
+import 'package:erad/view/custom_widgets/custom_title_text_container.dart';
+import 'package:erad/view/custom_widgets/custom_add_button.dart';
 
-import '../../../supplier/suppliers_bills_add/widgets/custom_price_container.dart';
+import '../../../supplier/bills/suppliers_bills_add/widgets/custom_price_container.dart';
 
 class Custom_customers_Card extends GetView<CustomersControllerImp> {
   const Custom_customers_Card({super.key, required this.customersModel});

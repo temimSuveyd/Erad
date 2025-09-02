@@ -1,8 +1,8 @@
 
 
 
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/customer/Customer_bills_view/widgets/custom_bill_status_button.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/customer/Customer_bills_view/widgets/custom_bill_status_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,6 +11,7 @@ Future<dynamic> custom_bill_status_dialog(
     Function(String value) onPressed,
   ) {
     return Get.defaultDialog(
+      backgroundColor: AppColors.backgroundColor,
       title: "فحص حالة الفاتورة",
       content: Column(
         mainAxisSize: MainAxisSize.min,

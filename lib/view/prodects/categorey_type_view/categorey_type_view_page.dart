@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:Erad/controller/categoreys/categorey_type_controller.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/prodects/categorey_type_view/widgets/custom_categoreyType_heder.dart';
-import 'package:Erad/view/prodects/categorey_type_view/widgets/custom_categoreyType_listView.dart';
-import 'package:Erad/view/custom_widgets/custom_appBar.dart';
-import 'package:Erad/view/custom_widgets/custom_search_text_field.dart';
+import 'package:erad/controller/categoreys/categorey_type_controller.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/prodects/categorey_type_view/widgets/custom_categoreyType_heder.dart';
+import 'package:erad/view/prodects/categorey_type_view/widgets/custom_categoreyType_listView.dart';
+import 'package:erad/view/custom_widgets/custom_appBar.dart';
+import 'package:erad/view/custom_widgets/custom_text_field.dart';
 
 class CategoreyTypeViewPage extends GetView<CategoreyTypeControllerImp> {
   const CategoreyTypeViewPage({super.key});

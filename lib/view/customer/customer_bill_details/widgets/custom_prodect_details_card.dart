@@ -1,10 +1,10 @@
-import 'package:Erad/data/model/customer_bill_details/bill_details_product_model.dart';
+import 'package:erad/data/model/customer_bill_details/bill_details_product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:Erad/controller/customers/customer_bill_details_controller.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/custom_widgets/custom_add_button.dart';
-import 'package:Erad/view/customer/customer_bill_details/widgets/custom_prodect_text_container.dart';
+import 'package:erad/controller/customers/bills/customer_bill_details_controller.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/custom_widgets/custom_add_button.dart';
+import 'package:erad/view/customer/customer_bill_details/widgets/custom_prodect_text_container.dart';
 
 class Custom_product_details_card
     extends GetView<CustomerBillDetailsControllerImp> {

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:Erad/core/constans/colors.dart';
+import 'package:erad/core/constans/colors.dart';
 
 class Custom_date_text_container extends StatelessWidget {
   const Custom_date_text_container({super.key, required this.title, required this.width});

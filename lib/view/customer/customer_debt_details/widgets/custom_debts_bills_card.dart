@@ -1,9 +1,9 @@
-import 'package:Erad/controller/customers/customer_dept_details_controller.dart';
-import 'package:Erad/data/model/customer_depts/customer_dept_bills_model.dart';
-import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:erad/controller/customers/depts/customer_dept_details_controller.dart';
+import 'package:erad/data/model/customer_depts/customer_dept_bills_model.dart';
+import 'package:erad/view/custom_widgets/custom_add_button.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/custom_widgets/custom_date_text_container.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/custom_widgets/custom_date_text_container.dart';
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
 

@@ -1,8 +1,8 @@
-import 'package:Erad/controller/suppliers/suppliers_view_controller.dart';
+import 'package:erad/controller/suppliers/suppliers_view/suppliers_view_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/custom_widgets/custom_add_button.dart';
 import 'package:get/state_manager.dart';
 
 class Custom_suppliers_heder extends GetView<SuppliersControllerImp> {

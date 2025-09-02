@@ -1,16 +1,16 @@
-import 'package:Erad/controller/customers/customer_depts_view_controller.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/data/data_score/static/city_data.dart';
-import 'package:Erad/view/customer/Customer_debts_view/widgets/custom_dept_name_list.dart';
-import 'package:Erad/view/customer/Customer_debts_view/widgets/custom_list_view_builder.dart';
-import 'package:Erad/view/custom_widgets/custom_add_button.dart';
-import 'package:Erad/view/custom_widgets/show_date_range_picker.dart';
+import 'package:erad/controller/customers/depts/customer_depts_view_controller.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/data/data_score/static/city_data.dart';
+import 'package:erad/view/customer/Customer_debts_view/widgets/custom_dept_name_list.dart';
+import 'package:erad/view/customer/Customer_debts_view/widgets/custom_list_view_builder.dart';
+import 'package:erad/view/custom_widgets/custom_add_button.dart';
+import 'package:erad/view/custom_widgets/show_date_range_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:Erad/view/customer/Customer_bills_view/widgets/custom_bill_name_list.dart';
-import 'package:Erad/view/custom_widgets/custom_appBar.dart';
-import 'package:Erad/view/custom_widgets/custom_search_text_field.dart';
-import 'package:Erad/view/custom_widgets/custom__dropDownButton.dart';
-import 'package:Erad/view/custom_widgets/custom_set_date_button.dart';
+import 'package:erad/view/customer/Customer_bills_view/widgets/custom_bill_name_list.dart';
+import 'package:erad/view/custom_widgets/custom_appBar.dart';
+import 'package:erad/view/custom_widgets/custom_text_field.dart';
+import 'package:erad/view/custom_widgets/custom_dropDownButton.dart';
+import 'package:erad/view/custom_widgets/custom_set_date_button.dart';
 import 'package:get/get.dart';
 
 class CustomerDebtsViewPage extends GetView<CustomerDeptsViewControllerImp> {
@@ -23,7 +23,7 @@ class CustomerDebtsViewPage extends GetView<CustomerDeptsViewControllerImp> {
 
     return Scaffold(
       appBar: Custom_appBar(title: "ديون العملاء"),
-
+backgroundColor: AppColors.backgroundColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: CustomScrollView(

@@ -1,6 +1,6 @@
-import 'package:Erad/core/constans/bill_status.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:erad/core/constans/bill_status.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/custom_widgets/custom_add_button.dart';
 import 'package:flutter/material.dart';
 
 class Bill_status_button extends StatelessWidget {

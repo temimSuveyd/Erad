@@ -1,10 +1,10 @@
-import 'package:Erad/controller/customers/customer_add_bill_controller.dart';
-import 'package:Erad/view/customer/customer_bills_add/widgets/custom_date_picker_button.dart';
+import 'package:erad/controller/customers/bills/customer_add_bill_controller.dart';
+import 'package:erad/view/customer/customer_bills_add/widgets/custom_date_picker_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/custom_widgets/custom__dropDownButton.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/custom_widgets/custom_dropDownButton.dart';
 
 class CustomerBillOptionsContainer extends StatelessWidget {
   const CustomerBillOptionsContainer({super.key});

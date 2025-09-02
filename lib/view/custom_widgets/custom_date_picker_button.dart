@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:Erad/controller/customers/customer_add_bill_controller.dart';
-import 'package:Erad/core/constans/colors.dart';
+import 'package:erad/controller/customers/bills/customer_add_bill_controller.dart';
+import 'package:erad/core/constans/colors.dart';
 
 class Custom_date_picker_button extends StatelessWidget {
   const Custom_date_picker_button({super.key});

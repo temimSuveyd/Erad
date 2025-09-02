@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:Erad/core/class/handling_data.dart';
-import 'package:Erad/core/constans/routes.dart';
-import 'package:Erad/core/constans/sharedPreferences.dart';
-import 'package:Erad/core/function/handling_signin_errors.dart';
-import 'package:Erad/core/services/app_services.dart';
-import 'package:Erad/data/data_score/remote/user_data.dart';
-import 'package:Erad/view/custom_widgets/custom_snackbar.dart';
+import 'package:erad/core/class/handling_data.dart';
+import 'package:erad/core/constans/routes.dart';
+import 'package:erad/core/constans/sharedPreferences.dart';
+import 'package:erad/core/function/handling_signin_errors.dart';
+import 'package:erad/core/services/app_services.dart';
+import 'package:erad/data/data_score/remote/user_data.dart';
+import 'package:erad/view/custom_widgets/custom_snackbar.dart';
 
 abstract class LoginController extends GetxController {
   login();

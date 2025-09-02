@@ -1,10 +1,10 @@
-import 'package:Erad/controller/suppliers/suppliers_bill_add_controller.dart';
-import 'package:Erad/view/supplier/suppliers_bills_add/widgets/custom_add_produc_Textfield.dart';
-import 'package:Erad/view/supplier/suppliers_bills_add/widgets/custom_search_menu.dart';
+import 'package:erad/controller/suppliers/bills/suppliers_bill_add_controller.dart';
+import 'package:erad/view/supplier/bills/suppliers_bills_add/widgets/custom_add_produc_Textfield.dart';
+import 'package:erad/view/supplier/bills/suppliers_bills_add/widgets/custom_search_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/custom_widgets/custom_add_button.dart';
 
 
 class Custom_add_product_card extends StatelessWidget {

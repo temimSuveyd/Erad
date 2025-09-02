@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:Erad/core/constans/colors.dart';
+import 'package:erad/core/constans/colors.dart';
 
 Future<dynamic> custom_delete_dialog(void Function() onConfirm) {
   return Get.defaultDialog(

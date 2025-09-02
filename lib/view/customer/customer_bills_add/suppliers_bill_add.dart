@@ -1,11 +1,11 @@
 
 
-import 'package:Erad/controller/customers/customer_add_bill_controller.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/custom_widgets/custom_appBar.dart';
-import 'package:Erad/view/customer/customer_bills_add/widgets/custom_bill_add_listView.dart';
-import 'package:Erad/view/customer/customer_bills_add/widgets/custom_bill_options_container.dart';
-import 'package:Erad/view/customer/customer_bills_add/widgets/custom_label_row.dart';
+import 'package:erad/controller/customers/bills/customer_add_bill_controller.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/custom_widgets/custom_appBar.dart';
+import 'package:erad/view/customer/customer_bills_add/widgets/custom_bill_add_listView.dart';
+import 'package:erad/view/customer/customer_bills_add/widgets/custom_bill_options_container.dart';
+import 'package:erad/view/customer/customer_bills_add/widgets/custom_label_row.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

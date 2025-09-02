@@ -2,7 +2,7 @@
 
 
 import 'package:flutter/widgets.dart';
-import 'package:Erad/core/constans/colors.dart';
+import 'package:erad/core/constans/colors.dart';
 
 class Custom_title_text_container extends StatelessWidget {
   const Custom_title_text_container({super.key, required this.title});

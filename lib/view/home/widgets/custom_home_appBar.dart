@@ -1,16 +1,29 @@
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/core/constans/images.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:Erad/controller/home/home_controller.dart';
-import 'package:Erad/view/home/widgets/custom_set_page_button.dart';
 
 AppBar Custom_home_appBar() {
   return AppBar(
     automaticallyImplyLeading: false,
-    backgroundColor: Colors.transparent,
+    backgroundColor: AppColors.primary,
+    centerTitle: true,
+
     actions: [
-      Spacer(),
-      GetBuilder<HomeControllerImp>(
-        builder: (controller) => Custom_set_page_container(),
+      SizedBox(width: 15),
+      SizedBox(
+        height: 45,
+        width: 45,
+        child: Image.asset(AppImages.logo, fit: BoxFit.cover),
+      ),
+
+      SizedBox(width: 10),
+      Text(
+        "إراد",
+        style: TextStyle(
+          fontSize: 24,
+          color: AppColors.wihet,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       Spacer(),
     ],

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
-import 'package:Erad/core/constans/colors.dart';
+import 'package:erad/core/constans/colors.dart';
 
 AppBar Custom_appBar({required String title}) {
   return AppBar(
     title: Text(
       title,
       style: TextStyle(
-        color: AppColors.primary,
-        fontSize: 20,
+        color: AppColors.wihet,
+        fontSize: 22,
         fontWeight: FontWeight.bold,
       ),
     ),
@@ -18,8 +18,8 @@ AppBar Custom_appBar({required String title}) {
       onPressed: () {
         Get.back();
       },
-      icon: Icon(Icons.arrow_back, color: AppColors.primary),
+      icon: Icon(Icons.arrow_back, color: AppColors.wihet),
     ),
-    backgroundColor: AppColors.backgroundColor,
+    backgroundColor: Colors.transparent,
   );
 }

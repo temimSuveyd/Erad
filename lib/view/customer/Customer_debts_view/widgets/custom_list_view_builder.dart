@@ -1,7 +1,7 @@
-import 'package:Erad/controller/customers/customer_depts_view_controller.dart';
-import 'package:Erad/core/class/handling_data_view_with_sliverBox.dart';
-import 'package:Erad/data/model/customer_depts/customer_depts_model.dart';
-import 'package:Erad/view/customer/Customer_debts_view/widgets/custom_depts_header_row%20copy.dart';
+import 'package:erad/controller/customers/depts/customer_depts_view_controller.dart';
+import 'package:erad/core/class/handling_data_view_with_sliverBox.dart';
+import 'package:erad/data/model/customer_depts/customer_depts_model.dart';
+import 'package:erad/view/customer/Customer_debts_view/widgets/custom_depts_header_row%20copy.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

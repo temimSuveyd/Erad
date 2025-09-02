@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/core/function/validatorInpot.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/core/function/validatorInpot.dart';
 
-import '../../../supplier/suppliers_bills_add/widgets/custom_amout_dropDown_button.dart';
+import '../../../supplier/bills/suppliers_bills_add/widgets/custom_amout_dropDown_button.dart';
 
 // ignore: non_constant_identifier_names
 Future<dynamic> custom_add_brands_type_dialog(

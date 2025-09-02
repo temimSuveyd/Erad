@@ -18,6 +18,10 @@ class AppRoutes {
   static const String supplier_bill_details_page = "/supplier_bill_details_page";
   static const String supplier_bills_view_page = "/supplier_bills_view_page";
   static const String supplier_bills_add_page = "/supplier_bills_add_page";
+  static const String supplier_depts_view_page = "/supplier_depts_view_page";
+  static const String supplier_depts_details_page = "/supplier_depts_details_page";
+
+
 
 
 

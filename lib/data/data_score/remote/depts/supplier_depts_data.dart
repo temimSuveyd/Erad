@@ -1,4 +1,4 @@
-import 'package:Erad/core/constans/bill_status.dart';
+import 'package:erad/core/constans/bill_status.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SupplierDeptsData {

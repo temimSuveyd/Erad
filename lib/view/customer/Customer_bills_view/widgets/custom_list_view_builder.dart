@@ -1,11 +1,11 @@
-import 'package:Erad/core/class/handling_data.dart';
-import 'package:Erad/core/class/handling_data_view_with_sliverBox.dart';
+import 'package:erad/core/class/handling_data.dart';
+import 'package:erad/core/class/handling_data_view_with_sliverBox.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:Erad/controller/customers/customer_bill_view_controller.dart';
-import 'package:Erad/core/class/handling_data_view.dart';
-import 'package:Erad/data/model/customer_bills_view/bill_model.dart';
-import 'package:Erad/view/customer/Customer_bills_view/widgets/custom_bill_header_row.dart';
+import 'package:erad/controller/customers/bills/customer_bill_view_controller.dart';
+import 'package:erad/core/class/handling_data_view.dart';
+import 'package:erad/data/model/customer_bills_view/bill_model.dart';
+import 'package:erad/view/customer/Customer_bills_view/widgets/custom_bill_header_row.dart';
 
 class Custom_listviewBuilder extends StatelessWidget {
   const Custom_listviewBuilder({super.key});

@@ -1,7 +1,7 @@
-import 'package:Erad/controller/customers/customer_dept_details_controller.dart';
-import 'package:Erad/data/model/customer_depts/customer_dept_payments_model.dart';
+import 'package:erad/controller/customers/depts/customer_dept_details_controller.dart';
+import 'package:erad/data/model/customer_depts/customer_dept_payments_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:Erad/view/customer/customer_debt_details/widgets/custom_debt_payments_card.dart';
+import 'package:erad/view/customer/customer_debt_details/widgets/custom_debt_payments_card.dart';
 import 'package:get/get.dart';
 
 class Custom_debt_payments_listView extends StatelessWidget {

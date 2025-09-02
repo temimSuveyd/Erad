@@ -1,10 +1,10 @@
-import 'package:Erad/core/class/handling_data.dart';
-import 'package:Erad/core/class/handling_data_view.dart';
+import 'package:erad/core/class/handling_data.dart';
+import 'package:erad/core/class/handling_data_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:Erad/controller/customers/customer_bill_details_controller.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/customer/customer_bill_details/widgets/custom_biil_details_text_container.dart';
+import 'package:erad/controller/customers/bills/customer_bill_details_controller.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/customer/customer_bill_details/widgets/custom_biil_details_text_container.dart';
 
 // ignore: camel_case_types
 class Custom_bill_details_heder extends StatelessWidget {

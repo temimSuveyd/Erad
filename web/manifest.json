@@ -1,6 +1,6 @@
 {
-    "name": "Erad",
-    "short_name": "Erad",
+    "name": "erad",
+    "short_name": "erad",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

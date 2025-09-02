@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/core/function/validatorInpot.dart';
-import 'package:Erad/data/data_score/static/city_data.dart';
-import 'package:Erad/view/custom_widgets/custom__dropDownButton.dart';
-import 'package:Erad/view/custom_widgets/custom_search_text_field.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/core/function/validatorInpot.dart';
+import 'package:erad/data/data_score/static/city_data.dart';
+import 'package:erad/view/custom_widgets/custom_dropDownButton.dart';
+import 'package:erad/view/custom_widgets/custom_text_field.dart';
 
 Future<dynamic> Custom_add_customer_dialog(
   TextEditingController customer_name_controller,

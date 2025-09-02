@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/state_manager.dart';
-import 'package:Erad/controller/customers/customers_controller.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:erad/controller/customers/customers_view/customers_controller.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/custom_widgets/custom_add_button.dart';
 
 class Custom_customers_heder extends GetView<CustomersControllerImp> {
   const Custom_customers_heder({super.key});

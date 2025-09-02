@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/state_manager.dart';
-import 'package:Erad/controller/categoreys/categorey_type_controller.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/custom_widgets/custom_title_text_container.dart';
-import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:erad/controller/categoreys/categorey_type_controller.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/custom_widgets/custom_title_text_container.dart';
+import 'package:erad/view/custom_widgets/custom_add_button.dart';
 
 class Custom_categoreyType_Card extends GetView<CategoreyTypeControllerImp> {
   const Custom_categoreyType_Card({super.key, required this.title});

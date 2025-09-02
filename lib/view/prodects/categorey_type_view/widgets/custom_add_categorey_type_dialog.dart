@@ -1,7 +1,7 @@
   import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/custom_widgets/custom_search_text_field.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/custom_widgets/custom_text_field.dart';
 
 Future<dynamic> custom_add_categorey_type_dialog(
     TextEditingController controller,

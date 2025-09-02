@@ -1,11 +1,11 @@
-import 'package:Erad/controller/customers/customer_depts_view_controller.dart';
-import 'package:Erad/data/model/customer_depts/customer_depts_model.dart';
+import 'package:erad/controller/customers/depts/customer_depts_view_controller.dart';
+import 'package:erad/data/model/customer_depts/customer_depts_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/custom_widgets/custom_add_button.dart';
 
-import '../../../supplier/suppliers_bills_add/widgets/custom_price_container.dart';
+import '../../../supplier/bills/suppliers_bills_add/widgets/custom_price_container.dart';
 
 class Custom_depts_view_card extends GetView<CustomerDeptsViewControllerImp> {
   const Custom_depts_view_card({super.key, required this.deptModel});

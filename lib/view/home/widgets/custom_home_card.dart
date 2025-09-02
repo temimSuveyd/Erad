@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
-import 'package:Erad/controller/home/home_controller.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/data/model/home/home_modle.dart';
+import 'package:erad/controller/home/home_controller.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/data/model/home/home_modle.dart';
 
 class Custom_home_card extends GetView<HomeControllerImp> {
   const Custom_home_card({super.key, required this.homeModle});
@@ -20,13 +20,13 @@ class Custom_home_card extends GetView<HomeControllerImp> {
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.primary,
-          borderRadius: BorderRadius.circular(28),
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: AppColors.black.withOpacity(0.7),
             width: 1.5,
           ),
         ),
-        padding: EdgeInsets.all(5),
+        padding: EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

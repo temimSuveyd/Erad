@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:Erad/controller/customers/customers_controller.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/data/data_score/static/city_data.dart';
-import 'package:Erad/view/custom_widgets/custom__dropDownButton.dart';
-import 'package:Erad/view/custom_widgets/custom_appBar.dart';
-import 'package:Erad/view/custom_widgets/custom_search_text_field.dart';
-import 'package:Erad/view/customer/customers_view/widgets/custom_brands_heder.dart';
-import 'package:Erad/view/customer/customers_view/widgets/custom_brands_listView.dart';
-import 'package:Erad/view/supplier/suppliers_view/widgets/custom_suppliers_listView.dart';
+import 'package:erad/controller/customers/customers_view/customers_controller.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/data/data_score/static/city_data.dart';
+import 'package:erad/view/custom_widgets/custom_dropDownButton.dart';
+import 'package:erad/view/custom_widgets/custom_appBar.dart';
+import 'package:erad/view/custom_widgets/custom_text_field.dart';
+import 'package:erad/view/customer/customers_view/widgets/custom_brands_heder.dart';
+import 'package:erad/view/customer/customers_view/widgets/custom_brands_listView.dart';
+import 'package:erad/view/supplier/suppliers_view/widgets/custom_suppliers_listView.dart';
 
 class CustomersViewPage extends GetView<CustomersControllerImp> {
   const CustomersViewPage({super.key});

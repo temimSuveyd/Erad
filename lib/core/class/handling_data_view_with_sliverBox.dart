@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:Erad/core/class/handling_data.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/core/constans/images.dart';
-import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:erad/core/class/handling_data.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/core/constans/images.dart';
+import 'package:erad/view/custom_widgets/custom_add_button.dart';
+import 'package:lottie/lottie.dart';
 
 class HandlingDataViewWithSliverBox extends StatelessWidget {
   const HandlingDataViewWithSliverBox({
@@ -24,7 +25,7 @@ class HandlingDataViewWithSliverBox extends StatelessWidget {
             width: 200,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [CircularProgressIndicator(color: AppColors.primary)],
+              children: [LottieBuilder.asset(AppImages.loadingAnimation)],
             ),
           ),
         ),
@@ -54,7 +55,8 @@ class HandlingDataViewWithSliverBox extends StatelessWidget {
                     color: AppColors.primary,
                   ),
                 ),
-                Custom_button( color: AppColors.primary,
+                Custom_button(
+                  color: AppColors.primary,
                   icon: Icons.refresh,
                   title: "حاول ثانية",
                   onPressed: () => onPressed(),
@@ -120,7 +122,8 @@ class HandlingDataViewWithSliverBox extends StatelessWidget {
                     color: AppColors.primary,
                   ),
                 ),
-                Custom_button( color: AppColors.primary,
+                Custom_button(
+                  color: AppColors.primary,
                   icon: Icons.refresh,
                   title: "حاول ثانية",
                   onPressed: () => onPressed(),

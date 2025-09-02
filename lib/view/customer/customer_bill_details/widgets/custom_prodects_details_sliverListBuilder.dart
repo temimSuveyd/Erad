@@ -1,9 +1,9 @@
-import 'package:Erad/core/class/handling_data_view_with_sliverBox.dart';
-import 'package:Erad/data/model/customer_bill_details/bill_details_product_model.dart';
+import 'package:erad/core/class/handling_data_view_with_sliverBox.dart';
+import 'package:erad/data/model/customer_bill_details/bill_details_product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:Erad/controller/customers/customer_bill_details_controller.dart';
-import 'package:Erad/view/customer/customer_bill_details/widgets/custom_prodect_details_card.dart';
+import 'package:erad/controller/customers/bills/customer_bill_details_controller.dart';
+import 'package:erad/view/customer/customer_bill_details/widgets/custom_prodect_details_card.dart';
 
 // ignore: camel_case_types
 class Custom_products_details_sliverListBuilder extends StatelessWidget {

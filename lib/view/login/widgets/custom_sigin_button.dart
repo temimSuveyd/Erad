@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Erad/core/constans/colors.dart';
+import 'package:erad/core/constans/colors.dart';
 
 // ignore: camel_case_types
 class Custom_sigin_button extends StatelessWidget {

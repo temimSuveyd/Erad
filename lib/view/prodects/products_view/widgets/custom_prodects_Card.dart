@@ -1,12 +1,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/custom_widgets/custom_title_text_container.dart';
-import 'package:Erad/view/custom_widgets/custom_add_button.dart';
-import 'package:Erad/view/custom_widgets/custom_date_text_container.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/custom_widgets/custom_title_text_container.dart';
+import 'package:erad/view/custom_widgets/custom_add_button.dart';
+import 'package:erad/view/custom_widgets/custom_date_text_container.dart';
 
-import '../../../supplier/suppliers_bills_add/widgets/custom_price_container.dart';
+import '../../../supplier/bills/suppliers_bills_add/widgets/custom_price_container.dart';
 
 class Custom_products_Card extends StatelessWidget {
   const Custom_products_Card({

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
-import 'package:Erad/controller/brands/brands_type_controller.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/custom_widgets/custom_add_button.dart';
+import 'package:erad/controller/brands/brands_type_controller.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/custom_widgets/custom_add_button.dart';
 
 class Custom_brands_type_heder extends GetView<BrandsTypeControllerImp> {
   const Custom_brands_type_heder({super.key});

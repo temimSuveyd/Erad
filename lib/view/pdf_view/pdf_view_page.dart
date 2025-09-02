@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:Erad/controller/pdf/pdf_view_controller.dart';
-import 'package:Erad/core/constans/colors.dart';
-import 'package:Erad/view/pdf_view/widgets/custom_pdf_view_AppBar.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:erad/controller/pdf/pdf_view_controller.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/view/pdf_view/widgets/custom_pdf_view_AppBar.dart';
+// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PdfViewPage extends GetView<PdfViewControllerImp> {
   const PdfViewPage({Key? key}) : super(key: key);
@@ -15,10 +15,10 @@ class PdfViewPage extends GetView<PdfViewControllerImp> {
       appBar: Custom_pdf_view_page_appBar(() {
         controller.sharePdfFile();
       },),
-      body: SfPdfViewer.memory(
-        controller.pdfBytes!,
+      // body: SfPdfViewer.memory(
+      //   controller.pdfBytes!,
       
-      ),
+      // ),
     );
   }
 }
