@@ -45,13 +45,13 @@ class CategoreyTypeControllerImp extends CategoreyTypeController {
   add_categorey_type() {
     statusreqest = Statusreqest.loading;
     update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     String categorey_type = _categorey_type.text;
     try {
       categoreysData.addCategorey_type(
         categorey_name!,
-        user_email,
+        userID,
         categorey_type,
       );
       statusreqest = Statusreqest.success;
@@ -84,11 +84,11 @@ class CategoreyTypeControllerImp extends CategoreyTypeController {
     statusreqest = Statusreqest.loading;
     update();
 
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
 
     try {
-      categoreysData.getCategoreysType(user_email, categorey_name!).listen((
+      categoreysData.getCategoreysType(userID, categorey_name!).listen((
         event,
       ) {
         categoreyTypeList.value = event.docs;
@@ -136,10 +136,10 @@ class CategoreyTypeControllerImp extends CategoreyTypeController {
 
   @override
   delete_categorey(String id) {
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      categoreysData.deleteCategorey_type(user_email, id);
+      categoreysData.deleteCategorey_type(userID, id);
       update();
     } catch (e) {
       statusreqest = Statusreqest.faliure;

@@ -8,13 +8,13 @@ class SupplierDeptsData {
     String supplier_name,
     String supplier_city,
 
-    String user_email,
+    String userID,
     double total_price,
     DateTime bill_add_time,
   ) async {
     final docRef = _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("supplier_depts")
         .doc(supplier_id);
 
@@ -36,13 +36,13 @@ class SupplierDeptsData {
     String bill_id,
     String supplier_id,
     String payment_type,
-    String user_email,
+    String userID,
     double total_price,
     DateTime bill_add_time,
   ) async {
     return await _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("supplier_depts")
         .doc(supplier_id)
         .collection("supplier_bills")
@@ -60,13 +60,13 @@ class SupplierDeptsData {
 
   Future addPaymentToDepts(
     String supplier_id,
-    String user_email,
+    String userID,
     double total_price,
     DateTime payment_date,
   ) async {
     return await _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("supplier_depts")
         .doc(supplier_id)
         .collection("payments")
@@ -76,11 +76,11 @@ class SupplierDeptsData {
   Future delteBillFromDepts(
     String bill_id,
     String supplier_id,
-    String user_email,
+    String userID,
   ) async {
     return await _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("supplier_depts")
         .doc(supplier_id)
         .collection("supplier_bills")
@@ -90,11 +90,11 @@ class SupplierDeptsData {
   Future deltePaymentFromDepts(
     String payment_id,
     String supplier_id,
-    String user_email,
+    String userID,
   ) async {
     return await _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("supplier_depts")
         .doc(supplier_id)
         .collection("payments")
@@ -104,12 +104,12 @@ class SupplierDeptsData {
   Future updateTotalPriceInBill(
     String bill_id,
     String supplier_id,
-    String user_email,
+    String userID,
     double total_price,
   ) async {
     return await _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("supplier_depts")
         .doc(supplier_id)
         .collection("supplier_bills")
@@ -119,21 +119,21 @@ class SupplierDeptsData {
 
   Future updateTotalDept(
     String supplier_id,
-    String user_email,
+    String userID,
     double total_price,
   ) async {
     return await _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("supplier_depts")
         .doc(supplier_id)
         .update({"total_price": total_price});
   }
 
-  Future delteDepts(String supplier_id, String user_email) async {
+  Future delteDepts(String supplier_id, String userID) async {
     final docRef = FirebaseFirestore.instance
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("supplier_depts")
         .doc(supplier_id);
 
@@ -149,21 +149,21 @@ class SupplierDeptsData {
     await docRef.delete();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getAllDepts(String user_email) {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllDepts(String userID) {
     return _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("supplier_depts")
         .snapshots();
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getAllPayments(
-    String user_email,
+    String userID,
     String supplier_id,
   ) {
     return _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("supplier_depts")
         .doc(supplier_id)
         .collection("payments")
@@ -171,12 +171,12 @@ class SupplierDeptsData {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getBillById(
-    String user_email,
+    String userID,
     String supplier_id,
   ) {
     return _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("supplier_depts")
         .doc(supplier_id)
         .collection("supplier_bills")
@@ -184,12 +184,12 @@ class SupplierDeptsData {
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getDeptDetails(
-    String user_email,
+    String userID,
     String supplier_id,
   ) {
     return _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("supplier_depts")
         .doc(supplier_id)
         .get();

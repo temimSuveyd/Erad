@@ -9,7 +9,11 @@ class CustomAddExpensesDialog extends StatelessWidget {
   final TextEditingController countController;
   final TextEditingController titleController;
 
-  const CustomAddExpensesDialog({super.key, required this.countController, required this.titleController});
+  const CustomAddExpensesDialog({
+    super.key,
+    required this.countController,
+    required this.titleController,
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,6 +43,8 @@ class CustomAddExpensesDialog extends StatelessWidget {
             ),
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             child: Custom_textfield(
+              height: 100,
+              maxLines: 3,
               hintText: "عنوان",
               suffixIcon: Icons.attach_money_rounded,
               validator: (q) {},
@@ -46,6 +52,7 @@ class CustomAddExpensesDialog extends StatelessWidget {
               onChanged: (value) {},
             ),
           ),
+          const SizedBox(height: 10),
           Container(
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.08),
@@ -65,7 +72,7 @@ class CustomAddExpensesDialog extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
           // Tarih seçici
           Container(
             decoration: BoxDecoration(
@@ -85,7 +92,6 @@ class CustomAddExpensesDialog extends StatelessWidget {
                     onPressed: () {
                       showDatePicker(
                         context: context,
-                        initialDate: DateTime.now(),
                         firstDate: DateTime(2000),
                         lastDate: DateTime(2100),
                         builder: (context, child) {
@@ -150,7 +156,7 @@ class CustomAddExpensesDialog extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      "كرر هذه النفقة كل شهر",
+                      "كرر هذه النفقة كل ",
                       style: TextStyle(
                         fontSize: 18,
                         color: AppColors.grey,
@@ -160,78 +166,66 @@ class CustomAddExpensesDialog extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Icon(Icons.repeat, color: AppColors.primary, size: 22),
-                    const SizedBox(width: 6),
-                    Text(
-                      "تكرار كل:",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: AppColors.grey,
-                        fontWeight: FontWeight.w500,
-                      ),
+
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.04),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: AppColors.primary.withOpacity(0.18),
+                      width: 1.2,
                     ),
-                    const SizedBox(width: 12),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.backgroundColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                      child: DropdownButtonHideUnderline(
-                        child: GetBuilder<ExpensesControllerImp>(
-                          builder:
-                              (controller) => DropdownButton<String>(
-                                value: "أسبوع",
-                                items: [
-                                  DropdownMenuItem(
-                                    value: "أسبوع",
-                                    child: Text(
-                                      "أسبوع",
-                                      style: TextStyle(
-                                        color: AppColors.primary,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500,
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
+                  child: GetBuilder<ExpensesControllerImp>(
+                    builder:
+                        (controller) => Custom_set_date_button(
+                          hintText:
+                              "${controller.addedDate.year}/${controller.addedDate.month.toString().padLeft(2, '0')}/${controller.addedDate.day.toString().padLeft(2, '0')}",
+                          onPressed: () {
+                            showDatePicker(
+                              context: context,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2100),
+                              builder: (context, child) {
+                                return Theme(
+                                  data: Theme.of(context).copyWith(
+                                    colorScheme: ColorScheme.light(
+                                      primary:
+                                          AppColors
+                                              .primary, // header background color
+                                      onPrimary:
+                                          Colors.white, // header text color
+                                      onSurface:
+                                          AppColors.primary, // body text color
+                                      surface:
+                                          AppColors
+                                              .backgroundColor, // background color of the date picker itself
+                                    ),
+                                    textButtonTheme: TextButtonThemeData(
+                                      style: TextButton.styleFrom(
+                                        foregroundColor:
+                                            AppColors
+                                                .primary, // button text color
                                       ),
                                     ),
                                   ),
-                                  DropdownMenuItem(
-                                    value: "شهر",
-                                    child: Text(
-                                      "شهر",
-                                      style: TextStyle(
-                                        color: AppColors.primary,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                                onChanged: (value) {
-                                  if (value == "أسبوع") {
-                                    controller.setDateType("أسبوع");
-                                  } else {
-                                    controller.setDateType("شهر");
-                                  }
-                                },
-                                icon: Icon(
-                                  Icons.keyboard_arrow_down_rounded,
-                                  color: AppColors.primary,
-                                ),
-                                dropdownColor: Colors.white,
-                                style: TextStyle(
-                                  color: AppColors.primary,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                                  child: child!,
+                                );
+                              },
+                            ).then((selectedDate) {
+                              if (selectedDate != null) {
+                                controller.setRepeatDate(selectedDate);
+                              }
+                            });
+                          },
                         ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
+                //
               ],
             ),
           ),

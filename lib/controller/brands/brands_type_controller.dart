@@ -68,8 +68,8 @@ class BrandsTypeControllerImp extends BrandsTypeController {
   add_brands_type() {
     statusreqest = Statusreqest.loading;
     update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
 
     if (product_size_controller.text.isNotEmpty ||
         product_buying_controller.text.isNotEmpty ||
@@ -81,7 +81,7 @@ class BrandsTypeControllerImp extends BrandsTypeController {
       try {
         brandData.addBrandsType(
           categorey_name!,
-          user_email,
+          userID,
           categorey_type!,
           brand_name!,
           product_size,
@@ -105,12 +105,12 @@ class BrandsTypeControllerImp extends BrandsTypeController {
   get_brands_type() {
     statusreqest = Statusreqest.loading;
     update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
       brandData
           .getBrandsType(
-            user_email,
+            userID,
             categorey_type!,
             categorey_name!,
             brand_name!,
@@ -182,8 +182,8 @@ class BrandsTypeControllerImp extends BrandsTypeController {
   ) {
     statusreqest = Statusreqest.loading;
     update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     String product_buing_price =
         product_buying_controller.text.isEmpty
             ? buiyng_price
@@ -198,7 +198,7 @@ class BrandsTypeControllerImp extends BrandsTypeController {
             : product_size_controller.text;
     try {
       brandData.editBrandsType(
-        user_email,
+        userID,
         product_buing_price,
         product_sales_price,
         product_size,
@@ -216,10 +216,10 @@ class BrandsTypeControllerImp extends BrandsTypeController {
 
   @override
   deleteBrandsType(String product_name) {
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      brandData.deleteBrandsType(user_email, product_name);
+      brandData.deleteBrandsType(userID, product_name);
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();

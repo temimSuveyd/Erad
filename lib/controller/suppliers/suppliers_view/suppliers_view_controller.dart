@@ -48,11 +48,11 @@ class SuppliersControllerImp extends SuppliersController {
     } else {
       statusreqest = Statusreqest.loading;
       update();
-      String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
+      String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
 
       try {
-        suppliersData.addSupplier(user_email, suppliers_name, suppliers_city);
+        suppliersData.addSupplier(userID, suppliers_name, suppliers_city);
       } catch (e) {
         statusreqest = Statusreqest.faliure;
         update();
@@ -87,10 +87,10 @@ class SuppliersControllerImp extends SuppliersController {
   getSuppliers() {
     statusreqest = Statusreqest.loading;
     update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      suppliersData.getAllSuppliers(user_email).listen((event) {
+      suppliersData.getAllSuppliers(userID).listen((event) {
         suppliersList.value = event.docs;
         if (suppliersList.isEmpty) {
           statusreqest = Statusreqest.noData;
@@ -115,10 +115,10 @@ class SuppliersControllerImp extends SuppliersController {
   @override
   dlete_Suppliers(String Suppliers_id) {
     try {
-      String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
+      String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
 
-      suppliersData.deleteSupplier(user_email, Suppliers_id);
+      suppliersData.deleteSupplier(userID, Suppliers_id);
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();
@@ -152,8 +152,8 @@ class SuppliersControllerImp extends SuppliersController {
     String _suppliers_city,
     String suppliers_name,
   ) {
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     String _suppliers_name =
         suppliers_name_controller.text.isEmpty
             ? suppliers_name
@@ -162,7 +162,7 @@ class SuppliersControllerImp extends SuppliersController {
         suppliers_city.isEmpty ? suppliers_city : suppliers_city;
     try {
       suppliersData.editSupplier(
-        user_email,
+        userID,
         _suppliers_name,
         _suppliers_city,
         _suppliers_id,
@@ -199,9 +199,9 @@ class SuppliersControllerImp extends SuppliersController {
       getSuppliers();
     } else {
 
-      String user_email = services.sharedPreferences.getString(AppShared.user_email)!;
+      String userID = services.sharedPreferences.getString(AppShared.userID)!;
       try {
-        suppliersData.getAllSuppliers(user_email).listen((event) {
+        suppliersData.getAllSuppliers(userID).listen((event) {
           var allSuppliers = event.docs;
           
           var filteredList = allSuppliers.where((doc) {

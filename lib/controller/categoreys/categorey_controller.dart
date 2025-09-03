@@ -56,11 +56,11 @@ class CategoreyControllerImp extends CategoreyController {
   add_categorey() {
     statusreqest = Statusreqest.loading;
     update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     String categorey_name = _categorey_name_controller.text;
     try {
-      categoreysData.addCategoreys(categorey_name, user_email);
+      categoreysData.addCategoreys(categorey_name, userID);
       _categorey_name_controller.clear();
       statusreqest = Statusreqest.success;
       update();
@@ -83,10 +83,10 @@ class CategoreyControllerImp extends CategoreyController {
   getCategoreys() {
     statusreqest = Statusreqest.loading;
     update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      categoreysData.getCategoreys(user_email).listen((event) {
+      categoreysData.getCategoreys(userID).listen((event) {
         categoreys_list.value = event.docs;
         update();
 
@@ -126,10 +126,10 @@ class CategoreyControllerImp extends CategoreyController {
    @override
   // ignore: non_constant_identifier_names
   delete_categorey(String id) {
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      categoreysData.deleteCategorey(id, user_email);
+      categoreysData.deleteCategorey(id, userID);
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();

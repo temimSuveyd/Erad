@@ -9,7 +9,7 @@ void custom_snackBar([Color? color, String? title, String? message]) {
   final snackBar = SnackBar(
     content: Text(
       message ?? "عليك إدخال جميع المعلومات",
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: Colors.white,fontSize: 20),
     ),
     backgroundColor: color ?? AppColors.primary,
     duration: Duration(seconds: 5),
@@ -28,10 +28,3 @@ void custom_snackBar([Color? color, String? title, String? message]) {
 
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
-
-// You need to define navigatorKey in your main.dart and pass it to MaterialApp:
-// final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-// MaterialApp(navigatorKey: navigatorKey, ...)
-//
-// Then import it here:
-// import 'package:erad/main.dart';

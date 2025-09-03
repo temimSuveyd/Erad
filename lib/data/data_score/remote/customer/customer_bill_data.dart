@@ -9,12 +9,12 @@ class CustomerBillData {
     String customer_city,
     String customer_id,
     String payment_type,
-    String user_email,
+    String userID,
     DateTime bill_add_time,
   ) async {
     DocumentReference docRef = await _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("customer_bills")
         .add({
           "customer_name": customer_name,
@@ -31,10 +31,10 @@ class CustomerBillData {
     return docRef.id;
   }
 
-  addDiscount(String bill_id, String user_email, double discount_amount) {
+  addDiscount(String bill_id, String userID, double discount_amount) {
     _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("customer_bills")
         .doc(bill_id)
         .update({
@@ -50,12 +50,12 @@ class CustomerBillData {
     int total_product_price,
     int total_product_profits,
     int prodect_profits,
-    String user_email,
+    String userID,
     String bill_id,
   ) {
     _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("customer_bills")
         .doc(bill_id)
         .collection("products")
@@ -73,17 +73,17 @@ class CustomerBillData {
         });
   }
 
-  Future deleteCustomerBill(String user_email, String bill_id) async {
+  Future deleteCustomerBill(String userID, String bill_id) async {
     return await _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("customer_bills")
         .doc(bill_id)
         .delete();
   }
 
   Future updateCustomerBill(
-    String user_email,
+    String userID,
     String bill_id,
     String bill_no,
     double total_price,
@@ -91,7 +91,7 @@ class CustomerBillData {
   ) async {
     await _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("customer_bills")
         .doc(bill_id)
         .update({
@@ -101,26 +101,26 @@ class CustomerBillData {
         });
   }
   Future updatePaymentType(
-    String user_email,
+    String userID,
     String bill_id,
     String payment_type,
   ) async {
     return await _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("customer_bills")
         .doc(bill_id)
         .update({"paymet_type": payment_type});
   }
   Future update_total_price(
-    String user_email,
+    String userID,
     String bill_id,
     double total_price,
     double totl_profits,
   ) async {
     await _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("customer_bills")
         .doc(bill_id)
         .update({
@@ -133,12 +133,12 @@ class CustomerBillData {
     String product_id,
     int product_number,
     int total_product_price,
-    String user_email,
+    String userID,
     String bill_id,
   ) async {
     await _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("customer_bills")
         .doc(bill_id)
         .collection("products")
@@ -150,13 +150,13 @@ class CustomerBillData {
   }
 
   Future updateBillStatus(
-    String user_email,
+    String userID,
     String bill_id,
     String bill_status,
   ) async {
     return await _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("customer_bills")
         .doc(bill_id)
         .update({"bill_status": bill_status});
@@ -165,11 +165,11 @@ class CustomerBillData {
   Future deleteProduct(
     String bill_id,
     String product_id,
-    String user_email,
+    String userID,
   ) async {
     return await _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("customer_bills")
         .doc(bill_id)
         .collection("products")
@@ -178,12 +178,12 @@ class CustomerBillData {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getBillProdects(
-    String user_email,
+    String userID,
     String bill_id,
   ) {
     return _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("customer_bills")
         .doc(bill_id)
         .collection("products")
@@ -191,13 +191,13 @@ class CustomerBillData {
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getBillProdectBayId(
-    String user_email,
+    String userID,
     String bill_id,
     String prodcut_id,
   ) {
     return _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("customer_bills")
         .doc(bill_id)
         .collection("products")
@@ -205,21 +205,21 @@ class CustomerBillData {
         .get();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getAllBils(String user_email) {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllBils(String userID) {
     return _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("customer_bills")
         .snapshots();
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getBillById(
-    String user_email,
+    String userID,
     String bill_id,
   ) {
     return _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("customer_bills")
         .doc(bill_id)
         .get();

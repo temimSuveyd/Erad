@@ -31,10 +31,10 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
   getSuppliersBills() {
     statusreqest = Statusreqest.loading;
     update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      supplierBillData.getAllBils(user_email).listen((event) {
+      supplierBillData.getAllBils(userID).listen((event) {
         supplier_bills_list.value = event.docs;
         if (supplier_bills_list.isEmpty) {
           statusreqest = Statusreqest.noData;
@@ -142,12 +142,12 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
   @override
   Future updateBillStaus(String bill_status, String bill_id) async {
     try {
-      String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
+      String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
       statusreqest = Statusreqest.loading;
       update();
 
-      await supplierBillData.updateBillStatus(user_email, bill_id, bill_status);
+      await supplierBillData.updateBillStatus(userID, bill_id, bill_status);
       statusreqest = Statusreqest.success;
     } catch (e) {
       statusreqest = Statusreqest.success;

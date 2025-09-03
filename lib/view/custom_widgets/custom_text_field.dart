@@ -10,22 +10,26 @@ class Custom_textfield extends StatelessWidget {
     required this.validator,
     required this.controller,
     required this.onChanged,
+    this.maxLines, this.height,
   });
   final String hintText;
   final IconData suffixIcon;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
   final void Function(String) onChanged;
+  final int? maxLines;
+  final double? height;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 42,
       width: 250,
+      height: height??42,
       child: TextFormField(
         onChanged: (value) {
           onChanged(value);
         },
-        style: TextStyle(color: AppColors.wihet,fontSize: 21),
+        maxLines: maxLines??1,
+        style: TextStyle(color: AppColors.wihet, fontSize: 21),
         controller: controller,
         validator: validator,
         decoration: InputDecoration(

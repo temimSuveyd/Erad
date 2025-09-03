@@ -41,7 +41,7 @@ abstract class CustomeraddBiilController extends GetxController {
   searchForProduct();
   hiden_search_Menu();
   setProductFromSearch(String prodect_name);
-  addProductListToFirebase(String user_email, String bill_id);
+  addProductListToFirebase(String userID, String bill_id);
   deleteProduct(int product_index);
   generateRandomInvoiceId(String username);
 }
@@ -101,15 +101,15 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
     } else {
       statusreqest = Statusreqest.loading;
       update();
-      String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
+      String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
       try {
         bill_id = await customerBillData.addCustomerBill(
           customer_name!,
           customer_city!,
           customer_id!,
           bill_payment_type!,
-          user_email,
+          userID,
           bill_add_date,
         );
 
@@ -137,11 +137,11 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
   getCustomerById() {
     statusreqest = Statusreqest.loading;
     update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
 
     try {
-      customersData.getCustomerByID(user_email, customer_id!).listen((event) {
+      customersData.getCustomerByID(userID, customer_id!).listen((event) {
         customerData = event.data();
         customer_city = customerData!["customer_city"];
         customer_name = customerData!["customer_name"];
@@ -181,10 +181,10 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
   getAllCustomers() {
     statusreqest = Statusreqest.loading;
     update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      customersData.getAllCustomers(user_email).listen((event) {
+      customersData.getAllCustomers(userID).listen((event) {
         customersList.value = event.docs;
         customers_list_dropdownItrm = convertToDropdownItems(
           event.docs,
@@ -205,13 +205,13 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
 
   @override
   deleteBill() {
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     if (bill_id == null) {
       Get.back();
     } else {
       try {
-        customerBillData.deleteCustomerBill(user_email, bill_id!);
+        customerBillData.deleteCustomerBill(userID, bill_id!);
         Get.back();
       } catch (e) {
         statusreqest = Statusreqest.faliure;
@@ -225,10 +225,10 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
   @override
   getAllProducts() {
     statusreqest = Statusreqest.loading;
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      _productData.getAllproduct(user_email).listen((event) {
+      _productData.getAllproduct(userID).listen((event) {
         all_product_list.value = event.docs;
         if (all_product_list.isEmpty) {
           statusreqest = Statusreqest.noData;
@@ -301,10 +301,10 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
   @override
   getProductById(String product_id) async {
     try {
-      String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
+      String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
       final productData = await _productData.getBrandsTypeBayId(
-        user_email,
+        userID,
         product_id,
       );
       product_price = productData["product_sales_price"];
@@ -322,10 +322,10 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
       statusreqest = Statusreqest.loading;
       update();
 
-      String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
+      String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
       try {
-        customerBillData.getBillProdects(user_email, bill_id!).listen((event) {
+        customerBillData.getBillProdects(userID, bill_id!).listen((event) {
           bill_prodects_list.value = event.docs;
           if (bill_prodects_list.isEmpty) {
             statusreqest = Statusreqest.notAdded;
@@ -393,8 +393,8 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
 
   @override
   saveBillData() async {
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
 
     if (!is_saved) {
       statusreqest = Statusreqest.loading;
@@ -405,11 +405,11 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
         if (bill_id != null && bill_prodects_list.isNotEmpty) {
           is_saved = true;
           generateRandomInvoiceId(customer_name!);
-          await addProductListToFirebase(user_email, bill_id!);
+          await addProductListToFirebase(userID, bill_id!);
           totalPriceAccount();
           totalProfits();
           customerBillData.updateCustomerBill(
-            user_email,
+            userID,
             bill_id!,
             bill_no!,
             total_product_price,
@@ -434,7 +434,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
       totalPriceAccount();
       totalProfits();
       customerBillData.updateCustomerBill(
-        user_email,
+        userID,
         bill_id!,
         bill_no!,
         total_product_price,
@@ -446,7 +446,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
 
   @override
   Future<void> addProductListToFirebase(
-    String user_email,
+    String userID,
     String bill_id,
   ) async {
     for (var product in bill_prodects_list) {
@@ -469,7 +469,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
         total_product_price,
         total_product_profits,
         product_profits,
-        user_email,
+        userID,
         bill_id,
       );
     }
@@ -484,15 +484,15 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
   createPdf() async {
     statusreqest = Statusreqest.loading;
     update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     await addCustomerBill();
     if (bill_id != null) {
       try {
         if (!is_saved) {
           totalPriceAccount();
           totalProfits();
-          await addProductListToFirebase(user_email, bill_id!);
+          await addProductListToFirebase(userID, bill_id!);
           is_saved = true;
           update();
         } else {
@@ -571,15 +571,15 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
 
   @override
   addDept() async {
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
       if (customer_name != null && customer_id != null) {
         await customerDeptsData.addDepts(
           customer_id!,
           customer_name!,
           customer_city!,
-          user_email,
+          userID,
           total_product_price,
           bill_add_date,
         );
@@ -597,8 +597,8 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
 
   @override
   addBillToDepts() async {
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
       if (customer_name != null && customer_id != null) {
         await customerDeptsData.addBillToDepts(
@@ -606,7 +606,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
           bill_id!,
           customer_id!,
           bill_payment_type!,
-          user_email,
+          userID,
           total_product_price,
           bill_add_date,
         );

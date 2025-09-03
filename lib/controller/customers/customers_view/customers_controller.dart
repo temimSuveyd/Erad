@@ -48,11 +48,11 @@ class CustomersControllerImp extends CustomersController {
     } else {
       statusreqest = Statusreqest.loading;
       update();
-      String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
+      String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
 
       try {
-        customersData.addCustomer(user_email, customer_name, customer_city);
+        customersData.addCustomer(userID, customer_name, customer_city);
       } catch (e) {
         statusreqest = Statusreqest.faliure;
         update();
@@ -87,10 +87,10 @@ class CustomersControllerImp extends CustomersController {
   getCustomers() {
     statusreqest = Statusreqest.loading;
     update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      customersData.getAllCustomers(user_email).listen((event) {
+      customersData.getAllCustomers(userID).listen((event) {
         customersList.value = event.docs;
         if (customersList.isEmpty) {
           statusreqest = Statusreqest.noData;
@@ -115,10 +115,10 @@ class CustomersControllerImp extends CustomersController {
   @override
   dlete_customer(String customer_id) {
     try {
-      String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
+      String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
 
-      customersData.deleteCustomer(user_email, customer_id);
+      customersData.deleteCustomer(userID, customer_id);
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();
@@ -152,8 +152,8 @@ class CustomersControllerImp extends CustomersController {
     String _customer_city,
     String customer_name,
   ) {
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     String _customer_name =
         customer_name_controller.text.isEmpty
             ? customer_name
@@ -162,7 +162,7 @@ class CustomersControllerImp extends CustomersController {
         customer_city.isEmpty ? customer_city : customer_city;
     try {
       customersData.editCustomer(
-        user_email,
+        userID,
         _customer_name,
         _customer_city,
         _customer_id,

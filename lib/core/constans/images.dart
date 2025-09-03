@@ -5,7 +5,6 @@ class AppImages {
   static String logog = "${asset}logo.png";
   static String signin_background = "${asset}backr.png";
   static String faliure = "${asset}exclamation.png";
-  static String noData = "${asset}empty-set.png";
   static String noInternet = "${asset}wifi-exclamation.png";
   // home page images
   static String customers = "${asset}people.png";
@@ -21,9 +20,12 @@ class AppImages {
   static String reports = "${asset}report.png";
   static String users = "${asset}profile.png";
   static String logo= "${asset}logo.png";
-
   // lottie assets
   static String loadingAnimation = "${lottie}loading_animation.json";
+  static String errorAnimation = "${lottie}warning_animation.json";
+  // static String noDataAnimation = "${lottie}noData.json";
+
+
 
 
 }

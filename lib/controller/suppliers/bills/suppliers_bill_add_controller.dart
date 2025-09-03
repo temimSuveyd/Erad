@@ -42,7 +42,7 @@ abstract class SupplieraddBiilController extends GetxController {
   searchForProduct();
   hiden_search_Menu();
   setProductFromSearch(String prodect_name);
-  addProductListToFirebase(String user_email, String bill_id);
+  addProductListToFirebase(String userID, String bill_id);
   deleteProduct(int product_index);
   generateRandomInvoiceId(String username);
 }
@@ -102,15 +102,15 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
     } else {
       statusreqest = Statusreqest.loading;
       update();
-      String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
+      String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
       try {
         bill_id = await supplierBillData.addSupplierBill(
           supplier_name!,
           supplier_city!,
           supplier_id!,
           bill_payment_type!,
-          user_email,
+          userID,
           bill_add_date,
         );
 
@@ -138,11 +138,11 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   getSupplierById() {
     statusreqest = Statusreqest.loading;
     update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
 
     try {
-      suppliersData.getSupplierByID(user_email, supplier_id!).listen((event) {
+      suppliersData.getSupplierByID(userID, supplier_id!).listen((event) {
         supplierData = event.data();
         supplier_city = supplierData!["supplier_city"];
         supplier_name = supplierData!["supplier_name"];
@@ -182,10 +182,10 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   getAllSuppliers() {
     statusreqest = Statusreqest.loading;
     update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      suppliersData.getAllSuppliers(user_email).listen((event) {
+      suppliersData.getAllSuppliers(userID).listen((event) {
         SuppliersList.value = event.docs;
         suppliers_list_dropdownItrm = convertToDropdownItems(
           event.docs,
@@ -206,13 +206,13 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
 
   @override
   deleteBill() {
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     if (bill_id == null) {
       Get.back();
     } else {
       try {
-        supplierBillData.deleteSupplierBill(user_email, bill_id!);
+        supplierBillData.deleteSupplierBill(userID, bill_id!);
         Get.back();
       } catch (e) {
         statusreqest = Statusreqest.faliure;
@@ -226,10 +226,10 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   @override
   getAllProducts() {
     statusreqest = Statusreqest.loading;
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      _productData.getAllproduct(user_email).listen((event) {
+      _productData.getAllproduct(userID).listen((event) {
         all_product_list.value = event.docs;
         if (all_product_list.isEmpty) {
           statusreqest = Statusreqest.noData;
@@ -302,10 +302,10 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   @override
   getProductById(String product_id) async {
     try {
-      String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
+      String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
       final productData = await _productData.getBrandsTypeBayId(
-        user_email,
+        userID,
         product_id,
       );
       product_price = productData["product_sales_price"];
@@ -323,10 +323,10 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
       statusreqest = Statusreqest.loading;
       update();
 
-      String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
+      String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
       try {
-        supplierBillData.getBillProdects(user_email, bill_id!).listen((event) {
+        supplierBillData.getBillProdects(userID, bill_id!).listen((event) {
           bill_prodects_list.value = event.docs;
           if (bill_prodects_list.isEmpty) {
             statusreqest = Statusreqest.notAdded;
@@ -394,8 +394,8 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
 
   @override
   saveBillData() async {
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
 
     if (!is_saved) {
       statusreqest = Statusreqest.loading;
@@ -406,11 +406,11 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
         if (bill_id != null && bill_prodects_list.isNotEmpty) {
           is_saved = true;
           generateRandomInvoiceId(supplier_name!);
-          await addProductListToFirebase(user_email, bill_id!);
+          await addProductListToFirebase(userID, bill_id!);
           totalPriceAccount();
           totalProfits();
           supplierBillData.updateSupplierBill(
-            user_email,
+            userID,
             bill_id!,
             bill_no!,
             total_product_price,
@@ -435,7 +435,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
       totalPriceAccount();
       totalProfits();
       supplierBillData.updateSupplierBill(
-        user_email,
+        userID,
         bill_id!,
         bill_no!,
         total_product_price,
@@ -447,7 +447,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
 
   @override
   Future<void> addProductListToFirebase(
-    String user_email,
+    String userID,
     String bill_id,
   ) async {
     for (var product in bill_prodects_list) {
@@ -470,7 +470,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
         total_product_price,
         total_product_profits,
         product_profits,
-        user_email,
+        userID,
         bill_id,
       );
     }
@@ -485,15 +485,15 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   createPdf() async {
     statusreqest = Statusreqest.loading;
     update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     await addSupplierBill();
     if (bill_id != null) {
       try {
         if (!is_saved) {
           totalPriceAccount();
           totalProfits();
-          await addProductListToFirebase(user_email, bill_id!);
+          await addProductListToFirebase(userID, bill_id!);
           is_saved = true;
           update();
         } else {
@@ -572,15 +572,15 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
 
   @override
   addDept() async {
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
       if (supplier_name != null && supplier_id != null) {
         await supplierDeptsData.addDepts(
           supplier_id!,
           supplier_name!,
           supplier_city!,
-          user_email,
+          userID,
           total_product_price,
           bill_add_date,
         );
@@ -598,8 +598,8 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
 
   @override
   addBillToDepts() async {
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
       if (supplier_name != null && supplier_id != null) {
         await supplierDeptsData.addBillToDepts(
@@ -607,7 +607,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
           bill_id!,
           supplier_id!,
           bill_payment_type!,
-          user_email,
+          userID,
           total_product_price,
           bill_add_date,
         );

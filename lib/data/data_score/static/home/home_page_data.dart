@@ -34,7 +34,7 @@ List<HomeModle> home_page_data = [
   HomeModle(AppImages.products, AppRoutes.home_page, "بضائع"),
 
   HomeModle(AppImages.reports, AppRoutes.home_page, "تقارير"),
-  HomeModle(AppImages.expenses, AppRoutes.home_page, "مصاريف"),
+  HomeModle(AppImages.expenses, AppRoutes.expenses_page, "مصاريف"),
   HomeModle(AppImages.withdrawal, AppRoutes.home_page, "سحب"),
   HomeModle(AppImages.users, AppRoutes.home_page, "مستخدمون"),
 ];

@@ -5,28 +5,28 @@ class CategoreysData {
 
   // categorey
 
-  addCategoreys(String categorey_name, String user_email) {
+  addCategoreys(String categorey_name, String userID) {
     _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("categoreys")
         .doc(categorey_name)
         .set({"categorey_name": categorey_name});
   }
 
-    deleteCategorey(String categorey_name, String user_email) {
+    deleteCategorey(String categorey_name, String userID) {
     _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("categoreys")
         .doc(categorey_name)
         .delete();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getCategoreys(String user_email) {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getCategoreys(String userID) {
     return _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("categoreys")
         .snapshots();
   }
@@ -34,12 +34,12 @@ class CategoreysData {
 
   addCategorey_type(
     String categorey_name,
-    String user_email,
+    String userID,
     String categorey_type,
   ) {
     _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("categoreys_type")
         .doc(categorey_type)
         .set({
@@ -48,23 +48,23 @@ class CategoreysData {
         });
   }
   deleteCategorey_type(
-    String user_email,
+    String userID,
     String categorey_type,
   ) {
     _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("categoreys_type")
         .doc(categorey_type)
         .delete();
   }
   Stream<QuerySnapshot<Map<String, dynamic>>> getCategoreysType(
-    String user_email,
+    String userID,
     String categorey_name,
   ) {
     return _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("categoreys_type")
         .where("categorey_name", isEqualTo: categorey_name)
         .snapshots();

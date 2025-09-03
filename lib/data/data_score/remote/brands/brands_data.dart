@@ -6,13 +6,13 @@ class BrandsData {
   // add brands
   addBrand(
     String categorey_name,
-    String user_email,
+    String userID,
     String categorey_type,
     String brand_name,
   ) {
     _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("brands")
         .doc(brand_name)
         .set({
@@ -22,23 +22,23 @@ class BrandsData {
         });
   }
 
-  deleteBramd(String user_email, String brand_name) {
+  deleteBramd(String userID, String brand_name) {
     _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("brands")
         .doc(brand_name)
         .delete();
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getBrands(
-    String user_email,
+    String userID,
     String categorey_type,
     String categorey_name,
   ) {
     return _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("brands")
         .where("categorey_name", isEqualTo: categorey_name)
         .where("categorey_type", isEqualTo: categorey_type)
@@ -47,7 +47,7 @@ class BrandsData {
 
   addBrandsType(
     String categorey_name,
-    String user_email,
+    String userID,
     String categorey_type,
     String brand_name,
     String product_size,
@@ -58,7 +58,7 @@ class BrandsData {
     String product_name = "${categorey_type} ${brand_name} ${product_size}";
     _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("brands_type")
         .doc(product_name)
         .set({
@@ -73,7 +73,7 @@ class BrandsData {
   }
 
   editBrandsType(
-    String user_email,
+    String userID,
     String product_buing_price,
     String product_sales_price,
     String product_size,
@@ -81,7 +81,7 @@ class BrandsData {
   ) {
     _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("brands_type")
         .doc(product_name)
         .update({
@@ -91,24 +91,24 @@ class BrandsData {
         });
   }
 
-  deleteBrandsType(String user_email, String product_name) {
+  deleteBrandsType(String userID, String product_name) {
     _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("brands_type")
         .doc(product_name)
         .delete();
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getBrandsType(
-    String user_email,
+    String userID,
     String categorey_type,
     String categorey_name,
     String brand_name,
   ) {
     return _firestore
         .collection("users")
-        .doc(user_email)
+        .doc(userID)
         .collection("brands_type")
         .where("categorey_name", isEqualTo: categorey_name)
         .where("brand_name", isEqualTo: brand_name)

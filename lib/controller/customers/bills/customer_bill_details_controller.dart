@@ -67,7 +67,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
   var productList = [].obs;
   late Uint8List pdfBytes;
   BillModel? billModel;
-  String? user_email;
+  String? userID;
   String? bill_id;
   double? total_price;
   double? total_earn;
@@ -88,7 +88,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
     try {
       statusreqest = Statusreqest.loading;
       update();
-      await customerBillData.getBillById(user_email!, bill_id!).then((value) {
+      await customerBillData.getBillById(userID!, bill_id!).then((value) {
         billModel = BillModel.formatJson(value);
         total_earn = billModel!.total_earn;
         total_price = billModel!.total_price;
@@ -106,7 +106,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
     try {
       statusreqest = Statusreqest.loading;
       update();
-      customerBillData.getBillProdects(user_email!, bill_id!).listen((event) {
+      customerBillData.getBillProdects(userID!, bill_id!).listen((event) {
         productList.value = event.docs;
         if (productList.isEmpty) {
           statusreqest = Statusreqest.noData;
@@ -166,7 +166,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
   Future getProductById(String product_id) async {
     try {
       await customerBillData
-          .getBillProdectBayId(user_email!, bill_id!, product_id)
+          .getBillProdectBayId(userID!, bill_id!, product_id)
           .then((value) {
             product_numper = value["product_number"];
             product_price = value["product_price"];
@@ -221,7 +221,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
         product_id,
         product_number,
         product_price! * product_number,
-        user_email!,
+        userID!,
         bill_id!,
       );
 
@@ -254,7 +254,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
     try {
       statusreqest = Statusreqest.loading;
       update();
-      await customerBillData.deleteProduct(bill_id!, product_id, user_email!);
+      await customerBillData.deleteProduct(bill_id!, product_id, userID!);
       await updateBillData();
       statusreqest = Statusreqest.success;
     } catch (e) {
@@ -271,7 +271,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
       totalPriceAccount();
       totalProfits();
       await customerBillData.updateCustomerBill(
-        user_email!,
+        userID!,
         bill_id!,
         billModel!.bill_no!,
         total_price!,
@@ -287,7 +287,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
 
   @override
   initData() async {
-    user_email = services.sharedPreferences.getString(AppShared.user_email);
+    userID = services.sharedPreferences.getString(AppShared.userID);
     bill_id = Get.arguments["bill_id"];
   }
 
@@ -334,7 +334,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
       total_earn = total_earn! - discount;
       total_price = total_price! - discount;
       await customerBillData.update_total_price(
-        user_email!,
+        userID!,
         bill_id!,
         total_price!,
         total_earn!,
@@ -388,7 +388,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
     try {
       statusreqest = Statusreqest.loading;
       update();
-      await customerBillData.deleteCustomerBill(user_email!, bill_id!);
+      await customerBillData.deleteCustomerBill(userID!, bill_id!);
 
       await deleteBillFromDepts();
       statusreqest = Statusreqest.success;
@@ -452,15 +452,15 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
   @override
   updateBillInDepts(double total_price) {
     try {
-      final String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
+      final String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
       final String customer_id = billModel!.customer_id!;
       final String bill_id = billModel!.bill_id!;
 
       customerDeptsData.updateTotalPriceInBill(
         bill_id,
         customer_id,
-        user_email,
+        userID,
         total_price,
       );
     } catch (e) {
@@ -472,11 +472,11 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
   @override
   deleteBillFromDepts() {
     try {
-      final String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
+      final String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
       final String customer_id = billModel!.customer_id!;
       final String bill_id = billModel!.bill_id!;
-      customerDeptsData.delteBillFromDepts(bill_id, customer_id, user_email);
+      customerDeptsData.delteBillFromDepts(bill_id, customer_id, userID);
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();
@@ -486,9 +486,9 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
   @override
   addDiscount(double discount) {
     try {
-      final String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
-      customerBillData.addDiscount(bill_id!, user_email, discount);
+      final String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
+      customerBillData.addDiscount(bill_id!, userID, discount);
       discount_amount = discount + discount_amount;
     } catch (e) {
       statusreqest = Statusreqest.faliure;
@@ -498,15 +498,15 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
 
   @override
   addBillToDepts() async {
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
       await customerDeptsData.addBillToDepts(
         billModel!.bill_no!,
         bill_id!,
         billModel!.customer_id!,
         billModel!.payment_type!,
-        user_email,
+        userID,
         billModel!.total_price!,
         billModel!.bill_date!,
       );
@@ -521,14 +521,14 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
 
   @override
   addDept() async {
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
       await customerDeptsData.addDepts(
         billModel!.customer_id!,
         billModel!.customer_name!,
         billModel!.customer_city!,
-        user_email,
+        userID,
         billModel!.total_price!,
         billModel!.bill_date!,
       );
@@ -545,9 +545,9 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
     statusreqest = Statusreqest.loading;
     update();
     try {
-      final String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
-      customerBillData.updatePaymentType(user_email, bill_id!, paymentType);
+      final String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
+      customerBillData.updatePaymentType(userID, bill_id!, paymentType);
       if (paymentType != "monetary") {
         addDept();
         addBillToDepts();

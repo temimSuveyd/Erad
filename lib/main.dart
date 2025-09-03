@@ -19,8 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      // getPages: getPages,
-      home: ExpensesPage(),
+      getPages: getPages,
       locale: Locale("ar"),
       theme: ThemeData(fontFamily: GoogleFonts.cairo().fontFamily),
       debugShowCheckedModeBanner: false,

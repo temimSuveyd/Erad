@@ -1,18 +1,28 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ExpensesCardModel {
   DateTime? date;
   String? title;
-  String? dateType;
-
+  DateTime? repeatDate;
   double? amount;
   bool? isRepeatExpense;
+  String? id;
 
-  ExpensesCardModel(this.amount, this.date, this.isRepeatExpense, this.title);
+  ExpensesCardModel(
+    this.amount,
+    this.date,
+    this.isRepeatExpense,
+    this.title,
+    this.repeatDate,
+    this.id,
+  );
 
-  ExpensesCardModel.formatJson(dynamic queryToJson) {
+  ExpensesCardModel.formatJson(QueryDocumentSnapshot queryToJson) {
     date = queryToJson["date"].toDate();
     title = queryToJson["title"];
     amount = queryToJson["amount"];
     isRepeatExpense = queryToJson["is_repeat_expense"];
-    dateType = queryToJson["date_type"];
+    repeatDate = queryToJson["repeat_date"].toDate();
+    id = queryToJson.id;
   }
 }

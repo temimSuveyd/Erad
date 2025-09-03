@@ -1,9 +1,11 @@
+import 'package:erad/controller/expenses/expenses_controller.dart';
 import 'package:erad/core/constans/colors.dart';
 import 'package:erad/data/model/expenses/expenses_card_model.dart';
 import 'package:erad/view/custom_widgets/custom_add_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class ExpensesCard extends StatelessWidget {
+class ExpensesCard extends GetView<ExpensesControllerImp> {
   const ExpensesCard({
     super.key,
     required this.expensesModel,
@@ -88,7 +90,10 @@ class ExpensesCard extends StatelessWidget {
                     const SizedBox(height: 10),
                     // Date and repeat info - make it much more visible
                     Container(
-                      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 6,
+                        horizontal: 10,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.primary.withOpacity(0.10),
                         borderRadius: BorderRadius.circular(8),
@@ -117,18 +122,20 @@ class ExpensesCard extends StatelessWidget {
                             expensesModel.isRepeatExpense!
                                 ? Icons.repeat
                                 : Icons.repeat_one,
-                            color: expensesModel.isRepeatExpense!
-                                ? AppColors.green
-                                : AppColors.primary,
+                            color:
+                                expensesModel.isRepeatExpense!
+                                    ? AppColors.green
+                                    : AppColors.primary,
                             size: 18,
                           ),
                           const SizedBox(width: 6),
                           Text(
                             repeatText,
                             style: TextStyle(
-                              color: expensesModel.isRepeatExpense!
-                                  ? AppColors.green
-                                  : AppColors.primary,
+                              color:
+                                  expensesModel.isRepeatExpense!
+                                      ? AppColors.green
+                                      : AppColors.primary,
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 0.2,
@@ -153,14 +160,23 @@ class ExpensesCard extends StatelessWidget {
                     Custom_button(
                       icon: Icons.delete,
                       title: "حذف",
-                      onPressed: () {},
+                      onPressed:
+                          () => controller.showDeleteDialog(expensesModel.id!),
                       color: AppColors.primary,
                     ),
                     const SizedBox(width: 8),
                     Custom_button(
                       icon: Icons.edit,
                       title: "تعديل",
-                      onPressed: () {},
+                      onPressed:
+                          () => controller.showEditDialog(
+                            expensesModel.title ?? "",
+                            expensesModel.amount ?? 0.0,
+                            expensesModel.date ?? DateTime.now(),
+                            expensesModel.isRepeatExpense ?? false,
+                            expensesModel.repeatDate ?? DateTime.now(),
+                            expensesModel.id ?? "",
+                          ),
                       color: AppColors.primary,
                     ),
                   ],

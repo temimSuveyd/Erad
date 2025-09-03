@@ -58,8 +58,10 @@ class TotalexpensesContainer extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 18),
-                
-                  SetExpensesDateRangeButton(),
+
+                  SetExpensesDateRangeButton(
+                    onPressed: () => controller.setDateRange(),
+                  ),
                   const SizedBox(height: 28),
                   // Toplam harcama miktarı
                   Container(
@@ -85,7 +87,7 @@ class TotalexpensesContainer extends StatelessWidget {
                         ),
                         const SizedBox(width: 10),
                         Text(
-                          "₺ 10.400,00",
+                        controller.expensesTotalAmount.toString(),
                           style: const TextStyle(
                             fontSize: 36,
                             fontWeight: FontWeight.bold,
@@ -118,4 +120,3 @@ class TotalexpensesContainer extends StatelessWidget {
     );
   }
 }
-

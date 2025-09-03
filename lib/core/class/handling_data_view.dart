@@ -24,9 +24,7 @@ class HandlingDataView extends StatelessWidget {
           width: 200,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-LottieBuilder.asset(AppImages.loadingAnimation),
-            ],
+            children: [LottieBuilder.asset(AppImages.loadingAnimation)],
           ),
         ),
       );
@@ -35,29 +33,27 @@ LottieBuilder.asset(AppImages.loadingAnimation),
       return Center(
         child: SizedBox(
           width: 300,
-          height: 300,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
             spacing: 20,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              SizedBox(
-                height: 100,
-                width: 100,
-                child: Image.asset(AppImages.faliure),
-              ),
+              LottieBuilder.asset(AppImages.faliure, height: 170),
               Text(
-                "حدث خطأ ، يرجى المحاولة مرة أخرى",
+                "هناك خط غير معروف من فضلك حاول مرة أخرى",
+                textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
                   color: AppColors.primary,
+
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              Custom_button( color: AppColors.primary,
-                icon: Icons.refresh,
+
+              Custom_button(
+                icon: Icons.refresh_rounded,
                 title: "حاول ثانية",
                 onPressed: () => onPressed(),
+                color: AppColors.primary,
               ),
             ],
           ),
@@ -74,11 +70,11 @@ LottieBuilder.asset(AppImages.loadingAnimation),
             crossAxisAlignment: CrossAxisAlignment.center,
             spacing: 20,
             children: [
-              SizedBox(
-                height: 100,
-                width: 100,
-                child: Image.asset(AppImages.noData),
-              ),
+              // SizedBox(
+              //   height: 100,
+              //   width: 100,
+              //   child: Image.asset(AppImages.noData),
+              // ),
               Text(
                 "لا بيانات",
                 style: TextStyle(
@@ -101,7 +97,7 @@ LottieBuilder.asset(AppImages.loadingAnimation),
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             spacing: 20,
-      
+
             children: [
               SizedBox(
                 height: 100,
@@ -116,7 +112,8 @@ LottieBuilder.asset(AppImages.loadingAnimation),
                   color: AppColors.primary,
                 ),
               ),
-              Custom_button( color: AppColors.primary,
+              Custom_button(
+                color: AppColors.primary,
                 icon: Icons.refresh,
                 title: "حاول ثانية",
                 onPressed: () => onPressed(),

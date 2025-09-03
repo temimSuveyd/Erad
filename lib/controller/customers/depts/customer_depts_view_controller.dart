@@ -31,9 +31,9 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
     statusreqest = Statusreqest.loading;
     update();
     try {
-      final String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
-      _customerDeptsData.getAllDepts(user_email).listen((event) {
+      final String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
+      _customerDeptsData.getAllDepts(userID).listen((event) {
         customersDeptsList.value = event.docs;
 
         if (customersDeptsList.isEmpty) {

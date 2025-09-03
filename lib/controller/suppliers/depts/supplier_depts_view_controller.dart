@@ -31,9 +31,9 @@ class SupplierDeptsViewControllerImp extends SupplierDeptsViewController {
     statusreqest = Statusreqest.loading;
     update();
     try {
-      final String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
-      _supplierDeptsData.getAllDepts(user_email).listen((event) {
+      final String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
+      _supplierDeptsData.getAllDepts(userID).listen((event) {
         supplierDeptsList.value = event.docs;
         if (supplierDeptsList.isEmpty) {
           statusreqest = Statusreqest.noData;

@@ -82,7 +82,7 @@ class Account_Square extends StatelessWidget {
                 
                     SizedBox(height: 20),
                     Custom_login_textfield(
-                      hintText: "أدخل اسمك",
+                      hintText: "أدخل بريدك الإلكتروني",
                       controller: controller.user_email,
                       validator: (p0) {
                         return validatorInput(p0!, 4, 40, "email");

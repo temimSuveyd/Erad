@@ -31,10 +31,10 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
   getCustomersBills() {
     statusreqest = Statusreqest.loading;
     update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      customerBillData.getAllBils(user_email).listen((event) {
+      customerBillData.getAllBils(userID).listen((event) {
         customer_bills_list.value = event.docs;
         if (customer_bills_list.isEmpty) {
           statusreqest = Statusreqest.noData;
@@ -162,12 +162,12 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
   @override
   Future updateBillStaus(String bill_status, String bill_id) async {
     try {
-      String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
+      String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
       statusreqest = Statusreqest.loading;
       update();
 
-      await customerBillData.updateBillStatus(user_email, bill_id, bill_status);
+      await customerBillData.updateBillStatus(userID, bill_id, bill_status);
       statusreqest = Statusreqest.success;
     } catch (e) {
       statusreqest = Statusreqest.success;

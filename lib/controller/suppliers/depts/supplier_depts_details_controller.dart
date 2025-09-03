@@ -49,9 +49,9 @@ class SupplierDeptsDetailsControllerImpl extends SupplierDeptsDetailsController 
     statusreqest = Statusreqest.loading;
     update();
     try {
-      final String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
-      _supplierDeptsData.getBillById(user_email, deptId!).listen((event) {
+      final String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
+      _supplierDeptsData.getBillById(userID, deptId!).listen((event) {
         deptsList.value = event.docs;
         calculatesAmountOfRemainingDebt();
         if (deptsList.isEmpty) {
@@ -72,9 +72,9 @@ class SupplierDeptsDetailsControllerImpl extends SupplierDeptsDetailsController 
     statusreqest = Statusreqest.loading;
     update();
     try {
-      final String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
-      _supplierDeptsData.getAllPayments(user_email, deptId!).listen((event) {
+      final String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
+      _supplierDeptsData.getAllPayments(userID, deptId!).listen((event) {
         paymentsList.value = event.docs;
         if (paymentsList.isEmpty) {
           statusreqest = Statusreqest.noData;
@@ -94,9 +94,9 @@ class SupplierDeptsDetailsControllerImpl extends SupplierDeptsDetailsController 
     statusreqest = Statusreqest.loading;
     update();
     try {
-      final String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
-      _supplierDeptsData.getDeptDetails(user_email, deptId!).then((value) {
+      final String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
+      _supplierDeptsData.getDeptDetails(userID, deptId!).then((value) {
         if (value.data()!.isEmpty) {
           statusreqest = Statusreqest.noData;
         } else {
@@ -178,15 +178,15 @@ backgroundColor: AppColors.backgroundColor,
     update();
 
     try {
-      final String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
+      final String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
 
       try {
         final double total_price = double.parse(addPaymentController.text);
         if (remainingDebtAamount - total_price >= 0) {
           _supplierDeptsData.addPaymentToDepts(
             deptId!,
-            user_email,
+            userID,
             total_price,
             paymentDate,
           );
@@ -246,12 +246,12 @@ backgroundColor: AppColors.backgroundColor,
 
   @override
   updateDeptData() {
-    final String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    final String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
       _supplierDeptsData.updateTotalDept(
         deptId!,
-        user_email,
+        userID,
         remainingDebtAamount,
       );
     } catch (e) {
@@ -285,9 +285,9 @@ backgroundColor: AppColors.backgroundColor,
     statusreqest = Statusreqest.loading;
     update();
     try {
-      final String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
-      _supplierDeptsData.delteDepts(deptId!, user_email);
+      final String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
+      _supplierDeptsData.delteDepts(deptId!, userID);
       statusreqest = Statusreqest.success;
       update();
     } catch (e) {
@@ -321,9 +321,9 @@ backgroundColor: AppColors.backgroundColor,
     update();
 
     try {
-      final String user_email =
-          services.sharedPreferences.getString(AppShared.user_email)!;
-      _supplierDeptsData.deltePaymentFromDepts(id, deptId!, user_email);
+      final String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
+      _supplierDeptsData.deltePaymentFromDepts(id, deptId!, userID);
       getBills();
       statusreqest = Statusreqest.success;
       update();

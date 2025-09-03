@@ -48,13 +48,13 @@ class BrandsControllerImp extends BrandsController {
   add_categorey() {
     statusreqest = Statusreqest.loading;
     update();
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     String brand_name = _brand_name.text;
     try {
       brandsData.addBrand(
         categorey_name!,
-        user_email,
+        userID,
         categorey_type!,
         brand_name,
       );
@@ -72,11 +72,11 @@ class BrandsControllerImp extends BrandsController {
     statusreqest = Statusreqest.loading;
     update();
 
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
 
     try {
-      brandsData.getBrands(user_email, categorey_type!, categorey_name!).listen(
+      brandsData.getBrands(userID, categorey_type!, categorey_name!).listen(
         (event) {
           brandsList.value = event.docs;
           if (brandsList.isEmpty) {
@@ -138,10 +138,10 @@ class BrandsControllerImp extends BrandsController {
   @override
   // ignore: non_constant_identifier_names
   delete_brand(String id) {
-    String user_email =
-        services.sharedPreferences.getString(AppShared.user_email)!;
+    String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      brandsData.deleteBramd(user_email, id);
+      brandsData.deleteBramd(userID, id);
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();

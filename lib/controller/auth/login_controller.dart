@@ -53,7 +53,7 @@ class LoginControllerImp extends LoginController {
     String email = user_email.text;
     String password = user_password.text;
     final shared = services.sharedPreferences;
-    shared.setString(AppShared.user_email, email);
+    shared.setString(AppShared.userID, email);
     shared.setString(AppShared.user_password, password);
   }
 
