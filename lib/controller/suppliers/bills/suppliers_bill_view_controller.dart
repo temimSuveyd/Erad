@@ -10,10 +10,10 @@ import 'package:erad/data/data_score/remote/Supplier/Supplier_bill_data.dart';
 abstract class SuppliersBillViewController extends GetxController {
   getSuppliersBills();
   searchForBillsBaySupplierName();
-  searchForBillBayCity(String city_name);
+  searchForBillBayCity(String cityName);
   searchByDate(DateTime searchStartDate, DateTime searchEndDate);
-  goToDetailsPage(String bill_id);
-  updateBillStaus(String bill_status, String bill_id);
+  goToDetailsPage(String billId);
+  updateBillStaus(String billStatus, String billId);
 }
 
 class SuppliersBillViewControllerImp extends SuppliersBillViewController {
@@ -58,12 +58,12 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
       supplier_bills_list.value =
           supplier_bills_list.where((doc) {
             final data = doc.data();
-            final supplier_name =
+            final supplierName =
                 data["supplier_name"].toString().toLowerCase();
 
-            final bill_id = data["bill_no"].toString().toLowerCase();
-            if (supplier_name.contains(search.toLowerCase()) ||
-                bill_id.contains(search.toLowerCase())) {
+            final billId = data["bill_no"].toString().toLowerCase();
+            if (supplierName.contains(search.toLowerCase()) ||
+                billId.contains(search.toLowerCase())) {
               return true;
             } else {
               return false;
@@ -77,20 +77,20 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
   }
 
   @override
-  searchForBillBayCity(String city_name) {
-    if (city_name.isEmpty || city_name == "جميع المدن") {
+  searchForBillBayCity(String cityName) {
+    if (cityName.isEmpty || cityName == "جميع المدن") {
       getSuppliersBills();
     } else {
       supplier_bills_list.value =
           supplier_bills_list.where((doc) {
             final data = doc.data();
             final fileView = data["supplier_city"].toLowerCase();
-            return fileView.contains(city_name.toLowerCase());
+            return fileView.contains(cityName.toLowerCase());
           }).toList();
       if (supplier_bills_list.isEmpty) {
         statusreqest = Statusreqest.noData;
       }
-      selectedSupplierCity = city_name;
+      selectedSupplierCity = cityName;
     }
     update();
   }
@@ -132,22 +132,22 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
   }
 
   @override
-  goToDetailsPage(String bill_id) {
+  goToDetailsPage(String billId) {
     Get.toNamed(
       AppRoutes.supplier_bill_details_page,
-      arguments: {"bill_id": bill_id},
+      arguments: {"bill_id": billId},
     );
   }
 
   @override
-  Future updateBillStaus(String bill_status, String bill_id) async {
+  Future updateBillStaus(String billStatus, String billId) async {
     try {
       String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
       statusreqest = Statusreqest.loading;
       update();
 
-      await supplierBillData.updateBillStatus(userID, bill_id, bill_status);
+      await supplierBillData.updateBillStatus(userID, billId, billStatus);
       statusreqest = Statusreqest.success;
     } catch (e) {
       statusreqest = Statusreqest.success;

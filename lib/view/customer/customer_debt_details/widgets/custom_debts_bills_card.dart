@@ -10,7 +10,7 @@ import 'package:get/state_manager.dart';
 class Custom_debts_bills_card
     extends GetView<CustomerDeptsDetailsControllerImp> {
   final DeptBillsModel deptsBillsModel;
-  Custom_debts_bills_card({super.key, required this.deptsBillsModel});
+  const Custom_debts_bills_card({super.key, required this.deptsBillsModel});
 
   @override
   Widget build(BuildContext context) {

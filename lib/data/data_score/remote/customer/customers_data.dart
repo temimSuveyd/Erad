@@ -1,38 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CustomersData {
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  addCustomer(String userID, String customer_name, String customer_city) {
+  void addCustomer(String userID, String customerName, String customerCity) {
     _firestore.collection("users").doc(userID).collection("customers").add({
-      "customer_name": customer_name,
-      "customer_city": customer_city,
+      "customer_name": customerName,
+      "customer_city": customerCity,
     });
   }
 
-  deleteCustomer(String userID, String customer_id) {
+  void deleteCustomer(String userID, String customerId) {
     _firestore
         .collection("users")
         .doc(userID)
         .collection("customers")
-        .doc(customer_id)
+        .doc(customerId)
         .delete();
   }
 
-  editCustomer(
+  void editCustomer(
     String userID,
-    String customer_name,
-    String customer_city,
-    String customer_id,
+    String customerName,
+    String customerCity,
+    String customerId,
   ) {
     _firestore
         .collection("users")
         .doc(userID)
         .collection("customers")
-        .doc(customer_id)
+        .doc(customerId)
         .update({
-          "customer_name": customer_name,
-          "customer_city": customer_city,
+          "customer_name": customerName,
+          "customer_city": customerCity,
         });
   }
 
@@ -45,11 +45,11 @@ class CustomersData {
   }
 
 
-Stream<DocumentSnapshot<Map<String, dynamic>>> getCustomerByID(String userID,String customer_id) {
+Stream<DocumentSnapshot<Map<String, dynamic>>> getCustomerByID(String userID,String customerId) {
     return _firestore
         .collection("users")
         .doc(userID)
-        .collection("customers").doc(customer_id)
+        .collection("customers").doc(customerId)
         .snapshots();
   }
 }

@@ -8,12 +8,12 @@ import '../../../supplier/bills/suppliers_bills_add/widgets/custom_amout_dropDow
 // ignore: non_constant_identifier_names
 Future<dynamic> custom_add_brands_type_dialog(
   void Function() onConfirm,
-  TextEditingController buying_controller,
-  TextEditingController sales_controller,
-  TextEditingController size_controller,
-  String hintText_sales,
-  String hintText_buying,
-  String hintText_size,
+  TextEditingController buyingController,
+  TextEditingController salesController,
+  TextEditingController sizeController,
+  String hinttextSales,
+  String hinttextBuying,
+  String hinttextSize,
   Key? key,
 ) {
   return Get.defaultDialog(
@@ -33,19 +33,19 @@ Future<dynamic> custom_add_brands_type_dialog(
               children: [
                 Csutom_count_textField(
                   suffixIcon: Icons.attach_money_outlined,
-                  hintText: hintText_buying,
-                  controller: buying_controller,
+                  hintText: hinttextBuying,
+                  controller: buyingController,
                 ),
                 Csutom_count_textField(
                   suffixIcon: Icons.attach_money_outlined,
-                  hintText: hintText_sales,
-                  controller: sales_controller,
+                  hintText: hinttextSales,
+                  controller: salesController,
                 ),
                 Csutom_count_textField(
                   suffixIcon: Icons.scale_outlined,
 
-                  hintText: hintText_size,
-                  controller: size_controller,
+                  hintText: hinttextSize,
+                  controller: sizeController,
                   // validator: (p0) {
                   // return validatorInput(p0, 1, 100, "text");
                   // },
@@ -61,14 +61,14 @@ Future<dynamic> custom_add_brands_type_dialog(
     buttonColor: AppColors.primary,
     onConfirm: () {
       onConfirm();
-      buying_controller.clear();
-      sales_controller.clear();
-      size_controller.clear();
+      buyingController.clear();
+      salesController.clear();
+      sizeController.clear();
     },
     onCancel: () {
-      buying_controller.clear();
-      sales_controller.clear();
-      size_controller.clear();
+      buyingController.clear();
+      salesController.clear();
+      sizeController.clear();
     },
   );
 }

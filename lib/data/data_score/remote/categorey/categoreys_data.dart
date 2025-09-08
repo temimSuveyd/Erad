@@ -1,25 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CategoreysData {
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // categorey
 
-  addCategoreys(String categorey_name, String userID) {
+  void addCategoreys(String categoreyName, String userID) {
     _firestore
         .collection("users")
         .doc(userID)
         .collection("categoreys")
-        .doc(categorey_name)
-        .set({"categorey_name": categorey_name});
+        .doc(categoreyName)
+        .set({"categorey_name": categoreyName});
   }
 
-    deleteCategorey(String categorey_name, String userID) {
+    void deleteCategorey(String categoreyName, String userID) {
     _firestore
         .collection("users")
         .doc(userID)
         .collection("categoreys")
-        .doc(categorey_name)
+        .doc(categoreyName)
         .delete();
   }
 
@@ -32,41 +32,41 @@ class CategoreysData {
   }
 
 
-  addCategorey_type(
-    String categorey_name,
+  void addCategorey_type(
+    String categoreyName,
     String userID,
-    String categorey_type,
+    String categoreyType,
   ) {
     _firestore
         .collection("users")
         .doc(userID)
         .collection("categoreys_type")
-        .doc(categorey_type)
+        .doc(categoreyType)
         .set({
-          "categorey_type": categorey_type,
-          "categorey_name": categorey_name,
+          "categorey_type": categoreyType,
+          "categorey_name": categoreyName,
         });
   }
-  deleteCategorey_type(
+  void deleteCategorey_type(
     String userID,
-    String categorey_type,
+    String categoreyType,
   ) {
     _firestore
         .collection("users")
         .doc(userID)
         .collection("categoreys_type")
-        .doc(categorey_type)
+        .doc(categoreyType)
         .delete();
   }
   Stream<QuerySnapshot<Map<String, dynamic>>> getCategoreysType(
     String userID,
-    String categorey_name,
+    String categoreyName,
   ) {
     return _firestore
         .collection("users")
         .doc(userID)
         .collection("categoreys_type")
-        .where("categorey_name", isEqualTo: categorey_name)
+        .where("categorey_name", isEqualTo: categoreyName)
         .snapshots();
   }
 }

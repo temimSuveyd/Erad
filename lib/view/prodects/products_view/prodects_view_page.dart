@@ -25,7 +25,9 @@ class productsViewPage extends StatelessWidget {
             SliverToBoxAdapter(
               child: Row(
                 spacing: 20,
-                children: [Custom_textfield(hintText: 'اسم الفئة', suffixIcon: Icons.add, validator: (String?validator ) {  }, controller: null, onChanged: (String ) {  },),   Custom_dropDownButton(
+                children: [Custom_textfield(hintText: 'اسم الفئة', suffixIcon: Icons.add, validator: (String?validator ) {
+                  return null;
+                  }, controller: null, onChanged: (String ) {  },),   Custom_dropDownButton(
               value: "value" ,
               onChanged:(value) {
                 

@@ -7,7 +7,7 @@ import 'package:erad/view/custom_widgets/custom_text_field.dart';
 
 Future<dynamic> custom_add_product_to_bill_dialog(TextEditingController controller,List<DropdownMenuItem<String>>? items,dynamic Function(String) onProductChange,void Function() onConfirm,
 
-String dropDown_hint,String textfield_hint) {
+String dropdownHint,String textfieldHint) {
     return Get.defaultDialog(
       buttonColor: AppColors.primary,
       backgroundColor: AppColors.backgroundColor,
@@ -33,13 +33,15 @@ String dropDown_hint,String textfield_hint) {
             Custom_dropDownButton(
               items: items,
               onChanged: (value) => onProductChange(value),
-              hint: dropDown_hint,
+              hint: dropdownHint,
               value: "",
             ),
             Custom_textfield(
-              hintText: textfield_hint,
+              hintText: textfieldHint,
               suffixIcon: Icons.add_box_rounded,
-              validator: (p0) {},
+              validator: (p0) {
+                return null;
+              },
               controller: controller,
               onChanged: (p0) {},
             ),

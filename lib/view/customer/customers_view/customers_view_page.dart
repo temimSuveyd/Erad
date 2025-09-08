@@ -29,7 +29,9 @@ class CustomersViewPage extends GetView<CustomersControllerImp> {
                   Custom_textfield(
                     hintText: 'ابحث عن العملاء',
                     suffixIcon: Icons.search,
-                    validator: (String? validator) {},
+                    validator: (String? validator) {
+                      return null;
+                    },
                     controller: controller.search_controller,
                     onChanged: (p0) {
                       controller.searchForCustomersBayName();

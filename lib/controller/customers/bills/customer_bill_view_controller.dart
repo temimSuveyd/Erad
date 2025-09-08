@@ -10,10 +10,10 @@ import 'package:erad/data/data_score/remote/customer/customer_bill_data.dart';
 abstract class CustomerBillViewController extends GetxController {
   getCustomersBills();
   searchForBillsBayCustomerName();
-  searchForBillBayCity(String city_name);
+  searchForBillBayCity(String cityName);
   searchByDate(DateTime searchStartDate, DateTime searchEndDate);
-  goToDetailsPage(String bill_id);
-  updateBillStaus(String bill_status, String bill_id);
+  goToDetailsPage(String billId);
+  updateBillStaus(String billStatus, String billId);
 }
 
 class CustomerBillViewControllerImp extends CustomerBillViewController {
@@ -58,12 +58,12 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
       customer_bills_list.value =
           customer_bills_list.where((doc) {
             final data = doc.data();
-            final customer_name =
+            final customerName =
                 data["customer_name"].toString().toLowerCase();
 
-            final bill_id = data["bill_no"].toString().toLowerCase();
-            if (customer_name.contains(search.toLowerCase()) ||
-                bill_id.contains(search.toLowerCase())) {
+            final billId = data["bill_no"].toString().toLowerCase();
+            if (customerName.contains(search.toLowerCase()) ||
+                billId.contains(search.toLowerCase())) {
               return true;
             } else {
               return false;
@@ -77,20 +77,20 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
   }
 
   @override
-  searchForBillBayCity(String city_name) {
-    if (city_name.isEmpty || city_name == "جميع المدن") {
+  searchForBillBayCity(String cityName) {
+    if (cityName.isEmpty || cityName == "جميع المدن") {
       getCustomersBills();
     } else {
       customer_bills_list.value =
           customer_bills_list.where((doc) {
             final data = doc.data();
             final fileView = data["customer_city"].toLowerCase();
-            return fileView.contains(city_name.toLowerCase());
+            return fileView.contains(cityName.toLowerCase());
           }).toList();
       if (customer_bills_list.isEmpty) {
         statusreqest = Statusreqest.noData;
       }
-      selectedCustomerCity = city_name;
+      selectedCustomerCity = cityName;
     }
     update();
   }
@@ -152,22 +152,22 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
   }
 
   @override
-  goToDetailsPage(String bill_id) {
+  goToDetailsPage(String billId) {
     Get.toNamed(
       AppRoutes.customer_bills_details_page,
-      arguments: {"bill_id": bill_id},
+      arguments: {"bill_id": billId},
     );
   }
 
   @override
-  Future updateBillStaus(String bill_status, String bill_id) async {
+  Future updateBillStaus(String billStatus, String billId) async {
     try {
       String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
       statusreqest = Statusreqest.loading;
       update();
 
-      await customerBillData.updateBillStatus(userID, bill_id, bill_status);
+      await customerBillData.updateBillStatus(userID, billId, billStatus);
       statusreqest = Statusreqest.success;
     } catch (e) {
       statusreqest = Statusreqest.success;

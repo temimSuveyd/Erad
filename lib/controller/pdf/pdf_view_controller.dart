@@ -34,7 +34,7 @@ class PdfViewControllerImp extends PdfViewController {
         text: 'سويد للتجارة',
       );
     }
-} on Exception catch (e) {
+} on Exception {
 Get.defaultDialog();
 }
 

@@ -2,140 +2,140 @@ import 'package:erad/core/constans/bill_status.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SupplierDeptsData {
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Future addDepts(
-    String supplier_id,
-    String supplier_name,
-    String supplier_city,
+    String supplierId,
+    String supplierName,
+    String supplierCity,
 
     String userID,
-    double total_price,
-    DateTime bill_add_time,
+    double totalPrice,
+    DateTime billAddTime,
   ) async {
     final docRef = _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_depts")
-        .doc(supplier_id);
+        .doc(supplierId);
 
     final docSnapshot = await docRef.get();
     if (!docSnapshot.exists) {
       return await docRef.set({
         "dept_id": docSnapshot.id,
-        "total_price": total_price,
-        "bill_date": bill_add_time,
-        "supplier_name": supplier_name,
-        "supplier_city": supplier_city,
-        "supplier_id": supplier_id,
+        "total_price": totalPrice,
+        "bill_date": billAddTime,
+        "supplier_name": supplierName,
+        "supplier_city": supplierCity,
+        "supplier_id": supplierId,
       });
     }
   }
 
   Future addBillToDepts(
-    String bill_no,
-    String bill_id,
-    String supplier_id,
-    String payment_type,
+    String billNo,
+    String billId,
+    String supplierId,
+    String paymentType,
     String userID,
-    double total_price,
-    DateTime bill_add_time,
+    double totalPrice,
+    DateTime billAddTime,
   ) async {
     return await _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_depts")
-        .doc(supplier_id)
+        .doc(supplierId)
         .collection("supplier_bills")
-        .doc(bill_id)
+        .doc(billId)
         .set({
-          "bill_id": bill_id,
-          "supplier_id": supplier_id,
-          "total_price": total_price,
-          "bill_date": bill_add_time,
-          "paymet_type": payment_type,
-          "bill_no": bill_no,
+          "bill_id": billId,
+          "supplier_id": supplierId,
+          "total_price": totalPrice,
+          "bill_date": billAddTime,
+          "paymet_type": paymentType,
+          "bill_no": billNo,
           "bill_status": BillStatus.itwasFormed,
         });
   }
 
   Future addPaymentToDepts(
-    String supplier_id,
+    String supplierId,
     String userID,
-    double total_price,
-    DateTime payment_date,
+    double totalPrice,
+    DateTime paymentDate,
   ) async {
     return await _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_depts")
-        .doc(supplier_id)
+        .doc(supplierId)
         .collection("payments")
-        .add({"payment_date": payment_date, "total_price": total_price});
+        .add({"payment_date": paymentDate, "total_price": totalPrice});
   }
 
   Future delteBillFromDepts(
-    String bill_id,
-    String supplier_id,
+    String billId,
+    String supplierId,
     String userID,
   ) async {
     return await _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_depts")
-        .doc(supplier_id)
+        .doc(supplierId)
         .collection("supplier_bills")
-        .doc(bill_id)
+        .doc(billId)
         .delete();
   }
   Future deltePaymentFromDepts(
-    String payment_id,
-    String supplier_id,
+    String paymentId,
+    String supplierId,
     String userID,
   ) async {
     return await _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_depts")
-        .doc(supplier_id)
+        .doc(supplierId)
         .collection("payments")
-        .doc(payment_id)
+        .doc(paymentId)
         .delete();
   }
   Future updateTotalPriceInBill(
-    String bill_id,
-    String supplier_id,
+    String billId,
+    String supplierId,
     String userID,
-    double total_price,
+    double totalPrice,
   ) async {
     return await _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_depts")
-        .doc(supplier_id)
+        .doc(supplierId)
         .collection("supplier_bills")
-        .doc(bill_id)
-        .update({"total_price": total_price});
+        .doc(billId)
+        .update({"total_price": totalPrice});
   }
 
   Future updateTotalDept(
-    String supplier_id,
+    String supplierId,
     String userID,
-    double total_price,
+    double totalPrice,
   ) async {
     return await _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_depts")
-        .doc(supplier_id)
-        .update({"total_price": total_price});
+        .doc(supplierId)
+        .update({"total_price": totalPrice});
   }
 
-  Future delteDepts(String supplier_id, String userID) async {
+  Future delteDepts(String supplierId, String userID) async {
     final docRef = FirebaseFirestore.instance
         .collection("users")
         .doc(userID)
         .collection("supplier_depts")
-        .doc(supplier_id);
+        .doc(supplierId);
 
     final billsCollections = await docRef.collection("supplier_bills").get();
     final paymentsCollections = await docRef.collection("payments").get();
@@ -159,39 +159,39 @@ class SupplierDeptsData {
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getAllPayments(
     String userID,
-    String supplier_id,
+    String supplierId,
   ) {
     return _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_depts")
-        .doc(supplier_id)
+        .doc(supplierId)
         .collection("payments")
         .snapshots();
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getBillById(
     String userID,
-    String supplier_id,
+    String supplierId,
   ) {
     return _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_depts")
-        .doc(supplier_id)
+        .doc(supplierId)
         .collection("supplier_bills")
         .snapshots();
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getDeptDetails(
     String userID,
-    String supplier_id,
+    String supplierId,
   ) {
     return _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_depts")
-        .doc(supplier_id)
+        .doc(supplierId)
         .get();
   }
 }

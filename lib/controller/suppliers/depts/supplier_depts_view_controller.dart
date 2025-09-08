@@ -9,10 +9,10 @@ import 'package:get/get.dart';
 
 abstract class SupplierDeptsViewController extends GetxController {
   searchForBillsBaySupplierName();
-  searchForBillBayCity(String city_name);
+  searchForBillBayCity(String cityName);
   searchByDate(DateTime searchStartDate, DateTime searchEndDate);
   getDepts();
-  goTODetailsPage(String dept_id);
+  goTODetailsPage(String deptId);
 }
 
 class SupplierDeptsViewControllerImp extends SupplierDeptsViewController {
@@ -57,11 +57,11 @@ class SupplierDeptsViewControllerImp extends SupplierDeptsViewController {
       supplierDeptsList.value =
           supplierDeptsList.where((doc) {
             final data = doc.data();
-            final customer_name =
+            final customerName =
                 data["supplier_name"].toString().toLowerCase();
-            final bill_id = data["bill_no"].toString().toLowerCase();
-            if (customer_name.contains(search.toLowerCase()) ||
-                bill_id.contains(search.toLowerCase())) {
+            final billId = data["bill_no"].toString().toLowerCase();
+            if (customerName.contains(search.toLowerCase()) ||
+                billId.contains(search.toLowerCase())) {
               return true;
             } else {
               return false;
@@ -75,20 +75,20 @@ class SupplierDeptsViewControllerImp extends SupplierDeptsViewController {
   }
 
   @override
-  searchForBillBayCity(String city_name) {
-    if (city_name.isEmpty || city_name == "جميع المدن") {
+  searchForBillBayCity(String cityName) {
+    if (cityName.isEmpty || cityName == "جميع المدن") {
       getDepts();
     } else {
       supplierDeptsList.value =
           supplierDeptsList.where((doc) {
             final data = doc.data();
             final fileView = data["supplier_city"].toLowerCase();
-            return fileView.contains(city_name.toLowerCase());
+            return fileView.contains(cityName.toLowerCase());
           }).toList();
       if (supplierDeptsList.isEmpty) {
         statusreqest = Statusreqest.noData;
       }
-      selectedSupplierCity = city_name;
+      selectedSupplierCity = cityName;
     }
     update();
   }
@@ -129,10 +129,10 @@ class SupplierDeptsViewControllerImp extends SupplierDeptsViewController {
   }
 
   @override
-  goTODetailsPage(String dept_id) {
+  goTODetailsPage(String deptId) {
     Get.toNamed(
       AppRoutes.supplier_depts_details_page,
-      arguments: {"dept_id": dept_id},
+      arguments: {"dept_id": deptId},
     );
   }
 

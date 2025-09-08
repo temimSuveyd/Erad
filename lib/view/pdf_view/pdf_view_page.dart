@@ -6,7 +6,7 @@ import 'package:erad/view/pdf_view/widgets/custom_pdf_view_AppBar.dart';
 // import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PdfViewPage extends GetView<PdfViewControllerImp> {
-  const PdfViewPage({Key? key}) : super(key: key);
+  const PdfViewPage({super.key});
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => PdfViewControllerImp());

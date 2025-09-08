@@ -17,18 +17,18 @@ abstract class CustomersController extends GetxController {
   addCustomer();
 
   show_add_customer_dialog();
-  changeCity(String city_name);
+  changeCity(String cityName);
   getCustomers();
-  show_delete_dialog(String customer_id);
-  dlete_customer(String customer_id);
+  show_delete_dialog(String customerId);
+  dlete_customer(String customerId);
   show_edit_dialog(
-    String customer_id,
-    String customer_city,
-    String customer_name,
+    String customerId,
+    String customerCity,
+    String customerName,
   );
-  editCustomer(String customer_id, String customer_city, String customer_name);
+  editCustomer(String customerId, String customerCity, String customerName);
   searchForCustomersBayName();
-  searchForCustomersBayCity(String city_name);
+  searchForCustomersBayCity(String cityName);
 }
 
 class CustomersControllerImp extends CustomersController {
@@ -42,8 +42,8 @@ class CustomersControllerImp extends CustomersController {
 
   @override
   addCustomer() {
-    String customer_name = customer_name_controller.text;
-    if (customer_city.isEmpty || customer_name.isEmpty) {
+    String customerName = customer_name_controller.text;
+    if (customer_city.isEmpty || customerName.isEmpty) {
       custom_snackBar();
     } else {
       statusreqest = Statusreqest.loading;
@@ -52,7 +52,7 @@ class CustomersControllerImp extends CustomersController {
           services.sharedPreferences.getString(AppShared.userID)!;
 
       try {
-        customersData.addCustomer(userID, customer_name, customer_city);
+        customersData.addCustomer(userID, customerName, customer_city);
       } catch (e) {
         statusreqest = Statusreqest.faliure;
         update();
@@ -78,8 +78,8 @@ class CustomersControllerImp extends CustomersController {
   }
 
   @override
-  changeCity(String city_name) {
-    customer_city = city_name;
+  changeCity(String cityName) {
+    customer_city = cityName;
     update();
   }
 
@@ -106,19 +106,19 @@ class CustomersControllerImp extends CustomersController {
   }
 
   @override
-  show_delete_dialog(String customer_id) {
+  show_delete_dialog(String customerId) {
     custom_delete_dialog(() {
-      dlete_customer(customer_id);
+      dlete_customer(customerId);
     });
   }
 
   @override
-  dlete_customer(String customer_id) {
+  dlete_customer(String customerId) {
     try {
       String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
 
-      customersData.deleteCustomer(userID, customer_id);
+      customersData.deleteCustomer(userID, customerId);
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();
@@ -127,45 +127,45 @@ class CustomersControllerImp extends CustomersController {
 
   @override
   show_edit_dialog(
-    String _customer_id,
-    String _customer_city,
-    String customer_name,
+    String customer_id,
+    String customer_city,
+    String customerName,
   ) {
     Custom_add_customer_dialog(
       customer_name_controller,
       customer_city,
       () {
-        editCustomer(_customer_id, customer_city, customer_name);
+        editCustomer(customer_id, customer_city, customerName);
         Get.close(0);
       },
       (p0) {
         changeCity(p0);
       },
-      customer_name,
-      _customer_city,
+      customerName,
+      customer_city,
     );
   }
 
   @override
   editCustomer(
-    String _customer_id,
-    String _customer_city,
-    String customer_name,
+    String customer_id,
+    String customer_city,
+    String customerName,
   ) {
     String userID =
         services.sharedPreferences.getString(AppShared.userID)!;
-    String _customer_name =
+    String customer_name =
         customer_name_controller.text.isEmpty
-            ? customer_name
+            ? customerName
             : customer_name_controller.text;
-    String _customer_city =
+    String cityName =
         customer_city.isEmpty ? customer_city : customer_city;
     try {
       customersData.editCustomer(
         userID,
-        _customer_name,
-        _customer_city,
-        _customer_id,
+        customer_name,
+        cityName,
+        customer_id,
       );
     } catch (e) {
       statusreqest = Statusreqest.faliure;
@@ -193,16 +193,16 @@ class CustomersControllerImp extends CustomersController {
   }
 
   @override
-  searchForCustomersBayCity(String city_name) {
-    customer_city = city_name;
-    if (city_name.isEmpty || city_name == "جميع المدن") {
+  searchForCustomersBayCity(String cityName) {
+    customer_city = cityName;
+    if (cityName.isEmpty || cityName == "جميع المدن") {
       getCustomers();
     } else {
       customersList.value =
           customersList.where((doc) {
             final data = doc.data();
             final fileView = data["customer_city"].toLowerCase();
-            return fileView.contains(city_name.toLowerCase());
+            return fileView.contains(cityName.toLowerCase());
           }).toList();
       if (customersList.isEmpty) {
         statusreqest = Statusreqest.noData;

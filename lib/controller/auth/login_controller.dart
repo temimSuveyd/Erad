@@ -13,6 +13,8 @@ abstract class LoginController extends GetxController {
   login();
   saveUserDataLocal();
   goToHomePage();
+  saveLogin();
+  changeSaveLogin();
 }
 
 class LoginControllerImp extends LoginController {
@@ -22,7 +24,9 @@ class LoginControllerImp extends LoginController {
   GlobalKey<FormState> formState = GlobalKey<FormState>();
   Statusreqest statusreqest = Statusreqest.success;
   Services services = Get.find();
+  var isLogin = false.obs;
   final auth = FirebaseAuth.instance;
+
   @override
   login() async {
     var validator = formState.currentState;
@@ -60,5 +64,23 @@ class LoginControllerImp extends LoginController {
   @override
   goToHomePage() {
     Get.toNamed(AppRoutes.home_page);
+  }
+
+  @override
+  saveLogin() {
+    if (isLogin.value == true) {
+      services.sharedPreferences.setBool(AppShared.isLoging, true);
+    }
+  }
+
+  @override
+  changeSaveLogin() {
+    if (isLogin.value == true) {
+      isLogin = false.obs;
+    } else {
+      isLogin = true.obs;
+    }
+    update();
+    
   }
 }

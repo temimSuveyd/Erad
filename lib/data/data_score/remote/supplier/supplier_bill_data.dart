@@ -2,28 +2,28 @@ import 'package:erad/core/constans/bill_status.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SupplierBillData {
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  addSupplierBill(
-    String supplier_name,
-    String supplier_city,
-    String supplier_id,
-    String payment_type,
+  Future<String> addSupplierBill(
+    String supplierName,
+    String supplierCity,
+    String supplierId,
+    String paymentType,
     String userID,
-    DateTime bill_add_time,
+    DateTime billAddTime,
   ) async {
     DocumentReference docRef = await _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_bills")
         .add({
-          "supplier_name": supplier_name,
-          "supplier_city": supplier_city,
-          "supplier_id": supplier_id,
+          "supplier_name": supplierName,
+          "supplier_city": supplierCity,
+          "supplier_id": supplierId,
           "total_product_price": 0,
           "total_profits": 0,
-          "bill_date": bill_add_time,
-          "paymet_type": payment_type,
+          "bill_date": billAddTime,
+          "paymet_type": paymentType,
           "bill_no": "",
           "bill_status": BillStatus.itwasFormed,
           "discount_amount": 0,
@@ -33,172 +33,172 @@ class SupplierBillData {
   }
 
 
-  addDiscount(String bill_id, String userID, double discount_amount) {
+  void addDiscount(String billId, String userID, double discountAmount) {
     _firestore
         .collection("users")
         .doc(userID)
         .collection("suppliers_bills")
-        .doc(bill_id)
+        .doc(billId)
         .update({
-          "discount_amount": FieldValue.increment(discount_amount)
+          "discount_amount": FieldValue.increment(discountAmount)
         });
   }
-  addProductToBill(
-     String product_name,
-    int product_price,
-    String product_id,
-    int product_number,
-    int total_product_price,
-    int total_product_profits,
-    int prodect_profits,
+  void addProductToBill(
+     String productName,
+    int productPrice,
+    String productId,
+    int productNumber,
+    int totalProductPrice,
+    int totalProductProfits,
+    int prodectProfits,
     String userID,
-    String bill_id,
+    String billId,
   ) {
     _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_bills")
-        .doc(bill_id)
+        .doc(billId)
         .collection("products")
         .add({
-          "product_name": product_name,
-          "product_price": product_price,
-          "product_id": product_id,
-          "product_number": product_number,
-          "total_product_price": total_product_price,
-          "prodect_profits": prodect_profits,
+          "product_name": productName,
+          "product_price": productPrice,
+          "product_id": productId,
+          "product_number": productNumber,
+          "total_product_price": totalProductPrice,
+          "prodect_profits": prodectProfits,
         });
   }
 
-  Future deleteSupplierBill(String userID, String bill_id) async {
+  Future deleteSupplierBill(String userID, String billId) async {
     return await _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_bills")
-        .doc(bill_id)
+        .doc(billId)
         .delete();
   }
 
   Future updateSupplierBill(
     String userID,
-    String bill_id,
-    String bill_no,
-    double total_price,
-    double totl_profits,
+    String billId,
+    String billNo,
+    double totalPrice,
+    double totlProfits,
   ) async {
     await _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_bills")
-        .doc(bill_id)
+        .doc(billId)
         .update({
-          "total_product_price": total_price,
-          "total_profits": totl_profits,
-          "bill_no": bill_no,
+          "total_product_price": totalPrice,
+          "total_profits": totlProfits,
+          "bill_no": billNo,
         });
   }
 
   Future update_total_price(
     String userID,
-    String bill_id,
-    double total_price,
-    double totl_profits,
+    String billId,
+    double totalPrice,
+    double totlProfits,
   ) async {
     await _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_bills")
-        .doc(bill_id)
+        .doc(billId)
         .update({
-          "total_product_price": total_price,
-          "total_profits": totl_profits,
+          "total_product_price": totalPrice,
+          "total_profits": totlProfits,
         });
   }
 
   Future updateProductData(
-    String product_id,
-    int product_number,
-    int total_product_price,
+    String productId,
+    int productNumber,
+    int totalProductPrice,
     String userID,
-    String bill_id,
+    String billId,
   ) async {
     await _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_bills")
-        .doc(bill_id)
+        .doc(billId)
         .collection("products")
-        .doc(product_id)
+        .doc(productId)
         .update({
-          "product_number": product_number,
-          "total_product_price": total_product_price,
+          "product_number": productNumber,
+          "total_product_price": totalProductPrice,
         });
   }
 
   Future updateBillStatus(
     String userID,
-    String bill_id,
-    String bill_status,
+    String billId,
+    String billStatus,
   ) async {
     return await _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_bills")
-        .doc(bill_id)
-        .update({"bill_status": bill_status});
+        .doc(billId)
+        .update({"bill_status": billStatus});
   }
   Future updatePaymentType(
     String userID,
-    String bill_id,
-    String payment_type,
+    String billId,
+    String paymentType,
   ) async {
     return await _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_bills")
-        .doc(bill_id)
-        .update({"paymet_type": payment_type});
+        .doc(billId)
+        .update({"paymet_type": paymentType});
   }
   Future deleteProduct(
-    String bill_id,
-    String product_id,
+    String billId,
+    String productId,
     String userID,
   ) async {
     return await _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_bills")
-        .doc(bill_id)
+        .doc(billId)
         .collection("products")
-        .doc(product_id)
+        .doc(productId)
         .delete();
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getBillProdects(
     String userID,
-    String bill_id,
+    String billId,
   ) {
     return _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_bills")
-        .doc(bill_id)
+        .doc(billId)
         .collection("products")
         .snapshots();
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getBillProdectBayId(
     String userID,
-    String bill_id,
-    String prodcut_id,
+    String billId,
+    String prodcutId,
   ) {
     return _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_bills")
-        .doc(bill_id)
+        .doc(billId)
         .collection("products")
-        .doc(prodcut_id)
+        .doc(prodcutId)
         .get();
   }
 
@@ -212,13 +212,13 @@ class SupplierBillData {
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getBillById(
     String userID,
-    String bill_id,
+    String billId,
   ) {
     return _firestore
         .collection("users")
         .doc(userID)
         .collection("supplier_bills")
-        .doc(bill_id)
+        .doc(billId)
         .get();
   }
 }

@@ -25,11 +25,11 @@ abstract class SupplieraddBiilController extends GetxController {
   getSupplierById();
   getAllSuppliers();
   setSupplierId(String id);
-  setDate(DateTime bill_date);
-  setPaymentType(String payment_type);
+  setDate(DateTime billDate);
+  setPaymentType(String paymentType);
   getAllProducts();
-  addProduct(String product_id);
-  getProductById(String product_id);
+  addProduct(String productId);
+  getProductById(String productId);
   getBillProdects();
   totalPriceAccount();
   onWillPop();
@@ -41,9 +41,9 @@ abstract class SupplieraddBiilController extends GetxController {
   createPdf();
   searchForProduct();
   hiden_search_Menu();
-  setProductFromSearch(String prodect_name);
-  addProductListToFirebase(String userID, String bill_id);
-  deleteProduct(int product_index);
+  setProductFromSearch(String prodectName);
+  addProductListToFirebase(String userID, String billId);
+  deleteProduct(int productIndex);
   generateRandomInvoiceId(String username);
 }
 
@@ -67,7 +67,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   String? supplier_id;
   String? bill_payment_type;
   // product data
-  ProductData _productData = ProductData();
+  final ProductData _productData = ProductData();
   var all_product_list = [].obs;
   var bill_prodects_list = [].obs;
 
@@ -160,14 +160,14 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   }
 
   @override
-  setDate(DateTime bill_date) {
-    bill_add_date = bill_date;
+  setDate(DateTime billDate) {
+    bill_add_date = billDate;
     update();
   }
 
   @override
-  setPaymentType(String payment_type) {
-    bill_payment_type = payment_type;
+  setPaymentType(String paymentType) {
+    bill_payment_type = paymentType;
     update();
   }
 
@@ -268,18 +268,18 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   }
 
   @override
-  addProduct(String product_id) async {
-    if (product_id.isNotEmpty) {
-      await getProductById(product_id);
-      int numper_of_numper = int.parse(number_of_products_controller.text);
+  addProduct(String productId) async {
+    if (productId.isNotEmpty) {
+      await getProductById(productId);
+      int numperOfNumper = int.parse(number_of_products_controller.text);
       try {
         bill_prodects_list.add({
           "product_name": product_name!,
-          "product_id": product_id,
-          "product_number": numper_of_numper,
+          "product_id": productId,
+          "product_number": numperOfNumper,
 
-          "total_product_price": numper_of_numper * product_price!,
-          "total_product_profits": numper_of_numper * prodect_profits!,
+          "total_product_price": numperOfNumper * product_price!,
+          "total_product_profits": numperOfNumper * prodect_profits!,
 
           "product_price": product_price!,
           "product_profits": prodect_profits!,
@@ -300,13 +300,13 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   }
 
   @override
-  getProductById(String product_id) async {
+  getProductById(String productId) async {
     try {
       String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
       final productData = await _productData.getBrandsTypeBayId(
         userID,
-        product_id,
+        productId,
       );
       product_price = productData["product_sales_price"];
       prodect_profits = productData["product_profits"];
@@ -448,30 +448,30 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   @override
   Future<void> addProductListToFirebase(
     String userID,
-    String bill_id,
+    String billId,
   ) async {
     for (var product in bill_prodects_list) {
-      String product_name = product["product_name"];
+      String productName = product["product_name"];
 
-      String product_id = product["product_id"];
-      int product_number = product["product_number"];
+      String productId = product["product_id"];
+      int productNumber = product["product_number"];
 
-      int product_profits = product["product_profits"];
-      int product_price = product["product_price"];
+      int productProfits = product["product_profits"];
+      int productPrice = product["product_price"];
 
-      int total_product_price = product["total_product_price"];
-      int total_product_profits = product["total_product_profits"];
+      int totalProductPrice = product["total_product_price"];
+      int totalProductProfits = product["total_product_profits"];
 
       supplierBillData.addProductToBill(
-        product_name,
-        product_price,
-        product_id,
-        product_number,
-        total_product_price,
-        total_product_profits,
-        product_profits,
+        productName,
+        productPrice,
+        productId,
+        productNumber,
+        totalProductPrice,
+        totalProductProfits,
+        productProfits,
         userID,
-        bill_id,
+        billId,
       );
     }
   }
@@ -517,7 +517,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
         goToPdfViewPage(pdfBytes);
         statusreqest = Statusreqest.success;
         update();
-      } on Exception catch (e) {
+      } on Exception {
         statusreqest = Statusreqest.faliure;
         update();
       }
@@ -536,12 +536,12 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   }
 
   @override
-  setProductFromSearch(String _product_name) {
+  setProductFromSearch(String product_name) {
     if (all_product_list.isNotEmpty) {
       Future.delayed(Duration(milliseconds: 100), () {
         FocusScope.of(Get.context!).requestFocus(focusNode2);
       });
-      product_name = _product_name;
+      product_name = product_name;
       serach_for_product_controller.text = product_name!;
     }
     show_search_popupMenu = false;
@@ -549,8 +549,8 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   }
 
   @override
-  deleteProduct(int product_index) {
-    bill_prodects_list.removeAt(product_index);
+  deleteProduct(int productIndex) {
+    bill_prodects_list.removeAt(productIndex);
     update();
   }
 

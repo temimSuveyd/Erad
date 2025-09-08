@@ -1,12 +1,10 @@
 
-import 'package:erad/controller/suppliers/bills/suppliers_bill_add_controller.dart';
 import 'package:erad/controller/suppliers/bills/suppliers_bill_view_controller.dart';
 import 'package:erad/view/custom_widgets/custom_bill_status_dialog.dart';
 import 'package:erad/view/custom_widgets/handling_bill_status.dart';
 import 'package:erad/view/supplier/bills/suppliers_bills_add/widgets/custom_price_container.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:erad/controller/customers/bills/customer_bill_view_controller.dart';
 import 'package:erad/core/constans/colors.dart';
 
 import 'package:erad/view/custom_widgets/custom_add_button.dart';

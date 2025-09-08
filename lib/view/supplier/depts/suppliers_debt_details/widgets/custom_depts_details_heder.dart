@@ -1,6 +1,4 @@
-import 'package:erad/controller/customers/depts/customer_dept_details_controller.dart';
 import 'package:erad/controller/suppliers/depts/supplier_depts_details_controller.dart';
-import 'package:erad/controller/suppliers/depts/supplier_depts_view_controller.dart';
 import 'package:erad/view/custom_widgets/custom_add_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

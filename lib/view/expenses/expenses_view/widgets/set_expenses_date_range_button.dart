@@ -30,7 +30,8 @@ class SetExpensesDateRangeButton extends StatelessWidget {
                   Icon(Icons.calendar_month, color: AppColors.wihet, size: 22),
                   const SizedBox(width: 10),
                   Text(
-                    "${controller.pickedDateRange!.start.year}/${controller.pickedDateRange!.start.month.toString().padLeft(2, '0')}/${controller.pickedDateRange!.start.day.toString().padLeft(2, '0')}",
+                    
+                    "${controller.pickedDateRange.start.year}/${controller.pickedDateRange.start.month.toString().padLeft(2, '0')}/${controller.pickedDateRange.start.day.toString().padLeft(2, '0')}",
                     style: TextStyle(
                       color: AppColors.wihet,
                       fontWeight: FontWeight.w600,
@@ -45,7 +46,7 @@ class SetExpensesDateRangeButton extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    "${controller.pickedDateRange!.end.year}/${controller.pickedDateRange!.end.month.toString().padLeft(2, '0')}/${controller.pickedDateRange!.end.day.toString().padLeft(2, '0')}",
+                    "${controller.pickedDateRange.end.year}/${controller.pickedDateRange.end.month.toString().padLeft(2, '0')}/${controller.pickedDateRange.end.day.toString().padLeft(2, '0')}",
                     style: TextStyle(
                       color: AppColors.wihet,
                       fontWeight: FontWeight.w600,

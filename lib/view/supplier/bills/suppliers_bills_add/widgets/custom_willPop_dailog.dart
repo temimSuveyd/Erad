@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:erad/core/constans/colors.dart';
 
 Future<dynamic> custom_willPop_dialog(
-  bool is_saved,
+  bool isSaved,
   void Function() onConfirm,
 ) {
   return Get.defaultDialog(
@@ -13,7 +13,7 @@ Future<dynamic> custom_willPop_dialog(
     title: "حفظ هذا الفاتورة",
     middleText: "هل تريد حفظ هذه الفاتورة",
     onCancel: () {
-      is_saved = false;
+      isSaved = false;
       Get.back();
     },
     onConfirm: () {

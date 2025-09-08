@@ -26,7 +26,9 @@ class CategoreyTypeViewPage extends GetView<CategoreyTypeControllerImp> {
                   Custom_textfield(
                     hintText: 'ابحث عن نوع الفئة',
                     suffixIcon: Icons.search,
-                    validator: (String? validator) {},
+                    validator: (String? validator) {
+                      return null;
+                    },
                     controller: controller.serach_for_categorey_type_controller,
                     onChanged: (String) {
                       controller.searchForCategoreys_type();

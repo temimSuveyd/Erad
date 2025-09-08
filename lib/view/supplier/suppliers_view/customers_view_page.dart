@@ -28,7 +28,9 @@ class SuppliersViewPage extends GetView<SuppliersControllerImp> {
                   Custom_textfield(
                     hintText: "اسم المورد",
                     suffixIcon: Icons.search_sharp,
-                    validator: (String? validator) {},
+                    validator: (String? validator) {
+                      return null;
+                    },
                     controller: controller.search_controller,
                     onChanged: (p0) => controller.searchForSuppliersBayName(),
                   ),

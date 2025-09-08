@@ -1,117 +1,117 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BrandsData {
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // add brands
-  addBrand(
-    String categorey_name,
+  void addBrand(
+    String categoreyName,
     String userID,
-    String categorey_type,
-    String brand_name,
+    String categoreyType,
+    String brandName,
   ) {
     _firestore
         .collection("users")
         .doc(userID)
         .collection("brands")
-        .doc(brand_name)
+        .doc(brandName)
         .set({
-          "brand_name": brand_name,
-          "categorey_name": categorey_name,
-          "categorey_type": categorey_type,
+          "brand_name": brandName,
+          "categorey_name": categoreyName,
+          "categorey_type": categoreyType,
         });
   }
 
-  deleteBramd(String userID, String brand_name) {
+  void deleteBramd(String userID, String brandName) {
     _firestore
         .collection("users")
         .doc(userID)
         .collection("brands")
-        .doc(brand_name)
+        .doc(brandName)
         .delete();
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getBrands(
     String userID,
-    String categorey_type,
-    String categorey_name,
+    String categoreyType,
+    String categoreyName,
   ) {
     return _firestore
         .collection("users")
         .doc(userID)
         .collection("brands")
-        .where("categorey_name", isEqualTo: categorey_name)
-        .where("categorey_type", isEqualTo: categorey_type)
+        .where("categorey_name", isEqualTo: categoreyName)
+        .where("categorey_type", isEqualTo: categoreyType)
         .snapshots();
   }
 
-  addBrandsType(
-    String categorey_name,
+  void addBrandsType(
+    String categoreyName,
     String userID,
-    String categorey_type,
-    String brand_name,
-    String product_size,
-    int product_buing_price,
-    int product_sales_price,
-    int product_profits,
+    String categoreyType,
+    String brandName,
+    String productSize,
+    int productBuingPrice,
+    int productSalesPrice,
+    int productProfits,
   ) {
-    String product_name = "${categorey_type} ${brand_name} ${product_size}";
+    String productName = "$categoreyType $brandName $productSize";
     _firestore
         .collection("users")
         .doc(userID)
         .collection("brands_type")
-        .doc(product_name)
+        .doc(productName)
         .set({
-          "product_profits": product_profits,
-          "product_name": product_name,
-          "product_size": product_size,
-          "product_buing_price": product_buing_price,
-          "product_sales_price": product_sales_price,
-          "categorey_name": categorey_name,
-          "brand_name": brand_name,
+          "product_profits": productProfits,
+          "product_name": productName,
+          "product_size": productSize,
+          "product_buing_price": productBuingPrice,
+          "product_sales_price": productSalesPrice,
+          "categorey_name": categoreyName,
+          "brand_name": brandName,
         });
   }
 
-  editBrandsType(
+  void editBrandsType(
     String userID,
-    String product_buing_price,
-    String product_sales_price,
-    String product_size,
-    String product_name,
+    String productBuingPrice,
+    String productSalesPrice,
+    String productSize,
+    String productName,
   ) {
     _firestore
         .collection("users")
         .doc(userID)
         .collection("brands_type")
-        .doc(product_name)
+        .doc(productName)
         .update({
-          "product_size": product_size,
-          "product_buing_price": product_buing_price,
-          "product_sales_price": product_sales_price,
+          "product_size": productSize,
+          "product_buing_price": productBuingPrice,
+          "product_sales_price": productSalesPrice,
         });
   }
 
-  deleteBrandsType(String userID, String product_name) {
+  void deleteBrandsType(String userID, String productName) {
     _firestore
         .collection("users")
         .doc(userID)
         .collection("brands_type")
-        .doc(product_name)
+        .doc(productName)
         .delete();
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getBrandsType(
     String userID,
-    String categorey_type,
-    String categorey_name,
-    String brand_name,
+    String categoreyType,
+    String categoreyName,
+    String brandName,
   ) {
     return _firestore
         .collection("users")
         .doc(userID)
         .collection("brands_type")
-        .where("categorey_name", isEqualTo: categorey_name)
-        .where("brand_name", isEqualTo: brand_name)
+        .where("categorey_name", isEqualTo: categoreyName)
+        .where("brand_name", isEqualTo: brandName)
         .snapshots();
   }
 }

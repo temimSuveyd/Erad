@@ -1,7 +1,7 @@
 import 'package:erad/controller/expenses/expenses_controller.dart';
 import 'package:erad/core/class/handling_data_view_with_sliverBox.dart';
 import 'package:erad/data/model/expenses/expenses_card_model.dart';
-import 'package:erad/view/expenses/widgets/custom_expenses_card.dart';
+import 'package:erad/view/expenses/expenses_view/widgets/custom_expenses_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
 

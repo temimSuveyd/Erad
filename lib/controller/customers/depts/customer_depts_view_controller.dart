@@ -9,10 +9,10 @@ import 'package:get/get.dart';
 
 abstract class CustomerDeptsViewController extends GetxController {
   searchForBillsBayCustomerName();
-  searchForBillBayCity(String city_name);
+  searchForBillBayCity(String cityName);
   searchByDate(DateTime searchStartDate, DateTime searchEndDate);
   getDepts();
-  goTODetailsPage(String dept_id);
+  goTODetailsPage(String deptId);
 }
 
 class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
@@ -58,11 +58,11 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
       customersDeptsList.value =
           customersDeptsList.where((doc) {
             final data = doc.data();
-            final customer_name =
+            final customerName =
                 data["customer_name"].toString().toLowerCase();
-            final bill_id = data["bill_no"].toString().toLowerCase();
-            if (customer_name.contains(search.toLowerCase()) ||
-                bill_id.contains(search.toLowerCase())) {
+            final billId = data["bill_no"].toString().toLowerCase();
+            if (customerName.contains(search.toLowerCase()) ||
+                billId.contains(search.toLowerCase())) {
               return true;
             } else {
               return false;
@@ -76,20 +76,20 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
   }
 
   @override
-  searchForBillBayCity(String city_name) {
-    if (city_name.isEmpty || city_name == "جميع المدن") {
+  searchForBillBayCity(String cityName) {
+    if (cityName.isEmpty || cityName == "جميع المدن") {
       getDepts();
     } else {
       customersDeptsList.value =
           customersDeptsList.where((doc) {
             final data = doc.data();
             final fileView = data["customer_city"].toLowerCase();
-            return fileView.contains(city_name.toLowerCase());
+            return fileView.contains(cityName.toLowerCase());
           }).toList();
       if (customersDeptsList.isEmpty) {
         statusreqest = Statusreqest.noData;
       }
-      selectedCustomerCity = city_name;
+      selectedCustomerCity = cityName;
     }
     update();
   }
@@ -130,10 +130,10 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
   }
 
   @override
-  goTODetailsPage(String dept_id) {
+  goTODetailsPage(String deptId) {
     Get.toNamed(
       AppRoutes.customer_debt_details_page,
-      arguments: {"dept_id": dept_id},
+      arguments: {"dept_id": deptId},
     );
   }
 

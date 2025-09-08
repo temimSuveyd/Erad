@@ -12,7 +12,7 @@ abstract class BrandsController extends GetxController {
   show_dialog();
   add_categorey();
   initData();
-  go_to_brands_type_page(String brand_name);
+  go_to_brands_type_page(String brandName);
   getBrands();
   searchForBrands();
   show_delete_dialog(String id);
@@ -21,7 +21,7 @@ abstract class BrandsController extends GetxController {
 
 class BrandsControllerImp extends BrandsController {
   Statusreqest statusreqest = Statusreqest.success;
-  TextEditingController _brand_name = TextEditingController();
+  final TextEditingController _brand_name = TextEditingController();
   TextEditingController serach_for_brands_controller = TextEditingController();
 
   BrandsData brandsData = BrandsData();
@@ -39,7 +39,9 @@ class BrandsControllerImp extends BrandsController {
         Get.back();
       },
       _brand_name,
-      (String? validator) {},
+      (String? validator) {
+        return null;
+      },
     );
   }
 
@@ -50,13 +52,13 @@ class BrandsControllerImp extends BrandsController {
     update();
     String userID =
         services.sharedPreferences.getString(AppShared.userID)!;
-    String brand_name = _brand_name.text;
+    String brandName = _brand_name.text;
     try {
       brandsData.addBrand(
         categorey_name!,
         userID,
         categorey_type!,
-        brand_name,
+        brandName,
       );
       _brand_name.clear();
       statusreqest = Statusreqest.success;

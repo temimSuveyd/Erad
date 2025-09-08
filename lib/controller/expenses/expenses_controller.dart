@@ -1,20 +1,24 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:erad/core/class/handling_data.dart';
 import 'package:erad/core/constans/colors.dart';
 import 'package:erad/core/constans/sharedPreferences.dart';
 import 'package:erad/core/services/app_services.dart';
 import 'package:erad/data/data_score/remote/expenses/expenses_data.dart';
-import 'package:erad/data/model/expenses/string_to_json_model.dart';
 import 'package:erad/view/custom_widgets/custom_set_date_range.dart';
 import 'package:erad/view/custom_widgets/custom_snackbar.dart';
-import 'package:erad/view/expenses/widgets/custom_add_expenses_dialog.dart';
+import 'package:erad/view/expenses/expenses_view/widgets/custom_add_expenses_dialog.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 abstract class ExpensesController extends GetxController {
-  Future addExpenses();
+  Future addExpenses(
+    String title,
+    double amount,
+    DateTime addDate,
+    bool isRepeat,
+    DateTime repeatedDate,
+  );
   void getExpenses();
   void showaddExpensesDialog();
   void setDate(DateTime date);
@@ -24,9 +28,9 @@ abstract class ExpensesController extends GetxController {
   void showEditDialog(
     String title,
     double amount,
-    DateTime date,
+    DateTime addDate,
     bool isRepeat,
-    DateTime _date,
+    DateTime date,
     String id,
   );
   void showDeleteDialog(String id);
@@ -36,6 +40,9 @@ abstract class ExpensesController extends GetxController {
   void calculateTotalExpenditures();
   void addExpensesAutomatically();
   Future saveStartDate();
+  Future deleteFromLocal(String id);
+  void editLocalData(String id, String title, double amount, DateTime date);
+  void initData();
 }
 
 class ExpensesControllerImp extends ExpensesController {
@@ -44,43 +51,44 @@ class ExpensesControllerImp extends ExpensesController {
   DateTime addedDate = DateTime.now();
   DateTime repeatDate = DateTime.now();
   DateTime? startDate;
-
-  DateTimeRange? pickedDateRange;
+  DateTimeRange pickedDateRange = DateTimeRange(
+    start: DateTime.now(),
+    end: DateTime.now(),
+  );
   double expensesAmount = 0.0;
   double expensesTotalAmount = 0.0;
   var isRepeatExpense = false.obs;
   var expensesList = [].obs;
-  ExpensesData _expensesData = ExpensesData();
+  List localExpesesList = [];
+  final ExpensesData _expensesData = ExpensesData();
   TextEditingController addExpensesAmountController = TextEditingController();
   TextEditingController addExpensesTitleController = TextEditingController();
-
+  String? categoryID;
+  String? expensesID;
   @override
-  Future addExpenses() async {
+  Future addExpenses(
+    String title,
+    double amount,
+    DateTime addDate,
+    bool isRepeat,
+    DateTime repeatedDate,
+  ) async {
     statusreqest = Statusreqest.loading;
     update();
     try {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
-      if (addExpensesAmountController.text.isEmpty ||
-          double.tryParse(addExpensesAmountController.text) == null ||
-          addExpensesTitleController.text.isEmpty) {
-        custom_snackBar(
-          AppColors.red,
-          "خطأ",
-          "لقد أدخلت قيمة خاطئة ، يرجى المحاولة مرة أخرى",
-        );
-      } else {
-        expensesAmount = double.parse(addExpensesAmountController.text);
-        await _expensesData.addExpenses(
-          userID,
-          addedDate,
-          expensesAmount,
-          isRepeatExpense.value,
-          repeatDate,
-          addExpensesTitleController.text,
-        );
-        await saveExpensesInLocal();
-      }
+      final docId = await _expensesData.addExpenses(
+        userID,
+        addDate,
+        amount,
+        isRepeat,
+        repeatedDate,
+        title,
+        categoryID!,
+      );
+      expensesID = docId;
+      await saveExpensesInLocal();
       statusreqest = Statusreqest.success;
       update();
     } catch (e) {
@@ -96,15 +104,17 @@ class ExpensesControllerImp extends ExpensesController {
     try {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
-      _expensesData.getExpenses(userID).listen((event) {
+      _expensesData.getExpenses(userID, categoryID!).listen((event) {
         expensesList.value =
             event.docs.where((element) {
               final expenseData = element.data();
               if (expenseData.containsKey("date") &&
                   expenseData["date"] != null) {
                 final DateTime expenseDate = expenseData["date"].toDate();
-                return expenseDate.isAfter(pickedDateRange!.start) &&
-                    expenseDate.isBefore(pickedDateRange!.end);
+                return (expenseDate.isAtSameMomentAs(pickedDateRange.start) ||
+                        expenseDate.isAfter(pickedDateRange.start)) &&
+                    (expenseDate.isAtSameMomentAs(pickedDateRange.end) ||
+                        expenseDate.isBefore(pickedDateRange.end));
               }
               return false;
             }).toList();
@@ -134,7 +144,25 @@ class ExpensesControllerImp extends ExpensesController {
         fontWeight: FontWeight.w500,
       ),
       onConfirm: () async {
-        await addExpenses();
+        if (addExpensesAmountController.text.isEmpty ||
+            double.tryParse(addExpensesAmountController.text) == null ||
+            addExpensesTitleController.text.isEmpty) {
+          custom_snackBar(
+            AppColors.red,
+            "خطأ",
+            "لقد أدخلت قيمة خاطئة ، يرجى المحاولة مرة أخرى",
+          );
+        } else {
+          expensesAmount = double.parse(addExpensesAmountController.text);
+          await addExpenses(
+            addExpensesTitleController.text,
+            expensesAmount,
+            addedDate,
+            isRepeatExpense.value,
+            repeatDate,
+          );
+        }
+
         addExpensesAmountController.clear();
         addExpensesTitleController.clear();
         isRepeatExpense.value = false;
@@ -175,21 +203,28 @@ class ExpensesControllerImp extends ExpensesController {
   @override
   Future saveExpensesInLocal() async {
     if (isRepeatExpense.value == true) {
-      final List<String> localExpensesList =
-          services.sharedPreferences.getStringList(AppShared.expenses) ?? [];
-      localExpensesList.add(
-        {
-          "expenses_date":
-              "${addedDate.year.toString().padLeft(4, '0')}-${addedDate.month.toString().padLeft(2, '0')}-${addedDate.day.toString().padLeft(2, '0')}",
-          "total_amount": expensesAmount,
-          "repeat_date":
-              "${repeatDate.year.toString().padLeft(4, '0')}-${repeatDate.month.toString().padLeft(2, '0')}-${repeatDate.day.toString().padLeft(2, '0')}",
-          "id": localExpensesList.length - 1,
-        }.toString(),
-      );
+      final List<Map<String, dynamic>> localExpensesList =
+          services.sharedPreferences
+              .getStringList(AppShared.expenses)
+              ?.map((e) => Map<String, dynamic>.from(json.decode(e)))
+              .toList() ??
+          [];
+
+      final title = addExpensesTitleController.text;
+      localExpensesList.add({
+        "expenses_date":
+            "${addedDate.year.toString().padLeft(4, '0')}-${addedDate.month.toString().padLeft(2, '0')}-${addedDate.day.toString().padLeft(2, '0')}",
+        "total_amount": expensesAmount, // double türünde
+        "repeat_date":
+            "${repeatDate.year.toString().padLeft(4, '0')}-${repeatDate.month.toString().padLeft(2, '0')}-${repeatDate.day.toString().padLeft(2, '0')}",
+        "id": expensesID,
+        "title": title,
+        "category_id": categoryID,
+      });
+
       await services.sharedPreferences.setStringList(
         AppShared.expenses,
-        localExpensesList,
+        localExpensesList.map((e) => json.encode(e)).toList(),
       );
     }
   }
@@ -205,11 +240,17 @@ class ExpensesControllerImp extends ExpensesController {
       if (double.parse(addExpensesAmountController.text).isNaN &&
           addExpensesTitleController.text.isEmpty) {
         custom_snackBar(
-          AppColors.primary,
+          AppColors.red,
           "خطأ",
           "لقد أدخلت قيمة خاطئة ، يرجى المحاولة مرة أخرى",
         );
       } else {
+        editLocalData(
+          id,
+          addExpensesTitleController.text,
+          expensesAmount,
+          repeatDate,
+        );
         await _expensesData.editExpenses(
           userID,
           addedDate,
@@ -218,8 +259,8 @@ class ExpensesControllerImp extends ExpensesController {
           repeatDate,
           addExpensesTitleController.text,
           id,
+          categoryID!,
         );
-        saveExpensesInLocal();
       }
 
       statusreqest = Statusreqest.success;
@@ -234,9 +275,9 @@ class ExpensesControllerImp extends ExpensesController {
   void showEditDialog(
     String title,
     double amount,
-    DateTime date,
+    DateTime addDate,
     bool isRepeat,
-    DateTime _date,
+    DateTime date,
     String id,
   ) {
     // title
@@ -244,11 +285,11 @@ class ExpensesControllerImp extends ExpensesController {
     // amount
     addExpensesAmountController.text = amount.toString();
     // date
-    addedDate = date;
+    addedDate = addDate;
     // isRepeatExpense
     isRepeatExpense.value = isRepeat;
     // date type
-    repeatDate = _date;
+    repeatDate = date;
     Get.defaultDialog(
       backgroundColor: AppColors.backgroundColor,
       buttonColor: AppColors.primary,
@@ -287,7 +328,8 @@ class ExpensesControllerImp extends ExpensesController {
     try {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
-      await _expensesData.deleteExpenses(userID, id);
+      deleteFromLocal(id);
+      await _expensesData.deleteExpenses(userID, id, categoryID!);
       statusreqest = Statusreqest.success;
       update();
     } catch (e) {
@@ -346,30 +388,53 @@ class ExpensesControllerImp extends ExpensesController {
   }
 
   @override
-  void addExpensesAutomatically() {
+  Future addExpensesAutomatically() async {
     if (services.sharedPreferences.getStringList(AppShared.expenses) != null) {
       final expenses = services.sharedPreferences.getStringList(
         AppShared.expenses,
       );
-      final data = fromStringToList(expenses);
-      for (var expensesElement in data) {
-        final amount = expensesElement["total_amount"];
-        final addedDate = expensesElement["expenses_date"];
-        final repeatDate = expensesElement["repeat_date"];
-      
-        addExpenses();
+
+      try {
+        if (expenses != null) {
+          localExpesesList =
+              expenses
+                  .map((e) => Map<String, dynamic>.from(json.decode(e)))
+                  .toList();
+
+          for (var expensesElement in localExpesesList) {
+            final amount = expensesElement["total_amount"];
+            final addedDate = expensesElement["expenses_date"];
+            final repeatDate = expensesElement["repeat_date"];
+            final title = expensesElement["title"];
+            categoryID = expensesElement["category_id"];
+            // final isRepeat = expensesElement["is_repeat_expense"];
+            final rDate = DateTime.parse(repeatDate);
+            final aDate = DateTime.parse(addedDate);
+            if (rDate.day == DateTime.now().day) {
+              await addExpenses(title, amount, aDate, false, rDate);
+            } else {
+              break;
+            }
+          }
+        }
+
+        statusreqest = Statusreqest.success;
+        update();
+      } on Exception {
+        statusreqest = Statusreqest.faliure;
+        update();
       }
     }
   }
 
   @override
   Future saveStartDate() async {
+    statusreqest = Statusreqest.loading;
+    update();
     if (services.sharedPreferences.getString("start_date") != null) {
       final String startDateParse =
           services.sharedPreferences.getString("start_date")!;
-
       final DateTime start = DateTime.parse(startDateParse);
-
       if (DateTime.now().difference(start).inDays >= 30) {
         await services.sharedPreferences.setString(
           "start_date",
@@ -392,13 +457,101 @@ class ExpensesControllerImp extends ExpensesController {
         DateTime.now().toString(),
       );
     }
+    statusreqest = Statusreqest.success;
+    update();
+  }
+
+  @override
+  Future deleteFromLocal(String id) async {
+    if (services.sharedPreferences.getStringList(AppShared.expenses) != null) {
+      final expenses = services.sharedPreferences.getStringList(
+        AppShared.expenses,
+      );
+      try {
+        if (expenses != null) {
+          localExpesesList =
+              expenses
+                  .map((e) => Map<String, dynamic>.from(json.decode(e)))
+                  .toList();
+
+          localExpesesList =
+              localExpesesList.where((expensesElement) {
+                final localId = expensesElement["id"];
+                return localId != id;
+              }).toList();
+
+          await services.sharedPreferences.setStringList(
+            AppShared.expenses,
+            localExpesesList.map((e) => json.encode(e)).toList(),
+          );
+        }
+      } on Exception {
+        statusreqest = Statusreqest.faliure;
+        update();
+      }
+    }
+  }
+
+  @override
+  void initData() async {
+    final args = Get.arguments;
+    if (args != null &&
+        args.containsKey("category_id") &&
+        args["category_id"] != null) {
+      categoryID = await args["category_id"];
+      await saveStartDate();
+      getExpenses();
+    }
+  }
+
+  @override
+  void editLocalData(
+    String id,
+    String title,
+    double amount,
+    DateTime date,
+  ) async {
+    if (services.sharedPreferences.getStringList(AppShared.expenses) != null) {
+      final expenses = services.sharedPreferences.getStringList(
+        AppShared.expenses,
+      );
+      try {
+        if (expenses != null) {
+          localExpesesList =
+              expenses
+                  .map((e) => Map<String, dynamic>.from(json.decode(e)))
+                  .toList();
+
+          for (int i = 0; i < localExpesesList.length; i++) {
+            if (localExpesesList[i]["id"] == id) {
+              localExpesesList[i]["title"] = title;
+              localExpesesList[i]["total_amount"] = amount;
+              localExpesesList[i]["expenses_date"] =
+                  "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
+              break;
+            }
+          }
+
+          await services.sharedPreferences.setStringList(
+            AppShared.expenses,
+            localExpesesList.map((e) => json.encode(e)).toList(),
+          );
+          log(
+            services.sharedPreferences
+                .getStringList(AppShared.expenses)
+                .toString(),
+          );
+        }
+      } on Exception {
+        statusreqest = Statusreqest.faliure;
+        update();
+      }
+    }
   }
 
   @override
   void onInit() async {
-    await saveStartDate();
-    getExpenses();
-    addExpensesAutomatically();
+    initData();
     super.onInit();
   }
 }

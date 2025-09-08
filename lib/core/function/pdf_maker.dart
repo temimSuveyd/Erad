@@ -1,7 +1,3 @@
-import 'dart:developer';
-import 'dart:typed_data';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 // import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 // Future<Uint8List> createInvoice(

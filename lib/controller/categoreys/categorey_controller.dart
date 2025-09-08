@@ -47,7 +47,9 @@ class CategoreyControllerImp extends CategoreyController {
         Get.back();
       },
       _categorey_name_controller,
-      (String? validator) {},
+      (String? validator) {
+        return null;
+      },
     );
   }
 
@@ -58,9 +60,9 @@ class CategoreyControllerImp extends CategoreyController {
     update();
     String userID =
         services.sharedPreferences.getString(AppShared.userID)!;
-    String categorey_name = _categorey_name_controller.text;
+    String categoreyName = _categorey_name_controller.text;
     try {
-      categoreysData.addCategoreys(categorey_name, userID);
+      categoreysData.addCategoreys(categoreyName, userID);
       _categorey_name_controller.clear();
       statusreqest = Statusreqest.success;
       update();

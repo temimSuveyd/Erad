@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
 import 'package:erad/core/constans/colors.dart';
 
 AppBar Custom_appBar({required String title}) {

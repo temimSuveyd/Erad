@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/state_manager.dart';
 import 'package:erad/controller/customers/customers_view/customers_controller.dart';
 import 'package:erad/core/constans/colors.dart';

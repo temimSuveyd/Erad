@@ -79,7 +79,7 @@ class ExpensesCard extends GetView<ExpensesControllerImp> {
                     const SizedBox(height: 4),
                     // Amount
                     Text(
-                      "${expensesModel.amount!.toStringAsFixed(2)}",
+                      expensesModel.amount!.toStringAsFixed(2),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,

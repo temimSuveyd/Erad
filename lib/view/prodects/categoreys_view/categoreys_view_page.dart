@@ -32,7 +32,9 @@ class CategoreysViewPage extends GetView<CategoreyControllerImp> {
                     },
                     hintText: 'ابحث عن الفئة',
                     suffixIcon: Icons.search,
-                    validator: (String? validator) {},
+                    validator: (String? validator) {
+                      return null;
+                    },
                     controller: controller.serach_for_categorey_controller,
                   ),
                 ],

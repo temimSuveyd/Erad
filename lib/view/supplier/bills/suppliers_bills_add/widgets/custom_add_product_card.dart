@@ -1,4 +1,3 @@
-import 'package:erad/controller/customers/bills/customer_add_bill_controller.dart';
 import 'package:erad/controller/suppliers/bills/suppliers_bill_add_controller.dart';
 import 'package:erad/view/supplier/bills/suppliers_bills_add/widgets/custom_add_produc_Textfield.dart';
 import 'package:erad/view/supplier/bills/suppliers_bills_add/widgets/custom_search_menu.dart';

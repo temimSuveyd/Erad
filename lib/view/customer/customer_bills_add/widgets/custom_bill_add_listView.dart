@@ -1,5 +1,4 @@
 import 'package:erad/controller/customers/bills/customer_add_bill_controller.dart';
-import 'package:erad/controller/suppliers/bills/suppliers_bill_add_controller.dart';
 import 'package:erad/core/class/handling_data_view_with_sliverBox.dart';
 import 'package:erad/data/model/customer_bill_add/prodects_model.dart';
 import 'package:erad/view/supplier/bills/suppliers_bills_add/widgets/custom_add_prodect_container.dart';

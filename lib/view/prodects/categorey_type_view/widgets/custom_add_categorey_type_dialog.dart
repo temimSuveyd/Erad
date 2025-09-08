@@ -19,7 +19,9 @@ Future<dynamic> custom_add_categorey_type_dialog(
               Custom_textfield(
                 hintText: "نوع الفئة",
                 suffixIcon: Icons.add,
-                validator: (p0) {},
+                validator: (p0) {
+                  return null;
+                },
                 controller: controller, onChanged: (String ) {  },
               ),
             ],

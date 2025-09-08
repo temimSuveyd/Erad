@@ -16,6 +16,7 @@ class Custom_add_product_container extends StatelessWidget {
   final BillProductsModel billProductsModel;
   final Function() onPressed ;
 
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,

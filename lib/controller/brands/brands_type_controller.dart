@@ -16,19 +16,19 @@ abstract class BrandsTypeController extends GetxController {
   initData();
   searchForBrandsType();
   show_edit_dialog(
-    String sales_pice,
-    String buiyng_price,
+    String salesPice,
+    String buiyngPrice,
     String size,
-    String product_name,
+    String productName,
   );
   editBrandsType(
-    String sales_pice,
-    String buiyng_price,
+    String salesPice,
+    String buiyngPrice,
     String size,
-    String product_name,
+    String productName,
   );
-  deleteBrandsType(String product_name);
-  show_delete_dialog(String product_name);
+  deleteBrandsType(String productName);
+  show_delete_dialog(String productName);
 }
 
 class BrandsTypeControllerImp extends BrandsTypeController {
@@ -74,19 +74,19 @@ class BrandsTypeControllerImp extends BrandsTypeController {
     if (product_size_controller.text.isNotEmpty ||
         product_buying_controller.text.isNotEmpty ||
         product_sales_price_controller.text.isNotEmpty) {
-      int product_buing_price = int.parse(product_buying_controller.text);
-      int product_sales_price = int.parse(product_sales_price_controller.text);
-      String product_size = product_size_controller.text;
-      int profits = product_sales_price - product_buing_price;
+      int productBuingPrice = int.parse(product_buying_controller.text);
+      int productSalesPrice = int.parse(product_sales_price_controller.text);
+      String productSize = product_size_controller.text;
+      int profits = productSalesPrice - productBuingPrice;
       try {
         brandData.addBrandsType(
           categorey_name!,
           userID,
           categorey_type!,
           brand_name!,
-          product_size,
-          product_buing_price,
-          product_sales_price,
+          productSize,
+          productBuingPrice,
+          productSalesPrice,
           profits,
         );
 
@@ -153,21 +153,21 @@ class BrandsTypeControllerImp extends BrandsTypeController {
 
   @override
   show_edit_dialog(
-    String sales_pice,
-    String buiyng_price,
+    String salesPice,
+    String buiyngPrice,
     String size,
-    String prand_name,
+    String prandName,
   ) {
     custom_add_brands_type_dialog(
       () {
-        editBrandsType(sales_pice, buiyng_price, size, prand_name);
+        editBrandsType(salesPice, buiyngPrice, size, prandName);
         Get.back();
       },
       product_buying_controller,
       product_sales_price_controller,
       product_size_controller,
-      sales_pice,
-      buiyng_price,
+      salesPice,
+      buiyngPrice,
       size,
       key,
     );
@@ -175,34 +175,34 @@ class BrandsTypeControllerImp extends BrandsTypeController {
 
   @override
   editBrandsType(
-    String sales_pice,
-    String buiyng_price,
+    String salesPice,
+    String buiyngPrice,
     String size,
-    String product_name,
+    String productName,
   ) {
     statusreqest = Statusreqest.loading;
     update();
     String userID =
         services.sharedPreferences.getString(AppShared.userID)!;
-    String product_buing_price =
+    String productBuingPrice =
         product_buying_controller.text.isEmpty
-            ? buiyng_price
+            ? buiyngPrice
             : product_buying_controller.text;
-    String product_sales_price =
+    String productSalesPrice =
         product_sales_price_controller.text.isEmpty
-            ? sales_pice
+            ? salesPice
             : product_buying_controller.text;
-    String product_size =
+    String productSize =
         product_size_controller.text.isEmpty
             ? size
             : product_size_controller.text;
     try {
       brandData.editBrandsType(
         userID,
-        product_buing_price,
-        product_sales_price,
-        product_size,
-        product_name,
+        productBuingPrice,
+        productSalesPrice,
+        productSize,
+        productName,
       );
       product_buying_controller.clear();
       product_size_controller.clear();
@@ -215,11 +215,11 @@ class BrandsTypeControllerImp extends BrandsTypeController {
   }
 
   @override
-  deleteBrandsType(String product_name) {
+  deleteBrandsType(String productName) {
     String userID =
         services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      brandData.deleteBrandsType(userID, product_name);
+      brandData.deleteBrandsType(userID, productName);
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();
@@ -227,9 +227,9 @@ class BrandsTypeControllerImp extends BrandsTypeController {
   }
 
   @override
-  show_delete_dialog(String product_name) {
+  show_delete_dialog(String productName) {
     custom_delete_dialog(() {
-      deleteBrandsType(product_name);
+      deleteBrandsType(productName);
     });
   }
 

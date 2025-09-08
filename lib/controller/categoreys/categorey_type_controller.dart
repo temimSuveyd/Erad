@@ -14,7 +14,7 @@ abstract class CategoreyTypeController extends GetxController {
   show_dialog();
   add_categorey_type();
   init_data();
-  go_to_brand_page(String categorey_type);
+  go_to_brand_page(String categoreyType);
   getCategoreysType();
   searchForCategoreys_type();
   show_delete_dialog(String id);
@@ -24,7 +24,7 @@ abstract class CategoreyTypeController extends GetxController {
 class CategoreyTypeControllerImp extends CategoreyTypeController {
   Statusreqest statusreqest = Statusreqest.success;
   CategoreysData categoreysData = CategoreysData();
-  TextEditingController _categorey_type = TextEditingController();
+  final TextEditingController _categorey_type = TextEditingController();
   TextEditingController serach_for_categorey_type_controller =
       TextEditingController();
   Services services = Get.find();
@@ -47,12 +47,12 @@ class CategoreyTypeControllerImp extends CategoreyTypeController {
     update();
     String userID =
         services.sharedPreferences.getString(AppShared.userID)!;
-    String categorey_type = _categorey_type.text;
+    String categoreyType = _categorey_type.text;
     try {
       categoreysData.addCategorey_type(
         categorey_name!,
         userID,
-        categorey_type,
+        categoreyType,
       );
       statusreqest = Statusreqest.success;
       update();
@@ -63,11 +63,11 @@ class CategoreyTypeControllerImp extends CategoreyTypeController {
   }
 
   @override
-  go_to_brand_page(String categorey_type) {
+  go_to_brand_page(String categoreyType) {
     Get.toNamed(
       AppRoutes.brands_page,
       arguments: {
-        "categorey_type": categorey_type,
+        "categorey_type": categoreyType,
         "categorey_name": categorey_name,
       },
     );

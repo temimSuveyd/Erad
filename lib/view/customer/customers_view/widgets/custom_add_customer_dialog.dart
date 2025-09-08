@@ -7,12 +7,12 @@ import 'package:erad/view/custom_widgets/custom_dropDownButton.dart';
 import 'package:erad/view/custom_widgets/custom_text_field.dart';
 
 Future<dynamic> Custom_add_customer_dialog(
-  TextEditingController customer_name_controller,
-  String customer_city,
+  TextEditingController customerNameController,
+  String customerCity,
   void Function() onConfirm,
   dynamic Function(String) onChangedCity,
-  String customer_name_hint,
-  String customer_city_hint,
+  String customerNameHint,
+  String customerCityHint,
 ) {
   return Get.defaultDialog(
     title: "أضف عميلًا",
@@ -21,8 +21,8 @@ Future<dynamic> Custom_add_customer_dialog(
     backgroundColor: AppColors.backgroundColor,
     onConfirm: () {
       onConfirm();
-      customer_name_controller.clear();
-      customer_city = "";
+      customerNameController.clear();
+      customerCity = "";
     },
     onCancel: () {},
     actions: [
@@ -33,19 +33,19 @@ Future<dynamic> Custom_add_customer_dialog(
           spacing: 20,
           children: [
             Custom_textfield(
-              hintText: customer_name_hint,
+              hintText: customerNameHint,
               suffixIcon: Icons.person,
               validator: (p0) {
-                return validatorInput(p0!, 3, 100, "name");
+             
               },
-              controller: customer_name_controller,
+              controller: customerNameController,
               onChanged: (p0) {},
             ),
 
             Custom_dropDownButton(
               value: "customer_city",
               onChanged: (value) => onChangedCity(value),
-              hint: customer_city_hint,
+              hint: customerCityHint,
               items: city_data,
             ),
 

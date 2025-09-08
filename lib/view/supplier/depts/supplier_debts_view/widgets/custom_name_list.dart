@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:erad/core/constans/colors.dart';
 import 'package:erad/view/custom_widgets/custom_add_button.dart';
-import 'package:erad/view/customer/Customer_bills_view/widgets/custom_name_label.dart';
 
 class CustomerNameList extends StatelessWidget {
   const CustomerNameList({super.key});

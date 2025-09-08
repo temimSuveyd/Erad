@@ -35,7 +35,9 @@ class CustomerBillsViewPage extends GetView<CustomerBillViewControllerImp> {
                         (controller) => Custom_textfield(
                           hintText: 'اسم العميل',
                           suffixIcon: Icons.search,
-                          validator: (String? validator) {},
+                          validator: (String? validator) {
+                            return null;
+                          },
                           controller: controller.searchBillsTextController,
                           onChanged: (p0) {
                             controller.searchForBillsBayCustomerName();

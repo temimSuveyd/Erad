@@ -6,7 +6,6 @@ import 'package:erad/view/customer/Customer_debts_view/widgets/custom_list_view_
 import 'package:erad/view/custom_widgets/custom_add_button.dart';
 import 'package:erad/view/custom_widgets/show_date_range_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:erad/view/customer/Customer_bills_view/widgets/custom_bill_name_list.dart';
 import 'package:erad/view/custom_widgets/custom_appBar.dart';
 import 'package:erad/view/custom_widgets/custom_text_field.dart';
 import 'package:erad/view/custom_widgets/custom_dropDownButton.dart';

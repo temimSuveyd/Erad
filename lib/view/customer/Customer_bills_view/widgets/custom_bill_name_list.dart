@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/utils.dart';
 import 'package:erad/core/constans/colors.dart';
 import 'package:erad/core/constans/routes.dart';
 import 'package:erad/view/custom_widgets/custom_add_button.dart';

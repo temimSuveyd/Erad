@@ -1,4 +1,3 @@
-import 'package:erad/controller/customers/depts/customer_dept_details_controller.dart';
 import 'package:erad/controller/suppliers/depts/supplier_depts_details_controller.dart';
 import 'package:erad/data/model/customer_depts/customer_dept_payments_model.dart';
 import 'package:erad/view/supplier/depts/suppliers_debt_details/widgets/custom_debt_payments_card.dart';

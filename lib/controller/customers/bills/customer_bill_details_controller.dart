@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'dart:typed_data';
 
 import 'package:erad/core/constans/routes.dart';
@@ -22,18 +22,18 @@ import 'package:erad/view/custom_widgets/custom_text_field.dart';
 
 abstract class CustomerBillDetailsController extends GetxController {
   deleteBillFromDepts();
-  updateBillInDepts(double total_price);
+  updateBillInDepts(double totalPrice);
   getBillDetails();
   getBillProducts();
   initData();
   editProductData(String productId);
-  getProductById(String product_id);
+  getProductById(String productId);
   // ignore: non_constant_identifier_names
   show_edit_prodcut_dialog(
     TextEditingController controller,
     Function() onConfirm,
   );
-  updateProductData(int product_number, String product_id);
+  updateProductData(int productNumber, String productId);
   // ignore: non_constant_identifier_names
   show_delete_product_dialog(String productId);
   // ignore: non_constant_identifier_names
@@ -53,7 +53,7 @@ abstract class CustomerBillDetailsController extends GetxController {
   goToPdfViewPage(Uint8List pdfBytes);
   createPdf();
   addDiscount(double discount);
-  updatePaymentType(String bill_status);
+  updatePaymentType(String billStatus);
   showEditPaymentTypeDailog();
   addDept();
   addBillToDepts();
@@ -163,10 +163,10 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
   }
 
   @override
-  Future getProductById(String product_id) async {
+  Future getProductById(String productId) async {
     try {
       await customerBillData
-          .getBillProdectBayId(userID!, bill_id!, product_id)
+          .getBillProdectBayId(userID!, bill_id!, productId)
           .then((value) {
             product_numper = value["product_number"];
             product_price = value["product_price"];
@@ -201,7 +201,9 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
               Custom_textfield(
                 hintText: "",
                 suffixIcon: Icons.edit,
-                validator: (p0) {},
+                validator: (p0) {
+                  return null;
+                },
                 controller: controller,
                 onChanged: (p0) {},
               ),
@@ -213,33 +215,33 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
   }
 
   @override
-  Future updateProductData(int product_number, String product_id) async {
+  Future updateProductData(int productNumber, String productId) async {
     try {
       statusreqest = Statusreqest.loading;
       update();
       await customerBillData.updateProductData(
-        product_id,
-        product_number,
-        product_price! * product_number,
+        productId,
+        productNumber,
+        product_price! * productNumber,
         userID!,
         bill_id!,
       );
 
       statusreqest = Statusreqest.success;
-    } on Exception catch (e) {
+    } on Exception {
       statusreqest = Statusreqest.faliure;
     }
     update();
   }
 
   @override
-  show_delete_product_dialog(String product_id) {
+  show_delete_product_dialog(String productId) {
     Get.defaultDialog(
       backgroundColor: AppColors.backgroundColor,
       onCancel: () {},
       buttonColor: AppColors.primary,
       onConfirm: () {
-        delete_product(product_id);
+        delete_product(productId);
         Get.back();
       },
       middleText: "",
@@ -250,11 +252,11 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
   }
 
   @override
-  Future delete_product(String product_id) async {
+  Future delete_product(String productId) async {
     try {
       statusreqest = Statusreqest.loading;
       update();
-      await customerBillData.deleteProduct(bill_id!, product_id, userID!);
+      await customerBillData.deleteProduct(bill_id!, productId, userID!);
       await updateBillData();
       statusreqest = Statusreqest.success;
     } catch (e) {
@@ -314,7 +316,9 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
               Custom_textfield(
                 hintText: "تخفيض",
                 suffixIcon: Icons.discount,
-                validator: (p0) {},
+                validator: (p0) {
+                  return null;
+                },
                 controller: discount_controller,
                 onChanged: (p0) {},
               ),
@@ -442,7 +446,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
       statusreqest = Statusreqest.success;
       update();
       goToPdfViewPage(pdfBytes);
-    } on Exception catch (e) {
+    } on Exception {
       statusreqest = Statusreqest.success;
       update();
     }
@@ -450,18 +454,18 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
   }
 
   @override
-  updateBillInDepts(double total_price) {
+  updateBillInDepts(double totalPrice) {
     try {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
-      final String customer_id = billModel!.customer_id!;
-      final String bill_id = billModel!.bill_id!;
+      final String customerId = billModel!.customer_id!;
+      final String billId = billModel!.bill_id!;
 
       customerDeptsData.updateTotalPriceInBill(
-        bill_id,
-        customer_id,
+        billId,
+        customerId,
         userID,
-        total_price,
+        totalPrice,
       );
     } catch (e) {
       statusreqest = Statusreqest.faliure;
@@ -474,9 +478,9 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
     try {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
-      final String customer_id = billModel!.customer_id!;
-      final String bill_id = billModel!.bill_id!;
-      customerDeptsData.delteBillFromDepts(bill_id, customer_id, userID);
+      final String customerId = billModel!.customer_id!;
+      final String billId = billModel!.bill_id!;
+      customerDeptsData.delteBillFromDepts(billId, customerId, userID);
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();

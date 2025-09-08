@@ -9,7 +9,6 @@ import 'package:erad/view/supplier/bills/supplier_bill_details/widgets/custom_pr
 import 'package:erad/view/supplier/bills/supplier_bill_details/widgets/custom_text_body.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 
 import '../../../custom_widgets/custom_add_button.dart';
 

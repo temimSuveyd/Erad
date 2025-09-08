@@ -85,7 +85,7 @@ class Account_Square extends StatelessWidget {
                       hintText: "أدخل بريدك الإلكتروني",
                       controller: controller.user_email,
                       validator: (p0) {
-                        return validatorInput(p0!, 4, 40, "email");
+                 
                       },
                     ),
                     SizedBox(height: 10),
@@ -93,10 +93,33 @@ class Account_Square extends StatelessWidget {
                     Custom_login_textfield(
                       hintText: "أدخل كلمة المرور ",
                       controller: controller.user_password,
-                      validator: (p0) {},
+                      validator: (p0) {
+                        return null;
+                      },
                     ),
                     SizedBox(height: 20),
-                
+                Row(children: [
+                Obx(() => Row(
+                  children: [
+                    Checkbox(
+                      value: controller.isLogin.value,
+                      onChanged: (value) {
+                        controller.changeSaveLogin();
+                      },
+                      activeColor: AppColors.primary,
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      "تذكرني عند الدخول",
+                      style: TextStyle(
+                        color: AppColors.wihet,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                )),
+                ],),
                     Custom_sigin_button(onPressed: () => controller.login()),
                   ],
                 ),

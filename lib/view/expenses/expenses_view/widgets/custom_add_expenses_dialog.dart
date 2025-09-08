@@ -47,7 +47,9 @@ class CustomAddExpensesDialog extends StatelessWidget {
               maxLines: 3,
               hintText: "عنوان",
               suffixIcon: Icons.attach_money_rounded,
-              validator: (q) {},
+              validator: (q) {
+                return null;
+              },
               controller: titleController,
               onChanged: (value) {},
             ),
@@ -66,7 +68,9 @@ class CustomAddExpensesDialog extends StatelessWidget {
             child: Custom_textfield(
               hintText: "مبلغ",
               suffixIcon: Icons.attach_money_rounded,
-              validator: (q) {},
+              validator: (q) {
+                return null;
+              },
               controller: countController,
               onChanged: (value) {},
             ),

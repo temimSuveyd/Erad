@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 Future<dynamic> custom_bill_status_dialog(
-    String bill_status,
+    String billStatus,
     Function(String value) onPressed,
   ) {
     return Get.defaultDialog(
@@ -25,21 +25,21 @@ Future<dynamic> custom_bill_status_dialog(
               ),
               SizedBox(width: 3),
               Text(
-                (bill_status == "deliveryd"
+                (billStatus == "deliveryd"
                     ? "تم التسليم"
-                    : bill_status == "eliminate"
+                    : billStatus == "eliminate"
                         ? "تم الإلغاء"
-                        : bill_status == "itwasFormed"
+                        : billStatus == "itwasFormed"
                             ? "تم التشكيل"
-                            : bill_status ?? ""),
+                            : billStatus ?? ""),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
-                  color: bill_status == "deliveryd"
+                  color: billStatus == "deliveryd"
                       ? AppColors.green
-                      : bill_status == "eliminate"
+                      : billStatus == "eliminate"
                           ? AppColors.red
-                          : bill_status == "itwasFormed"
+                          : billStatus == "itwasFormed"
                               ? AppColors.black
                               : AppColors.grey,
                 ),

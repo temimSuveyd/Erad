@@ -28,7 +28,9 @@ class BrandsTypeViewPage extends GetView<BrandsTypeControllerImp> {
                   Custom_textfield(
                     hintText: "ابحث عن منتج",
                     suffixIcon: Icons.search,
-                    validator: (p0) {},
+                    validator: (p0) {
+                      return null;
+                    },
                     controller: controller.serach_for_brands_type_controller,
                     onChanged: (p0) {
                       controller.searchForBrandsType();

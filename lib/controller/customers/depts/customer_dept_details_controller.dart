@@ -136,7 +136,9 @@ backgroundColor: AppColors.backgroundColor,
             Custom_textfield(
               hintText: "أضف سعر الدفع",
               suffixIcon: Icons.attach_money_rounded,
-              validator: (p0) {},
+              validator: (p0) {
+                return null;
+              },
               controller: addPaymentController,
               onChanged: (p0) {},
             ),
@@ -181,12 +183,12 @@ backgroundColor: AppColors.backgroundColor,
           services.sharedPreferences.getString(AppShared.userID)!;
 
       try {
-        final double total_price = double.parse(addPaymentController.text);
-        if (remainingDebtAamount - total_price >= 0) {
+        final double totalPrice = double.parse(addPaymentController.text);
+        if (remainingDebtAamount - totalPrice >= 0) {
           _customerDeptsData.addPaymentToDepts(
             deptId!,
             userID,
-            total_price,
+            totalPrice,
             paymentDate,
           );
           getBills();

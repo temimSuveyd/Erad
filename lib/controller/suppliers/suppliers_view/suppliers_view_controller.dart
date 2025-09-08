@@ -13,22 +13,18 @@ abstract class SuppliersController extends GetxController {
   addSuppliers();
 
   show_add_Suppliers_dialog();
-  changeCity(String city_name);
+  changeCity(String cityName);
   getSuppliers();
-  show_delete_dialog(String Suppliers_id);
-  dlete_Suppliers(String Suppliers_id);
+  show_delete_dialog(String suppliersId);
+  dlete_Suppliers(String suppliersId);
   show_edit_dialog(
-    String suppliers_id,
-    String suppliers_city,
-    String suppliers_name,
+    String suppliersId,
+    String suppliersCity,
+    String suppliersName,
   );
-  editSuppliers(
-    String suppliers_id,
-    String suppliers_city,
-    String suppliers_name,
-  );
+  editSuppliers(String suppliersId, String suppliersCity, String suppliersName);
   searchForSuppliersBayName();
-  searchForSuppliersBayCity(String city_name);
+  searchForSuppliersBayCity(String cityName);
 }
 
 class SuppliersControllerImp extends SuppliersController {
@@ -42,17 +38,16 @@ class SuppliersControllerImp extends SuppliersController {
 
   @override
   addSuppliers() {
-    String suppliers_name = suppliers_name_controller.text;
-    if (suppliers_city.isEmpty || suppliers_name.isEmpty) {
+    String suppliersName = suppliers_name_controller.text;
+    if (suppliers_city.isEmpty || suppliersName.isEmpty) {
       custom_snackBar();
     } else {
       statusreqest = Statusreqest.loading;
       update();
-      String userID =
-          services.sharedPreferences.getString(AppShared.userID)!;
+      String userID = services.sharedPreferences.getString(AppShared.userID)!;
 
       try {
-        suppliersData.addSupplier(userID, suppliers_name, suppliers_city);
+        suppliersData.addSupplier(userID, suppliersName, suppliers_city);
       } catch (e) {
         statusreqest = Statusreqest.faliure;
         update();
@@ -78,8 +73,8 @@ class SuppliersControllerImp extends SuppliersController {
   }
 
   @override
-  changeCity(String city_name) {
-    suppliers_city = city_name;
+  changeCity(String cityName) {
+    suppliers_city = cityName;
     update();
   }
 
@@ -87,8 +82,7 @@ class SuppliersControllerImp extends SuppliersController {
   getSuppliers() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       suppliersData.getAllSuppliers(userID).listen((event) {
         suppliersList.value = event.docs;
@@ -106,19 +100,18 @@ class SuppliersControllerImp extends SuppliersController {
   }
 
   @override
-  show_delete_dialog(String Suppliers_id) {
+  show_delete_dialog(String suppliersId) {
     custom_delete_dialog(() {
-      dlete_Suppliers(Suppliers_id);
+      dlete_Suppliers(suppliersId);
     });
   }
 
   @override
-  dlete_Suppliers(String Suppliers_id) {
+  dlete_Suppliers(String suppliersId) {
     try {
-      String userID =
-          services.sharedPreferences.getString(AppShared.userID)!;
+      String userID = services.sharedPreferences.getString(AppShared.userID)!;
 
-      suppliersData.deleteSupplier(userID, Suppliers_id);
+      suppliersData.deleteSupplier(userID, suppliersId);
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();
@@ -127,45 +120,44 @@ class SuppliersControllerImp extends SuppliersController {
 
   @override
   show_edit_dialog(
-    String _suppliers_id,
-    String _suppliers_city,
-    String suppliers_name,
+    String suppliers_id,
+    String suppliers_city,
+    String suppliersName,
   ) {
     Custom_add_suppliers_dialog(
       suppliers_name_controller,
       suppliers_city,
       () {
-        editSuppliers(_suppliers_id, suppliers_city, suppliers_name);
+        editSuppliers(suppliers_id, suppliers_city, suppliersName);
         Get.close(0);
       },
       (p0) {
         changeCity(p0);
       },
-      suppliers_name,
-      _suppliers_city,
+      suppliersName,
+      suppliers_city,
     );
   }
 
   @override
   editSuppliers(
-    String _suppliers_id,
-    String _suppliers_city,
-    String suppliers_name,
+    String suppliers_id,
+    String suppliers_city,
+    String suppliersName,
   ) {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
-    String _suppliers_name =
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
+    String suppliers_name0 =
         suppliers_name_controller.text.isEmpty
-            ? suppliers_name
+            ? suppliersName
             : suppliers_name_controller.text;
-    String _suppliers_city =
+    String suppliersCity =
         suppliers_city.isEmpty ? suppliers_city : suppliers_city;
     try {
       suppliersData.editSupplier(
         userID,
-        _suppliers_name,
-        _suppliers_city,
-        _suppliers_id,
+        suppliers_name0,
+        suppliersCity,
+        suppliers_id,
       );
     } catch (e) {
       statusreqest = Statusreqest.faliure;
@@ -193,28 +185,29 @@ class SuppliersControllerImp extends SuppliersController {
   }
 
   @override
-  searchForSuppliersBayCity(String city_name) async{
-    suppliers_city = city_name;
-    if (city_name.isEmpty || city_name == "جميع المدن") {
+  searchForSuppliersBayCity(String cityName) async {
+    suppliers_city = cityName;
+    if (cityName.isEmpty || cityName == "جميع المدن") {
       getSuppliers();
     } else {
-
       String userID = services.sharedPreferences.getString(AppShared.userID)!;
       try {
         suppliersData.getAllSuppliers(userID).listen((event) {
           var allSuppliers = event.docs;
-          
-          var filteredList = allSuppliers.where((doc) {
-            final data = doc.data();
-            final supplierCity = data["supplier_city"]?.toString().toLowerCase() ?? '';
-            final searchCity = city_name.toLowerCase();
-            return supplierCity.contains(searchCity) || 
-                   searchCity.contains(supplierCity) ||
-                   supplierCity == searchCity;
-          }).toList();
-          
+
+          var filteredList =
+              allSuppliers.where((doc) {
+                final data = doc.data();
+                final supplierCity =
+                    data["supplier_city"]?.toString().toLowerCase() ?? '';
+                final searchCity = cityName.toLowerCase();
+                return supplierCity.contains(searchCity) ||
+                    searchCity.contains(supplierCity) ||
+                    supplierCity == searchCity;
+              }).toList();
+
           suppliersList.value = filteredList;
-          
+
           if (filteredList.isEmpty) {
             statusreqest = Statusreqest.noData;
           } else {

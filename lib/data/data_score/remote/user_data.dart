@@ -4,7 +4,7 @@ class UserData {
   final FirebaseFirestore _firebase = FirebaseFirestore.instance;
 
   // ignore: non_constant_identifier_names
-  add_user(String userID) {
+  void add_user(String userID) {
     _firebase.collection("users").doc(userID).set({
       "userID": userID,
     });

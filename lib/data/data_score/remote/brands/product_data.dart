@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductData {
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getAllproduct(String userID) {
     return _firestore
@@ -13,13 +13,13 @@ class ProductData {
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getBrandsTypeBayId(
     String userID,
-    String product_id,
+    String productId,
   ) async {
     return await _firestore
         .collection("users")
         .doc(userID)
         .collection("brands_type")
-        .doc(product_id)
+        .doc(productId)
         .get();
   }
 }

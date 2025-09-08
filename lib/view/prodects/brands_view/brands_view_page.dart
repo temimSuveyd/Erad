@@ -23,7 +23,9 @@ class BrandsViewPage extends GetView<BrandsControllerImp> {
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: Row(children: [Custom_textfield(hintText: 'ابحث عن العلامات التجارية', suffixIcon: Icons.search, validator: (String?validator ) {  }, controller: controller.serach_for_brands_controller, onChanged: (String ) { 
+              child: Row(children: [Custom_textfield(hintText: 'ابحث عن العلامات التجارية', suffixIcon: Icons.search, validator: (String?validator ) {
+                return null;
+                }, controller: controller.serach_for_brands_controller, onChanged: (String ) { 
 
                 controller.searchForBrands();
                },)]),
