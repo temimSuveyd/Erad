@@ -81,7 +81,7 @@ class ExpensesCategoryControllerImp extends ExpensesDetailsController {
       _expensesData.getExpensesCategory(userID).listen((event) {
         expensesList.value = event.docs;
         if (expensesList.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
         }

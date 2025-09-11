@@ -147,7 +147,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
         supplier_city = supplierData!["supplier_city"];
         supplier_name = supplierData!["supplier_name"];
         if (supplierData!.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
         }
@@ -232,7 +232,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
       _productData.getAllproduct(userID).listen((event) {
         all_product_list.value = event.docs;
         if (all_product_list.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
           Future.delayed(Duration(milliseconds: 100), () {
@@ -536,17 +536,21 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   }
 
   @override
-  setProductFromSearch(String product_name) {
+  setProductFromSearch(String _product_name) {
     if (all_product_list.isNotEmpty) {
       Future.delayed(Duration(milliseconds: 100), () {
         FocusScope.of(Get.context!).requestFocus(focusNode2);
       });
-      product_name = product_name;
+      product_name = _product_name;
       serach_for_product_controller.text = product_name!;
     }
     show_search_popupMenu = false;
     update();
   }
+
+
+
+
 
   @override
   deleteProduct(int productIndex) {

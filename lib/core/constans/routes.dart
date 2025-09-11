@@ -22,5 +22,5 @@ class AppRoutes {
   static const String supplier_depts_details_page = "/supplier_depts_details_page";
   static const String expenses_page = "/expenses_page";
   static const String expenses_category_page = "/expenses_category_page";
-
-  }
+  static const String reports_view_page = "/reports_view_page";
+}

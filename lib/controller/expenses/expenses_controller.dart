@@ -119,7 +119,7 @@ class ExpensesControllerImp extends ExpensesController {
               return false;
             }).toList();
         if (expensesList.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           calculateTotalExpenditures();
           statusreqest = Statusreqest.success;

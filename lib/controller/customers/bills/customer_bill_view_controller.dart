@@ -37,7 +37,7 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
       customerBillData.getAllBils(userID).listen((event) {
         customer_bills_list.value = event.docs;
         if (customer_bills_list.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
         }
@@ -70,7 +70,7 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
             }
           }).toList();
       if (customer_bills_list.isEmpty) {
-        statusreqest = Statusreqest.noData;
+        statusreqest = Statusreqest.empty;
       }
       update();
     }
@@ -88,7 +88,7 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
             return fileView.contains(cityName.toLowerCase());
           }).toList();
       if (customer_bills_list.isEmpty) {
-        statusreqest = Statusreqest.noData;
+        statusreqest = Statusreqest.empty;
       }
       selectedCustomerCity = cityName;
     }
@@ -131,7 +131,7 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
 
           // Update status if no results found
           if (customer_bills_list.isEmpty) {
-            statusreqest = Statusreqest.noData;
+            statusreqest = Statusreqest.empty;
             update();
           }
 

@@ -1,4 +1,4 @@
-import 'package:erad/controller/suppliers/bills/suppliers_bill_add_controller.dart';
+import 'package:erad/controller/customers/bills/customer_add_bill_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:erad/core/constans/colors.dart';
@@ -12,7 +12,7 @@ class Custom_serach_menu extends StatelessWidget {
       right: 5,
       top: 53,
       width: 290,
-      child: GetBuilder<SupplierBiilAddControllerImp>(
+      child: GetBuilder<CustomerBiilAddControllerImp>(
         builder:
             (controller) =>
                 controller.show_search_popupMenu

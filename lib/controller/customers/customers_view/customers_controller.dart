@@ -93,7 +93,7 @@ class CustomersControllerImp extends CustomersController {
       customersData.getAllCustomers(userID).listen((event) {
         customersList.value = event.docs;
         if (customersList.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
         }
@@ -186,7 +186,7 @@ class CustomersControllerImp extends CustomersController {
             return fileView.contains(search.toLowerCase());
           }).toList();
       if (customersList.isEmpty) {
-        statusreqest = Statusreqest.noData;
+        statusreqest = Statusreqest.empty;
       }
     }
     update();
@@ -205,7 +205,7 @@ class CustomersControllerImp extends CustomersController {
             return fileView.contains(cityName.toLowerCase());
           }).toList();
       if (customersList.isEmpty) {
-        statusreqest = Statusreqest.noData;
+        statusreqest = Statusreqest.empty;
       }
     }
     update();

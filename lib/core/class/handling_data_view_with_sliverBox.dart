@@ -64,7 +64,7 @@ class HandlingDataViewWithSliverBox extends StatelessWidget {
         ),
       );
     }
-    if (statusreqest == Statusreqest.noData) {
+    if (statusreqest == Statusreqest.empty) {
       return SliverToBoxAdapter(
         child: Center(
           child: SizedBox(

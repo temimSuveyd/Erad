@@ -2,6 +2,7 @@ import 'package:erad/core/middleWare/app_middleware.dart';
 import 'package:erad/view/customer/customer_bills_add/suppliers_bill_add.dart';
 import 'package:erad/view/expenses/expenses_category/expenses_category.dart';
 import 'package:erad/view/expenses/expenses_view/expenses_page.dart';
+import 'package:erad/view/reports/reports_view_page.dart';
 import 'package:erad/view/supplier/bills/supplier_bill_details/supplier_bill_details_view.dart';
 import 'package:erad/view/supplier/depts/supplier_debts_view/suppliers_debts_view_page.dart';
 import 'package:erad/view/supplier/bills/suppliers_bills_add/suppliers_bill_add.dart';
@@ -169,9 +170,10 @@ List<GetPage<dynamic>>? getPages = [
     transition: Transition.leftToRight,
     transitionDuration: Duration(milliseconds: 350),
   ),
+  GetPage(
+    name: AppRoutes.reports_view_page,
+    page: () => ReportsViewPage(),
+    transition: Transition.leftToRight,
+    transitionDuration: Duration(milliseconds: 350),
+  ),
 ];
-
-
-// Turkish: masraflar kısmı : delete local data , edit local data , add local data ve harcama kategorisi ekleme kısmı tamamen bitti .
-// English: Expenses section: delete local data, edit local data, add local data, and add expense category parts are completely finished.
-// Arabic: قسم المصاريف: حذف البيانات المحلية، تعديل البيانات المحلية، إضافة البيانات المحلية، وإضافة فئة المصاريف اكتملت تمامًا.

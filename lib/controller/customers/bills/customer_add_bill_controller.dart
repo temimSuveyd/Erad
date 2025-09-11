@@ -146,7 +146,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
         customer_city = customerData!["customer_city"];
         customer_name = customerData!["customer_name"];
         if (customerData!.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
         }
@@ -231,7 +231,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
       _productData.getAllproduct(userID).listen((event) {
         all_product_list.value = event.docs;
         if (all_product_list.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
           Future.delayed(Duration(milliseconds: 100), () {
@@ -535,12 +535,12 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
   }
 
   @override
-  setProductFromSearch(String product_name) {
+  setProductFromSearch(String _product_name) {
     if (all_product_list.isNotEmpty) {
       Future.delayed(Duration(milliseconds: 100), () {
         FocusScope.of(Get.context!).requestFocus(focusNode2);
       });
-      product_name = product_name;
+      product_name = _product_name;
       serach_for_product_controller.text = product_name!;
     }
     show_search_popupMenu = false;

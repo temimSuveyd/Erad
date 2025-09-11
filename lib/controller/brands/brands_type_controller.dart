@@ -118,7 +118,7 @@ class BrandsTypeControllerImp extends BrandsTypeController {
           .listen((event) {
             brandsTypeList.value = event.docs;
             if (brandsTypeList.isEmpty) {
-              statusreqest = Statusreqest.noData;
+              statusreqest = Statusreqest.empty;
               update();
             } else {
               statusreqest = Statusreqest.success;
@@ -145,7 +145,7 @@ class BrandsTypeControllerImp extends BrandsTypeController {
             return fileView.contains(search.toLowerCase());
           }).toList();
       if (brandsTypeList.isEmpty) {
-        statusreqest = Statusreqest.noData;
+        statusreqest = Statusreqest.empty;
       }
     }
     update();

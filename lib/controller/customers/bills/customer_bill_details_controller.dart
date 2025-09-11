@@ -109,7 +109,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
       customerBillData.getBillProdects(userID!, bill_id!).listen((event) {
         productList.value = event.docs;
         if (productList.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
         }

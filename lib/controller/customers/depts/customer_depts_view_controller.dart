@@ -37,7 +37,7 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
         customersDeptsList.value = event.docs;
 
         if (customersDeptsList.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
         }
@@ -69,7 +69,7 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
             }
           }).toList();
       if (customersDeptsList.isEmpty) {
-        statusreqest = Statusreqest.noData;
+        statusreqest = Statusreqest.empty;
       }
       update();
     }
@@ -87,7 +87,7 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
             return fileView.contains(cityName.toLowerCase());
           }).toList();
       if (customersDeptsList.isEmpty) {
-        statusreqest = Statusreqest.noData;
+        statusreqest = Statusreqest.empty;
       }
       selectedCustomerCity = cityName;
     }
@@ -115,7 +115,7 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
 
       // Update status if no results found
       if (customersDeptsList.isEmpty) {
-        statusreqest = Statusreqest.noData;
+        statusreqest = Statusreqest.empty;
       }
 
       update();

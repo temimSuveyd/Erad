@@ -36,7 +36,7 @@ class SupplierDeptsViewControllerImp extends SupplierDeptsViewController {
       _supplierDeptsData.getAllDepts(userID).listen((event) {
         supplierDeptsList.value = event.docs;
         if (supplierDeptsList.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
         }
@@ -68,7 +68,7 @@ class SupplierDeptsViewControllerImp extends SupplierDeptsViewController {
             }
           }).toList();
       if (supplierDeptsList.isEmpty) {
-        statusreqest = Statusreqest.noData;
+        statusreqest = Statusreqest.empty;
       }
       update();
     }
@@ -86,7 +86,7 @@ class SupplierDeptsViewControllerImp extends SupplierDeptsViewController {
             return fileView.contains(cityName.toLowerCase());
           }).toList();
       if (supplierDeptsList.isEmpty) {
-        statusreqest = Statusreqest.noData;
+        statusreqest = Statusreqest.empty;
       }
       selectedSupplierCity = cityName;
     }
@@ -114,7 +114,7 @@ class SupplierDeptsViewControllerImp extends SupplierDeptsViewController {
 
       // Update status if no results found
       if (supplierDeptsList.isEmpty) {
-        statusreqest = Statusreqest.noData;
+        statusreqest = Statusreqest.empty;
       }
 
       update();

@@ -87,7 +87,7 @@ class SuppliersControllerImp extends SuppliersController {
       suppliersData.getAllSuppliers(userID).listen((event) {
         suppliersList.value = event.docs;
         if (suppliersList.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
         }
@@ -178,7 +178,7 @@ class SuppliersControllerImp extends SuppliersController {
             return fileView.contains(search.toLowerCase());
           }).toList();
       if (suppliersList.isEmpty) {
-        statusreqest = Statusreqest.noData;
+        statusreqest = Statusreqest.empty;
       }
     }
     update();
@@ -209,7 +209,7 @@ class SuppliersControllerImp extends SuppliersController {
           suppliersList.value = filteredList;
 
           if (filteredList.isEmpty) {
-            statusreqest = Statusreqest.noData;
+            statusreqest = Statusreqest.empty;
           } else {
             statusreqest = Statusreqest.success;
           }

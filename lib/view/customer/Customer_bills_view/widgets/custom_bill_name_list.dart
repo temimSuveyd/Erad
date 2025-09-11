@@ -27,7 +27,7 @@ class CustomerNameList extends StatelessWidget {
             color: AppColors.primary,
             icon: Icons.add,
             onPressed: () {
-              Get.toNamed(AppRoutes.supplier_bills_add_page);
+              Get.toNamed(AppRoutes.customer_bills_add_page);
             },
             title: "إضافة",
           ),

@@ -94,7 +94,7 @@ class CategoreyTypeControllerImp extends CategoreyTypeController {
         categoreyTypeList.value = event.docs;
         update();
         if (categoreyTypeList.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
           update();
         } else {
           statusreqest = Statusreqest.success;
@@ -120,7 +120,7 @@ class CategoreyTypeControllerImp extends CategoreyTypeController {
             return fileView.contains(search.toLowerCase());
           }).toList();
       if (categoreyTypeList.isEmpty) {
-        statusreqest = Statusreqest.noData;
+        statusreqest = Statusreqest.empty;
         update();
       }
     }

@@ -1,6 +1,6 @@
-import 'package:erad/controller/suppliers/bills/suppliers_bill_add_controller.dart';
-import 'package:erad/view/supplier/bills/suppliers_bills_add/widgets/custom_add_produc_Textfield.dart';
-import 'package:erad/view/supplier/bills/suppliers_bills_add/widgets/custom_search_menu.dart';
+import 'package:erad/controller/customers/bills/customer_add_bill_controller.dart';
+import 'package:erad/view/customer/customer_bills_add/widgets/custom_add_produc_Textfield.dart';
+import 'package:erad/view/customer/customer_bills_add/widgets/custom_search_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:erad/core/constans/colors.dart';
@@ -33,7 +33,7 @@ class Custom_add_product_card extends StatelessWidget {
             Positioned(
               right: 5,
               top: 7,
-              child: GetBuilder<SupplierBiilAddControllerImp>(
+              child: GetBuilder<CustomerBiilAddControllerImp>(
                 builder:
                     (controller) => Custom_add_produc_Textfield(
                       focusNode: controller.focusNode1,
@@ -54,7 +54,7 @@ class Custom_add_product_card extends StatelessWidget {
             Positioned(
               right: 330,
               top: 7,
-              child: GetBuilder<SupplierBiilAddControllerImp>(
+              child: GetBuilder<CustomerBiilAddControllerImp>(
                 builder:
                     (controller) => Custom_add_produc_Textfield(
                       focusNode: controller.focusNode2,
@@ -75,7 +75,7 @@ class Custom_add_product_card extends StatelessWidget {
               right: 520,
               top: 6,
 
-              child: GetBuilder<SupplierBiilAddControllerImp>(
+              child: GetBuilder<CustomerBiilAddControllerImp>(
                 builder:
                     (controller) => Custom_button( color: AppColors.primary,
                       icon: Icons.add,

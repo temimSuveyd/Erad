@@ -33,7 +33,7 @@ class Custom_bill_details_heder extends StatelessWidget {
                       (controller) => HandlingDataView(
                         onPressed: () => controller.getBillDetails(),
                         statusreqest:
-                            controller.statusreqest == Statusreqest.noData
+                            controller.statusreqest == Statusreqest.empty
                                 ? Statusreqest.success
                                 : controller.statusreqest,
                         widget: Row(
@@ -108,7 +108,7 @@ class Custom_bill_details_heder extends StatelessWidget {
                       (controller) => HandlingDataView(
                         onPressed: () => controller.getBillDetails(),
                         statusreqest:
-                            controller.statusreqest == Statusreqest.noData
+                            controller.statusreqest == Statusreqest.empty
                                 ? Statusreqest.success
                                 : controller.statusreqest,
                         widget: Row(

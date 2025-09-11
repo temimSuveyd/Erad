@@ -60,7 +60,7 @@ class HandlingDataView extends StatelessWidget {
         ),
       );
     }
-    if (statusreqest == Statusreqest.noData) {
+    if (statusreqest == Statusreqest.empty) {
       return Center(
         child: SizedBox(
           height: 300,

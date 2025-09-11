@@ -37,7 +37,7 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
       supplierBillData.getAllBils(userID).listen((event) {
         supplier_bills_list.value = event.docs;
         if (supplier_bills_list.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
         }
@@ -70,7 +70,7 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
             }
           }).toList();
       if (supplier_bills_list.isEmpty) {
-        statusreqest = Statusreqest.noData;
+        statusreqest = Statusreqest.empty;
       }
       update();
     }
@@ -88,7 +88,7 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
             return fileView.contains(cityName.toLowerCase());
           }).toList();
       if (supplier_bills_list.isEmpty) {
-        statusreqest = Statusreqest.noData;
+        statusreqest = Statusreqest.empty;
       }
       selectedSupplierCity = cityName;
     }
@@ -116,7 +116,7 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
           }).toList();
 
       if (supplier_bills_list.isEmpty) {
-        statusreqest = Statusreqest.noData;
+        statusreqest = Statusreqest.empty;
       }
 
       update();

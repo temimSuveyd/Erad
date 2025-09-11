@@ -1,8 +1,9 @@
 import 'package:erad/controller/customers/bills/customer_add_bill_controller.dart';
 import 'package:erad/core/class/handling_data_view_with_sliverBox.dart';
 import 'package:erad/data/model/customer_bill_add/prodects_model.dart';
-import 'package:erad/view/supplier/bills/suppliers_bills_add/widgets/custom_add_prodect_container.dart';
-import 'package:erad/view/supplier/bills/suppliers_bills_add/widgets/custom_add_product_card.dart';
+import 'package:erad/view/customer/customer_bills_add/widgets/custom_add_prodect_container.dart';
+import 'package:erad/view/customer/customer_bills_add/widgets/custom_add_product_card.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 

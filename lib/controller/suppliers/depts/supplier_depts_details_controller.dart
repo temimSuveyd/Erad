@@ -55,7 +55,7 @@ class SupplierDeptsDetailsControllerImpl extends SupplierDeptsDetailsController 
         deptsList.value = event.docs;
         calculatesAmountOfRemainingDebt();
         if (deptsList.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
         }
@@ -77,7 +77,7 @@ class SupplierDeptsDetailsControllerImpl extends SupplierDeptsDetailsController 
       _supplierDeptsData.getAllPayments(userID, deptId!).listen((event) {
         paymentsList.value = event.docs;
         if (paymentsList.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
         }
@@ -98,7 +98,7 @@ class SupplierDeptsDetailsControllerImpl extends SupplierDeptsDetailsController 
           services.sharedPreferences.getString(AppShared.userID)!;
       _supplierDeptsData.getDeptDetails(userID, deptId!).then((value) {
         if (value.data()!.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           deptModel = DeptsModel.formatJson(value.data());
           statusreqest = Statusreqest.success;

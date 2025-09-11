@@ -20,6 +20,7 @@ class CustomerDebtsDetailsPage
   Widget build(BuildContext context) {
     Get.lazyPut(() => CustomerDeptsDetailsControllerImp());
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
       appBar: Custom_appBar(title: "تفاصيل الديون"),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),

@@ -54,7 +54,7 @@ class CustomerDeptsDetailsControllerImp extends CustomerDeptsDetailsController {
         deptsList.value = event.docs;
         calculatesAmountOfRemainingDebt();
         if (deptsList.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
         }
@@ -76,7 +76,7 @@ class CustomerDeptsDetailsControllerImp extends CustomerDeptsDetailsController {
       _customerDeptsData.getAllPayments(userID, deptId!).listen((event) {
         paymentsList.value = event.docs;
         if (paymentsList.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
         }
@@ -97,7 +97,7 @@ class CustomerDeptsDetailsControllerImp extends CustomerDeptsDetailsController {
           services.sharedPreferences.getString(AppShared.userID)!;
       _customerDeptsData.getDeptDetails(userID, deptId!).then((value) {
         if (value.data()!.isEmpty) {
-          statusreqest = Statusreqest.noData;
+          statusreqest = Statusreqest.empty;
         } else {
           deptModel = DeptsModel.formatJson(value.data());
           statusreqest = Statusreqest.success;
