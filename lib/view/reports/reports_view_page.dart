@@ -81,27 +81,40 @@ class ReportsViewPage extends StatelessWidget {
             SliverToBoxAdapter(child: const SizedBox(height: 28)),
 
             SliverToBoxAdapter(
-              child: Wrap(
-                spacing: 16,
-                runSpacing: 16,
-                alignment: WrapAlignment.center,
-                children: List.generate(cards.length, (i) {
-                  final card = cards[i];
-                  return ReportCard(
-                    icon: card['icon'],
-                    iconColor: card['iconColor'],
-                    label: card['label'],
-                    value: card['value'],
-                    monthlyValue: card['monthly'],
-                    cardWidth: Get.width * 0.16,
-                    highlight: false,
-
-                    isSelected: false,
-                  );
-                }),
+              child: GetBuilder<ReportsControllerImpl>(
+                builder:
+                    (controller) => Wrap(
+                      spacing: 16,
+                      runSpacing: 16,
+                      alignment: WrapAlignment.center,
+                      children: List.generate(controller.cardsList.length, (i) {
+                        final card = cards[i];
+                        return ReportCard(
+                          icon: card['icon'],
+                          iconColor: card['iconColor'],
+                          label: card['label'],
+                          value: controller.cardsList[i],
+                          monthlyValue: card['monthly'],
+                        );
+                      }),
+                    ),
               ),
             ),
+            SliverToBoxAdapter(child: const SizedBox(height: 28)),
 
+            SliverToBoxAdapter(
+              child: GetBuilder<ReportsControllerImpl>(
+                builder:
+                    (controller) => SizedBox(
+                      width: Get.width * 0.9,
+                      child: ChartArea(
+                        totalList: controller.totalEraningsMonthly,
+                        title: "إجمالي أرباحي",
+                        primaryColor: AppColors.green,
+                      ),
+                    ),
+              ),
+            ),
             SliverToBoxAdapter(child: const SizedBox(height: 28)),
             ChartsGridViewBuilder(),
           ],

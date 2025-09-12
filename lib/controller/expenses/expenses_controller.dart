@@ -407,7 +407,6 @@ class ExpensesControllerImp extends ExpensesController {
             final repeatDate = expensesElement["repeat_date"];
             final title = expensesElement["title"];
             categoryID = expensesElement["category_id"];
-            // final isRepeat = expensesElement["is_repeat_expense"];
             final rDate = DateTime.parse(repeatDate);
             final aDate = DateTime.parse(addedDate);
             if (rDate.day == DateTime.now().day) {
