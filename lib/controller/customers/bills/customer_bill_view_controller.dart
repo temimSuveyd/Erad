@@ -1,4 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:erad/core/function/is_date_in_range.dart';
+import 'package:erad/core/function/save_started_date.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:erad/core/class/handling_data.dart';
@@ -8,12 +9,12 @@ import 'package:erad/core/services/app_services.dart';
 import 'package:erad/data/data_score/remote/customer/customer_bill_data.dart';
 
 abstract class CustomerBillViewController extends GetxController {
-  getCustomersBills();
-  searchForBillsBayCustomerName();
-  searchForBillBayCity(String cityName);
-  searchByDate(DateTime searchStartDate, DateTime searchEndDate);
-  goToDetailsPage(String billId);
-  updateBillStaus(String billStatus, String billId);
+  void getCustomersBills();
+  void searchForBillsBayCustomerName();
+  void searchForBillBayCity(String cityName);
+  void searchByDate(DateTimeRange dateRange);
+  void goToDetailsPage(String billId);
+  void updateBillStaus(String billStatus, String billId);
 }
 
 class CustomerBillViewControllerImp extends CustomerBillViewController {
@@ -24,18 +25,32 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
   late TextEditingController searchBillsTextController =
       TextEditingController();
   String? selectedCustomerCity;
-  String? selectedStartDate;
-  String? selectedEndDate;
+  DateTimeRange? selectedDateRange;
+  DateTime startedDate = DateTime.now();
 
   @override
   getCustomersBills() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       customerBillData.getAllBils(userID).listen((event) {
         customer_bills_list.value = event.docs;
+        customer_bills_list.value =
+            customer_bills_list.where((doc) {
+              final data = doc.data();
+              final DateTime billDate = data["bill_date"].toDate();
+              if (selectedDateRange == null) {
+                return (billDate.year == startedDate.year &&
+                    billDate.month == startedDate.month &&
+                    billDate.day == startedDate.day);
+              } else {
+                return isDateInRange(
+                  billDate: billDate,
+                  range: selectedDateRange!,
+                );
+              }
+            }).toList();
         if (customer_bills_list.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {
@@ -58,8 +73,7 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
       customer_bills_list.value =
           customer_bills_list.where((doc) {
             final data = doc.data();
-            final customerName =
-                data["customer_name"].toString().toLowerCase();
+            final customerName = data["customer_name"].toString().toLowerCase();
 
             final billId = data["bill_no"].toString().toLowerCase();
             if (customerName.contains(search.toLowerCase()) ||
@@ -81,74 +95,35 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
     if (cityName.isEmpty || cityName == "جميع المدن") {
       getCustomersBills();
     } else {
-      customer_bills_list.value =
-          customer_bills_list.where((doc) {
-            final data = doc.data();
-            final fileView = data["customer_city"].toLowerCase();
-            return fileView.contains(cityName.toLowerCase());
-          }).toList();
-      if (customer_bills_list.isEmpty) {
-        statusreqest = Statusreqest.empty;
-      }
-      selectedCustomerCity = cityName;
+      String userID = services.sharedPreferences.getString(AppShared.userID)!;
+
+      customerBillData.getAllBils(userID).listen((event) {
+        customer_bills_list.value = event.docs;
+        customer_bills_list.value =
+            customer_bills_list.where((doc) {
+              final data = doc.data();
+              final fileView = data["customer_city"].toLowerCase();
+              return fileView.contains(cityName.toLowerCase());
+            }).toList();
+        if (customer_bills_list.isEmpty) {
+          statusreqest = Statusreqest.empty;
+        }
+        selectedCustomerCity = cityName;
+        update();
+      });
     }
-    update();
   }
 
   @override
-  searchByDate(DateTime searchStartDate, DateTime searchEndDate) {
-    () async {
-      Future.microtask(() async {
-        try {
-          // Reset to all bills first and bekle
-          await getCustomersBills();
-
-          // Format dates for display
-          selectedStartDate = _formatDate(searchStartDate);
-          selectedEndDate = _formatDate(searchEndDate);
-
-          // Filter bills within date range
-          customer_bills_list.value =
-              customer_bills_list.where((doc) {
-                final data = doc.data();
-                final billDateRaw = data["bill_date"];
-                DateTime? billDate;
-
-                // bill_date null veya yanlış tipte olabilir, kontrol et
-                if (billDateRaw is Timestamp) {
-                  billDate = billDateRaw.toDate();
-                } else if (billDateRaw is DateTime) {
-                  billDate = billDateRaw;
-                } else {
-                  // Hatalı veri, filtreye dahil etme
-                  return false;
-                }
-
-                // Check if bill date is within range (inclusive)
-                return !billDate.isBefore(searchStartDate) &&
-                    !billDate.isAfter(searchEndDate);
-              }).toList();
-
-          // Update status if no results found
-          if (customer_bills_list.isEmpty) {
-            statusreqest = Statusreqest.empty;
-            update();
-          }
-
-          update();
-        } catch (e) {
-          statusreqest = Statusreqest.faliure;
-          update();
-          // Hata bildirimi için log ekle
-          print("searchByDate hata: $e");
-        }
-      });
-    };
-  }
-
-  // Helper method to format dates consistently
-  String _formatDate(DateTime date) {
-    return "${date.day}/${date.month}/${date.year}";
+  searchByDate(DateTimeRange dateRange) async {
+    // String userID = services.sharedPreferences.getString(AppShared.userID)!;
+    try {
+      selectedDateRange = dateRange;
+      getCustomersBills();
+    } catch (e) {
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
   }
 
   @override
@@ -162,8 +137,7 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
   @override
   Future updateBillStaus(String billStatus, String billId) async {
     try {
-      String userID =
-          services.sharedPreferences.getString(AppShared.userID)!;
+      String userID = services.sharedPreferences.getString(AppShared.userID)!;
       statusreqest = Statusreqest.loading;
       update();
 
@@ -177,8 +151,54 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
   }
 
   @override
-  void onInit() {
+  void onInit() async {
     getCustomersBills();
     super.onInit();
   }
 }
+
+
+
+
+  // customerBillData.getAllBils(userID).listen((event) {
+      //   customer_bills_list.value = event.docs;
+      //   customer_bills_list.value =
+      //       customer_bills_list.where((doc) {
+      //         final data = doc.data();
+      //         final billDate = data["bill_date"].toDate();
+      //         // Tarih aralığı tek bir günse, o günün tüm faturalarını dahil et
+      //         if (selectedDateRange!.start.year == selectedDateRange!.end.year &&
+      //             selectedDateRange!.start.month == dateRange.end.month &&
+      //             dateRange.start.day == dateRange.end.day) {
+      //           return billDate.year == dateRange.start.year &&
+      //               billDate.month == dateRange.start.month &&
+      //               billDate.day == dateRange.start.day;
+      //         } else {
+      //           // Tarih aralığı ise, başlangıç ve bitiş dahil aradaki tüm faturaları dahil et
+      //           final billDateOnly = DateTime(
+      //             billDate.year,
+      //             billDate.month,
+      //             billDate.day,
+      //           );
+      //           final startOnly = DateTime(
+      //             dateRange.start.year,
+      //             dateRange.start.month,
+      //             dateRange.start.day,
+      //           );
+      //           final endOnly = DateTime(
+      //             dateRange.end.year,
+      //             dateRange.end.month,
+      //             dateRange.end.day,
+      //           );
+      //           return (billDateOnly.isAtSameMomentAs(startOnly) ||
+      //                   billDateOnly.isAfter(startOnly)) &&
+      //               (billDateOnly.isAtSameMomentAs(endOnly) ||
+      //                   billDateOnly.isBefore(endOnly));
+      //         }
+      //       }).toList();
+      //   if (customer_bills_list.isEmpty) {
+      //     statusreqest = Statusreqest.empty;
+      //   }
+      //   selectedDateRange = dateRange;
+      //   update();
+      // });

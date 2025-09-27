@@ -153,7 +153,7 @@ class CustomerDeptsData {
     return _firestore
         .collection("users")
         .doc(userID)
-        .collection("customer_depts")
+        .collection("customer_depts").orderBy("bill_date", descending: false)
         .snapshots();
   }
 
@@ -166,7 +166,7 @@ class CustomerDeptsData {
         .doc(userID)
         .collection("customer_depts")
         .doc(customerId)
-        .collection("payments")
+        .collection("payments").orderBy("payment_date", descending: false)
         .snapshots();
   }
 
@@ -179,7 +179,7 @@ class CustomerDeptsData {
         .doc(userID)
         .collection("customer_depts")
         .doc(customerId)
-        .collection("customer_bills")
+        .collection("customer_bills").orderBy("bill_date", descending: false)
         .snapshots();
   }
 

@@ -3,6 +3,7 @@ import 'package:erad/core/class/handling_data_view.dart';
 import 'package:erad/core/constans/colors.dart';
 import 'package:erad/view/custom_widgets/custom_add_button.dart';
 import 'package:erad/view/custom_widgets/custom_date_text_container.dart';
+import 'package:erad/view/custom_widgets/show_date_range_picker.dart';
 import 'package:erad/view/customer/customer_debt_details/widgets/custom_depts_details_heder.dart';
 import 'package:flutter/material.dart';
 import 'package:erad/view/custom_widgets/custom_appBar.dart';
@@ -26,7 +27,24 @@ class CustomerDebtsDetailsPage
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         children: [
           Row(
-            children: [Custom_set_date_button(hintText: '', onPressed: () {})],
+            children: [
+              GetBuilder<CustomerDeptsDetailsControllerImp>(
+                builder:
+                    (controller) => Custom_set_date_button(
+                      hintText:
+                          controller.selectedDateRange == null
+                              ? "${controller.startedDateRange?.start.year}/${controller.startedDateRange?.start.month}/${controller.startedDateRange?.start.day} - ${controller.startedDateRange?.end.year}/${controller.startedDateRange?.end.month}/${controller.startedDateRange?.end.day}"
+                              : "${controller.selectedDateRange!.start.year}/${controller.selectedDateRange!.start.month}/${controller.selectedDateRange!.start.day} - ${controller.selectedDateRange!.end.year}/${controller.selectedDateRange!.end.month}/${controller.selectedDateRange!.end.day}",
+                      onPressed: () {
+                        show_date_range_picker(context).then((dateRange) {
+                          if (dateRange != null) {
+                            controller.setDateRenage(dateRange);
+                          }
+                        });
+                      },
+                    ),
+              ),
+            ],
           ),
           SizedBox(height: 20),
 

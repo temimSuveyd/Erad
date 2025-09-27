@@ -1,5 +1,5 @@
 import 'package:erad/core/middleWare/app_middleware.dart';
-import 'package:erad/view/customer/customer_bills_add/suppliers_bill_add.dart';
+import 'package:erad/view/customer/customer_bills_add/customer_bill_add.dart';
 import 'package:erad/view/expenses/expenses_category/expenses_category.dart';
 import 'package:erad/view/expenses/expenses_view/expenses_page.dart';
 import 'package:erad/view/reports/reports_view_page.dart';
@@ -9,6 +9,8 @@ import 'package:erad/view/supplier/bills/suppliers_bills_add/suppliers_bill_add.
 import 'package:erad/view/supplier/bills/suppliers_bills_view/suppliers_bills_view_page.dart';
 import 'package:erad/view/supplier/depts/suppliers_debt_details/suppliers_debts_details_page.dart';
 import 'package:erad/view/supplier/suppliers_view/customers_view_page.dart';
+import 'package:erad/view/withdrawn_funds/withdrawn_funds_category/withdrawn_funds_category.dart';
+import 'package:erad/view/withdrawn_funds/withdrawn_funds_view/withdrawn_funds_page.dart';
 import 'package:get/get.dart';
 import 'package:erad/core/constans/routes.dart';
 import 'package:erad/view/customer/Customer_bills_view/customer_bills_view_page.dart';
@@ -173,6 +175,17 @@ List<GetPage<dynamic>>? getPages = [
   GetPage(
     name: AppRoutes.reports_view_page,
     page: () => ReportsViewPage(),
+    transition: Transition.leftToRight,
+    transitionDuration: Duration(milliseconds: 350),
+  ),
+    GetPage(
+    name: AppRoutes.withdrawn_fund_category_page,
+    page: () => WithdrawnFundsCategoryPage(),
+    transition: Transition.leftToRight,
+    transitionDuration: Duration(milliseconds: 350),
+  ),  GetPage(
+    name: AppRoutes.withdrawn_fund_page,
+    page: () => WithdrawnFundsPage(),
     transition: Transition.leftToRight,
     transitionDuration: Duration(milliseconds: 350),
   ),

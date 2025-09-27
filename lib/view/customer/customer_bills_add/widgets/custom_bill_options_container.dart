@@ -17,20 +17,18 @@ class CustomerBillOptionsContainer extends StatelessWidget {
         physics: NeverScrollableScrollPhysics(),
         child: Row(
           children: [
-            // CustomerBillOptionsContainer
             Container(
               height: 50,
-              // width: 500,
               padding: EdgeInsets.all(5),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: AppColors.grey,
+                // color: AppColors.primary,
               ),
 
               child: GetBuilder<CustomerBiilAddControllerImp>(
                 builder:
                     (controller) => Row(
-                      spacing: 20,
+                      spacing: 10,
                       children: [
                         Custom_dropDownButton(
                           items: controller.customers_list_dropdownItrm,

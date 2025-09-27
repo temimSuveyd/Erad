@@ -1,11 +1,8 @@
-import 'dart:developer';
-
 import 'package:erad/core/class/handling_data.dart';
 import 'package:erad/core/constans/colors.dart';
 import 'package:erad/core/constans/routes.dart';
 import 'package:erad/core/constans/sharedPreferences.dart';
 import 'package:erad/core/services/app_services.dart';
-import 'package:erad/data/data_score/remote/depts/customer_depts_data.dart';
 import 'package:erad/data/data_score/remote/depts/supplier_depts_data.dart';
 import 'package:erad/data/model/supplier_depts/supplier_depts_model.dart';
 import 'package:erad/view/custom_widgets/custom_text_field.dart';

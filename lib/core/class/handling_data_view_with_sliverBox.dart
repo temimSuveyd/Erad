@@ -11,10 +11,12 @@ class HandlingDataViewWithSliverBox extends StatelessWidget {
     required this.statusreqest,
     required this.widget,
     required this.onPressed,
+    this.message,
   });
   final Statusreqest statusreqest;
   final Widget widget;
   final dynamic Function() onPressed;
+  final String? message;
   @override
   Widget build(BuildContext context) {
     if (statusreqest == Statusreqest.loading) {
@@ -81,7 +83,7 @@ class HandlingDataViewWithSliverBox extends StatelessWidget {
                 //   child: Image.asset(AppImages.),
                 // ),
                 Text(
-                  "لا بيانات",
+                  message ?? "لا بيانات",
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,

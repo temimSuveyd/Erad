@@ -113,7 +113,6 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
           userID,
           bill_add_date,
         );
-
         statusreqest = Statusreqest.success;
         update();
       } catch (e) {
@@ -277,10 +276,8 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
           "product_name": product_name!,
           "product_id": productId,
           "product_number": numperOfNumper,
-
           "total_product_price": numperOfNumper * product_price!,
           "total_product_profits": numperOfNumper * prodect_profits!,
-
           "product_price": product_price!,
           "product_profits": prodect_profits!,
         });
@@ -396,11 +393,9 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   saveBillData() async {
     String userID =
         services.sharedPreferences.getString(AppShared.userID)!;
-
     if (!is_saved) {
       statusreqest = Statusreqest.loading;
       update();
-
       try {
         await addSupplierBill();
         if (bill_id != null && bill_prodects_list.isNotEmpty) {
@@ -416,6 +411,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
             total_product_price,
             total_product_profits,
           );
+
           if (bill_payment_type == "Religion") {
             await addDept();
             addBillToDepts();
@@ -549,9 +545,6 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   }
 
 
-
-
-
   @override
   deleteProduct(int productIndex) {
     bill_prodects_list.removeAt(productIndex);
@@ -570,7 +563,6 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
       final numberStr = randomNumber.toString().padLeft(5, '0');
       return '$initials-$date-$numberStr';
     }
-
     bill_no = generateRandomInvoiceId(username);
   }
 

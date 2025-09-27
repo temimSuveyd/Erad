@@ -1,6 +1,7 @@
 import 'package:erad/core/constans/colors.dart';
 import 'package:flutter/material.dart';
 
+// ignore: camel_case_types
 class Custom_bill_status_button extends StatelessWidget {
   const Custom_bill_status_button({
     super.key,

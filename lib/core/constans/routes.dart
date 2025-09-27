@@ -15,12 +15,17 @@ class AppRoutes {
   static const String customers_view_page = "/customers_view_page";
   static const String pdf_view = "/pdf_view";
   static const String suppliers_view = "/suppliers_view";
-  static const String supplier_bill_details_page = "/supplier_bill_details_page";
+  static const String supplier_bill_details_page =
+      "/supplier_bill_details_page";
   static const String supplier_bills_view_page = "/supplier_bills_view_page";
   static const String supplier_bills_add_page = "/supplier_bills_add_page";
   static const String supplier_depts_view_page = "/supplier_depts_view_page";
-  static const String supplier_depts_details_page = "/supplier_depts_details_page";
+  static const String supplier_depts_details_page =
+      "/supplier_depts_details_page";
   static const String expenses_page = "/expenses_page";
   static const String expenses_category_page = "/expenses_category_page";
   static const String reports_view_page = "/reports_view_page";
+  static const String withdrawn_fund_category_page =
+      "/withdrawn_fund_category_page";
+  static const String withdrawn_fund_page = "/withdrawn_fund_page";
 }

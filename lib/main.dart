@@ -1,5 +1,4 @@
-import 'package:erad/view/expenses/expenses_category/expenses_category.dart';
-import 'package:erad/view/reports/reports_view_page.dart';
+import 'package:erad/view/withdrawn_funds/withdrawn_funds_category/withdrawn_funds_category.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,7 +23,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       getPages: getPages,
-      // home: ReportsViewPage(),
       locale: Locale("ar"),
       theme: ThemeData(fontFamily: GoogleFonts.cairo().fontFamily),
       debugShowCheckedModeBanner: false,

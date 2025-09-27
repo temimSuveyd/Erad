@@ -22,7 +22,7 @@ class CustomerDebtsViewPage extends GetView<CustomerDeptsViewControllerImp> {
 
     return Scaffold(
       appBar: Custom_appBar(title: "ديون العملاء"),
-backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.backgroundColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: CustomScrollView(
@@ -33,7 +33,7 @@ backgroundColor: AppColors.backgroundColor,
                 // runSpacing: 20, // Vertical space between lines
                 children: [
                   Custom_textfield(
-                    hintText: 'اسم او رقم الفاتورة',
+                    hintText: 'اسم العميل',
                     suffixIcon: Icons.add,
                     validator: (p0) {
                       return null;
@@ -43,23 +43,6 @@ backgroundColor: AppColors.backgroundColor,
                         (value) => controller.searchForBillsBayCustomerName(),
                   ),
 
-                  GetBuilder<CustomerDeptsViewControllerImp>(
-                    builder:
-                        (controller) => Custom_set_date_button(
-                          hintText:
-                              controller.selectedEndDate == null
-                                  ? "حدد تاريخ الفواتير"
-                                  : "${controller.selectedStartDate} - ${controller.selectedEndDate}",
-                          onPressed: () {
-                            show_date_range_picker(context).then((dateRange) {
-                              controller.searchByDate(
-                                dateRange!.start,
-                                dateRange.end,
-                              );
-                            });
-                          },
-                        ),
-                  ),
                   Custom_dropDownButton(
                     value:
                         controller

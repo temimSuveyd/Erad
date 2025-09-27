@@ -153,7 +153,7 @@ class SupplierDeptsData {
     return _firestore
         .collection("users")
         .doc(userID)
-        .collection("supplier_depts")
+        .collection("supplier_depts").orderBy("bill_date", descending: false)
         .snapshots();
   }
 
@@ -166,7 +166,7 @@ class SupplierDeptsData {
         .doc(userID)
         .collection("supplier_depts")
         .doc(supplierId)
-        .collection("payments")
+        .collection("payments").orderBy("payment_date", descending: false)
         .snapshots();
   }
 

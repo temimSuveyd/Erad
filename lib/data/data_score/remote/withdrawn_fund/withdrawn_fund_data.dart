@@ -1,119 +1,117 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ExpensesData {
+class WithdrawnFundData {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<String> addExpenses(
+  Future<String> addWithdrawnFund(
     String userID,
     DateTime date,
     double totalAmount,
     bool isRepeatExpense,
     DateTime repeatDate,
-    String title,
+    String userId,
     String id,
   ) async {
     final doc =
     await _firestore
         .collection("users")
         .doc(userID)
-        .collection("expenses_category")
+        .collection("withdrawn_fund_category")
         .doc(id)
-        .collection("expenses")
+        .collection("withdrawn_fund")
         .add({
           "date": date,
           "amount": totalAmount,
-          "is_repeat_expense": isRepeatExpense,
+          "is_repeat_withdrawn_fund": isRepeatExpense,
           "repeat_date": repeatDate,
-          "title": title,
+          "userId": userId,
         });
         return doc.id;
   }
 
-  Future editExpenses(
+  Future editWithdrawnFund(
     String userID,
     DateTime date,
     double totalAmount,
     bool isRepeatExpense,
     DateTime repeatDate,
-    String title,
     String id,
-
     String categoryID,
   ) async {
     await _firestore
         .collection("users")
         .doc(userID)
-        .collection("expenses_category")
+        .collection("withdrawn_fund_category")
         .doc(categoryID)
-        .collection("expenses")
+        .collection("withdrawn_fund")
         .doc(id)
         .update({
           "date": date,
           "amount": totalAmount,
-          "is_repeat_expense": isRepeatExpense,
+          "is_repeat_withdrawn_fund": isRepeatExpense,
           "repeat_date": repeatDate,
-          "title": title,
         });
   }
 
-  Future deleteExpenses(String userID, String id, String categoryID) async {
+  Future deleteWithdrawnFund(String userID, String id, String categoryID) async {
     await _firestore
         .collection("users")
         .doc(userID)
-        .collection("expenses_category")
+        .collection("withdrawn_fund_category")
         .doc(categoryID)
-        .collection("expenses")
+        .collection("withdrawn_fund")
         .doc(id)
         .delete();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getExpenses(
+  Stream<QuerySnapshot<Map<String, dynamic>>> getWithdrawnFund(
     String userID,
     String categoryID,
   ) {
     return _firestore
         .collection("users")
         .doc(userID)
-        .collection("expenses_category")
+        .collection("withdrawn_fund_category")
         .doc(categoryID)
-        .collection("expenses").orderBy("date", descending: false)
+        .collection("withdrawn_fund")
+        .orderBy("date", descending: false)
         .snapshots();
   }
 
   // expenses category
-  Future addExpensesCategory(String userID, String title) async {
+  Future addWithdrawnFundCategory(String userID, String userId) async {
     await _firestore
         .collection("users")
         .doc(userID)
-        .collection("expenses_category")
-        .add({"title": title});
+        .collection("withdrawn_fund_category")
+        .add({"userId": userId});
   }
 
-  Future editExpensesCategory(String userID, String title, String id) async {
+  Future editWithdrawnFundCategory(String userID, String userId, String id) async {
     await _firestore
         .collection("users")
         .doc(userID)
-        .collection("expenses_category")
+        .collection("withdrawn_fund_category")
         .doc(id)
-        .update({"title": title});
+        .update({"userId": userId});
   }
 
-  Future deleteExpensesCategory(String userID, String id) async {
+  Future deleteWithdrawnFundCategory(String userID, String id) async {
     await _firestore
         .collection("users")
         .doc(userID)
-        .collection("expenses_category")
+        .collection("withdrawn_fund_category")
         .doc(id)
         .delete();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getExpensesCategory(
+  Stream<QuerySnapshot<Map<String, dynamic>>> getWithdrawnFundCategory(
     String userID,
   ) {
     return _firestore
         .collection("users")
         .doc(userID)
-        .collection("expenses_category")
+        .collection("withdrawn_fund_category")
         .snapshots();
   }
 }

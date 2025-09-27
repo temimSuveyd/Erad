@@ -32,9 +32,7 @@ List<HomeModle> home_page_data = [
   // products
   HomeModle(AppImages.categorey, AppRoutes.categoreys_view_page, "فئات"),
   HomeModle(AppImages.products, AppRoutes.home_page, "بضائع"),
-
   HomeModle(AppImages.reports, AppRoutes.reports_view_page, "تقارير"),
   HomeModle(AppImages.expenses, AppRoutes.expenses_category_page, "مصاريف"),
-  HomeModle(AppImages.withdrawal, AppRoutes.home_page, "سحب"),
-  HomeModle(AppImages.users, AppRoutes.home_page, "مستخدمون"),
+  HomeModle(AppImages.withdrawal, AppRoutes.withdrawn_fund_category_page, "سحب"),
 ];

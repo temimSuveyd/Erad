@@ -3,31 +3,29 @@ import 'dart:developer';
 import 'package:erad/core/class/handling_data.dart';
 import 'package:erad/core/constans/colors.dart';
 import 'package:erad/core/constans/sharedPreferences.dart';
-import 'package:erad/core/function/save_started_date.dart';
 import 'package:erad/core/services/app_services.dart';
-import 'package:erad/data/data_score/remote/expenses/expenses_data.dart';
+import 'package:erad/data/data_score/remote/withdrawn_fund/withdrawn_fund_data.dart';
 import 'package:erad/view/custom_widgets/custom_set_date_range.dart';
 import 'package:erad/view/custom_widgets/custom_snackbar.dart';
-import 'package:erad/view/expenses/expenses_view/widgets/custom_add_expenses_dialog.dart';
+import 'package:erad/view/withdrawn_funds/withdrawn_funds_view/widgets/custom_add_withdrawn_funds_dialog.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
-abstract class ExpensesController extends GetxController {
-  Future addExpenses(
-    String title,
+abstract class WithdrawnFundsController extends GetxController {
+  Future addWithdrawnFunds(
+    String userName,
     double amount,
     DateTime addDate,
     bool isRepeat,
     DateTime repeatedDate,
   );
-  void getExpenses();
-  void showaddExpensesDialog();
+  void getWithdrawnFunds();
+  void showaddWithdrawnFundsDialog();
   void setDate(DateTime date);
-  void toggleRepeatExpense();
+  void toggleRepeatWithdrawnFunds();
   void setRepeatDate(DateTime type);
-  void saveExpensesInLocal();
+  void saveWithdrawnFundsInLocal();
   void showEditDialog(
-    String title,
     double amount,
     DateTime addDate,
     bool isRepeat,
@@ -38,15 +36,15 @@ abstract class ExpensesController extends GetxController {
   Future editDate(String id);
   Future deleteData(String id);
   void setDateRange();
-  void calculateTotalExpenditures();
-  void addExpensesAutomatically();
+  void calculateTotalWithdrawnFunds();
+  void addWithdrawnFundsAutomatically();
   Future saveStartDate();
   Future deleteFromLocal(String id);
-  void editLocalData(String id, String title, double amount, DateTime date);
+  void editLocalData(String id, String userName, double amount, DateTime date);
   void initData();
 }
 
-class ExpensesControllerImp extends ExpensesController {
+class WithdrawnFundsControllerImp extends WithdrawnFundsController {
   Statusreqest statusreqest = Statusreqest.success;
   Services services = Get.find();
   DateTime addedDate = DateTime.now();
@@ -56,19 +54,19 @@ class ExpensesControllerImp extends ExpensesController {
     start: DateTime.now(),
     end: DateTime.now(),
   );
-  double expensesAmount = 0.0;
-  double expensesTotalAmount = 0.0;
-  var isRepeatExpense = false.obs;
-  var expensesList = [].obs;
-  List localExpesesList = [];
-  final ExpensesData _expensesData = ExpensesData();
-  TextEditingController addExpensesAmountController = TextEditingController();
-  TextEditingController addExpensesTitleController = TextEditingController();
+  double withdrawnFundsAmount = 0.0;
+  double withdrawnFundsTotalAmount = 0.0;
+  var isRepeatWithdrawnFunds = false.obs;
+  var withdrawnFundsList = [].obs;
+  List localWithdrawnFundsList = [];
+  final WithdrawnFundData _withdrawnFundData = WithdrawnFundData();
+  TextEditingController addWithdrawnFundAmountController =
+      TextEditingController();
   String? categoryID;
-  String? expensesID;
+  String? withdrawnFundsID;
   @override
-  Future addExpenses(
-    String title,
+  Future addWithdrawnFunds(
+    String userName,
     double amount,
     DateTime addDate,
     bool isRepeat,
@@ -79,17 +77,17 @@ class ExpensesControllerImp extends ExpensesController {
     try {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
-      final docId = await _expensesData.addExpenses(
+      final docId = await _withdrawnFundData.addWithdrawnFund(
         userID,
         addDate,
         amount,
         isRepeat,
         repeatedDate,
-        title,
+        userName,
         categoryID!,
       );
-      expensesID = docId;
-      await saveExpensesInLocal();
+      withdrawnFundsID = docId;
+      await saveWithdrawnFundsInLocal();
       statusreqest = Statusreqest.success;
       update();
     } catch (e) {
@@ -99,19 +97,20 @@ class ExpensesControllerImp extends ExpensesController {
   }
 
   @override
-  void getExpenses() {
+  void getWithdrawnFunds() {
     statusreqest = Statusreqest.loading;
     update();
     try {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
-      _expensesData.getExpenses(userID, categoryID!).listen((event) {
-        expensesList.value =
+      _withdrawnFundData.getWithdrawnFund(userID, categoryID!).listen((event) {
+        withdrawnFundsList.value =
             event.docs.where((element) {
               final expenseData = element.data();
               if (expenseData.containsKey("date") &&
                   expenseData["date"] != null) {
                 final DateTime expenseDate = expenseData["date"].toDate();
+
                 return (expenseDate.isAtSameMomentAs(pickedDateRange.start) ||
                         expenseDate.isAfter(pickedDateRange.start)) &&
                     (expenseDate.isAtSameMomentAs(pickedDateRange.end) ||
@@ -119,10 +118,10 @@ class ExpensesControllerImp extends ExpensesController {
               }
               return false;
             }).toList();
-        if (expensesList.isEmpty) {
+        if (withdrawnFundsList.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {
-          calculateTotalExpenditures();
+          calculateTotalWithdrawnFunds();
           statusreqest = Statusreqest.success;
         }
         update();
@@ -134,51 +133,50 @@ class ExpensesControllerImp extends ExpensesController {
   }
 
   @override
-  void showaddExpensesDialog() {
+  void showaddWithdrawnFundsDialog() {
     Get.defaultDialog(
       backgroundColor: AppColors.backgroundColor,
       buttonColor: AppColors.primary,
-      title: "إضافة نفقة",
+      title: "أضف سحب الأموال",
       titleStyle: TextStyle(
         color: AppColors.grey,
         fontSize: 30,
         fontWeight: FontWeight.w500,
       ),
       onConfirm: () async {
-        if (addExpensesAmountController.text.isEmpty ||
-            double.tryParse(addExpensesAmountController.text) == null ||
-            addExpensesTitleController.text.isEmpty) {
+        if (addWithdrawnFundAmountController.text.isEmpty ||
+            double.tryParse(addWithdrawnFundAmountController.text) == null) {
           custom_snackBar(
             AppColors.red,
             "خطأ",
             "لقد أدخلت قيمة خاطئة ، يرجى المحاولة مرة أخرى",
           );
         } else {
-          expensesAmount = double.parse(addExpensesAmountController.text);
-          await addExpenses(
-            addExpensesTitleController.text,
-            expensesAmount,
+          withdrawnFundsAmount = double.parse(
+            addWithdrawnFundAmountController.text,
+          );
+          await addWithdrawnFunds(
+            categoryID!,
+            withdrawnFundsAmount,
             addedDate,
-            isRepeatExpense.value,
+            isRepeatWithdrawnFunds.value,
             repeatDate,
           );
         }
 
-        addExpensesAmountController.clear();
-        addExpensesTitleController.clear();
-        isRepeatExpense.value = false;
+        addWithdrawnFundAmountController.clear();
+        isRepeatWithdrawnFunds.value = false;
         repeatDate = DateTime.now();
         Get.back();
       },
       onCancel: () {
-        addExpensesAmountController.clear();
-        addExpensesTitleController.clear();
-        isRepeatExpense.value = false;
+        addWithdrawnFundAmountController.clear();
+
+        isRepeatWithdrawnFunds.value = false;
         repeatDate = DateTime.now();
       },
       content: CustomAddExpensesDialog(
-        countController: addExpensesAmountController,
-        titleController: addExpensesTitleController,
+        countController: addWithdrawnFundAmountController,
       ),
     );
   }
@@ -190,8 +188,8 @@ class ExpensesControllerImp extends ExpensesController {
   }
 
   @override
-  void toggleRepeatExpense() {
-    isRepeatExpense.value = !isRepeatExpense.value;
+  void toggleRepeatWithdrawnFunds() {
+    isRepeatWithdrawnFunds.value = !isRepeatWithdrawnFunds.value;
     update();
   }
 
@@ -202,8 +200,8 @@ class ExpensesControllerImp extends ExpensesController {
   }
 
   @override
-  Future saveExpensesInLocal() async {
-    if (isRepeatExpense.value == true) {
+  Future saveWithdrawnFundsInLocal() async {
+    if (isRepeatWithdrawnFunds.value == true) {
       final List<Map<String, dynamic>> localExpensesList =
           services.sharedPreferences
               .getStringList(AppShared.expenses)
@@ -211,15 +209,14 @@ class ExpensesControllerImp extends ExpensesController {
               .toList() ??
           [];
 
-      final title = addExpensesTitleController.text;
       localExpensesList.add({
         "expenses_date":
             "${addedDate.year.toString().padLeft(4, '0')}-${addedDate.month.toString().padLeft(2, '0')}-${addedDate.day.toString().padLeft(2, '0')}",
-        "total_amount": expensesAmount, // double türünde
+        "total_amount": withdrawnFundsAmount, // double türünde
         "repeat_date":
             "${repeatDate.year.toString().padLeft(4, '0')}-${repeatDate.month.toString().padLeft(2, '0')}-${repeatDate.day.toString().padLeft(2, '0')}",
-        "id": expensesID,
-        "title": title,
+        "id": withdrawnFundsID,
+        "userName": categoryID!,
         "category_id": categoryID,
       });
 
@@ -237,28 +234,23 @@ class ExpensesControllerImp extends ExpensesController {
     try {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
-      expensesAmount = double.parse(addExpensesAmountController.text);
-      if (double.parse(addExpensesAmountController.text).isNaN &&
-          addExpensesTitleController.text.isEmpty) {
+      withdrawnFundsAmount = double.parse(
+        addWithdrawnFundAmountController.text,
+      );
+      if (double.parse(addWithdrawnFundAmountController.text).isNaN) {
         custom_snackBar(
           AppColors.red,
           "خطأ",
           "لقد أدخلت قيمة خاطئة ، يرجى المحاولة مرة أخرى",
         );
       } else {
-        editLocalData(
-          id,
-          addExpensesTitleController.text,
-          expensesAmount,
-          repeatDate,
-        );
-        await _expensesData.editExpenses(
+        editLocalData(id, categoryID!, withdrawnFundsAmount, repeatDate);
+        await _withdrawnFundData.editWithdrawnFund(
           userID,
           addedDate,
-          expensesAmount,
-          isRepeatExpense.value,
+          withdrawnFundsAmount,
+          isRepeatWithdrawnFunds.value,
           repeatDate,
-          addExpensesTitleController.text,
           id,
           categoryID!,
         );
@@ -274,21 +266,18 @@ class ExpensesControllerImp extends ExpensesController {
 
   @override
   void showEditDialog(
-    String title,
     double amount,
     DateTime addDate,
     bool isRepeat,
     DateTime date,
     String id,
   ) {
-    // title
-    addExpensesTitleController.text = title;
     // amount
-    addExpensesAmountController.text = amount.toString();
+    addWithdrawnFundAmountController.text = amount.toString();
     // date
     addedDate = addDate;
     // isRepeatExpense
-    isRepeatExpense.value = isRepeat;
+    isRepeatWithdrawnFunds.value = isRepeat;
     // date type
     repeatDate = date;
     Get.defaultDialog(
@@ -302,21 +291,18 @@ class ExpensesControllerImp extends ExpensesController {
       ),
       onConfirm: () {
         editDate(id);
-        addExpensesAmountController.clear();
-        addExpensesTitleController.clear();
-        isRepeatExpense.value = false;
+        addWithdrawnFundAmountController.clear();
+        isRepeatWithdrawnFunds.value = false;
         repeatDate = DateTime.now();
         Get.back();
       },
       onCancel: () {
-        addExpensesAmountController.clear();
-        addExpensesTitleController.clear();
-        isRepeatExpense.value = false;
+        addWithdrawnFundAmountController.clear();
+        isRepeatWithdrawnFunds.value = false;
         repeatDate = DateTime.now();
       },
       content: CustomAddExpensesDialog(
-        countController: addExpensesAmountController,
-        titleController: addExpensesTitleController,
+        countController: addWithdrawnFundAmountController,
       ),
     );
   }
@@ -330,7 +316,7 @@ class ExpensesControllerImp extends ExpensesController {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
       deleteFromLocal(id);
-      await _expensesData.deleteExpenses(userID, id, categoryID!);
+      await _withdrawnFundData.deleteWithdrawnFund(userID, id, categoryID!);
       statusreqest = Statusreqest.success;
       update();
     } catch (e) {
@@ -375,21 +361,21 @@ class ExpensesControllerImp extends ExpensesController {
   void setDateRange() {
     selectDateRange(Get.context!).then((value) {
       pickedDateRange = value!;
-      getExpenses();
+      getWithdrawnFunds();
     });
   }
 
   @override
-  void calculateTotalExpenditures() {
-    expensesTotalAmount = 0.0;
-    for (var total in expensesList) {
+  void calculateTotalWithdrawnFunds() {
+    withdrawnFundsTotalAmount = 0.0;
+    for (var total in withdrawnFundsList) {
       final amount = total["amount"];
-      expensesTotalAmount = amount + expensesTotalAmount;
+      withdrawnFundsTotalAmount = amount + withdrawnFundsTotalAmount;
     }
   }
 
   @override
-  Future addExpensesAutomatically() async {
+  Future addWithdrawnFundsAutomatically() async {
     if (services.sharedPreferences.getStringList(AppShared.expenses) != null) {
       final expenses = services.sharedPreferences.getStringList(
         AppShared.expenses,
@@ -397,21 +383,21 @@ class ExpensesControllerImp extends ExpensesController {
 
       try {
         if (expenses != null) {
-          localExpesesList =
+          localWithdrawnFundsList =
               expenses
                   .map((e) => Map<String, dynamic>.from(json.decode(e)))
                   .toList();
 
-          for (var expensesElement in localExpesesList) {
+          for (var expensesElement in localWithdrawnFundsList) {
             final amount = expensesElement["total_amount"];
             final addedDate = expensesElement["expenses_date"];
             final repeatDate = expensesElement["repeat_date"];
-            final title = expensesElement["title"];
+            final userName = expensesElement["userName"];
             categoryID = expensesElement["category_id"];
             final rDate = DateTime.parse(repeatDate);
             final aDate = DateTime.parse(addedDate);
             if (rDate.day == DateTime.now().day) {
-              await addExpenses(title, amount, aDate, false, rDate);
+              await addWithdrawnFunds(userName, amount, aDate, false, rDate);
             } else {
               break;
             }
@@ -430,36 +416,34 @@ class ExpensesControllerImp extends ExpensesController {
   @override
   Future saveStartDate() async {
     statusreqest = Statusreqest.loading;
-    // update();
-    // if (services.sharedPreferences.getString("start_date") != null) {
-    //   final String startDateParse =
-    //       services.sharedPreferences.getString("start_date")!;
-    //   final DateTime start = DateTime.parse(startDateParse);
-    //   if (DateTime.now().difference(start).inDays >= 30) {
-    //     await services.sharedPreferences.setString(
-    //       "start_date",
-    //       DateTime.now().toString(),
-    //     );
-    //     pickedDateRange = DateTimeRange(
-    //       start: DateTime.now(),
-    //       end: DateTime.now(),
-    //     );
-    //   } else {
-    //     pickedDateRange = DateTimeRange(start: start, end: DateTime.now());
-    //   }
-    // } else {
-    //   pickedDateRange = DateTimeRange(
-    //     start: DateTime.now(),
-    //     end: DateTime.now(),
-    //   );
-    //   await services.sharedPreferences.setString(
-    //     "start_date",
-    //     DateTime.now().toString(),
-    //   );
-    // }
-    // statusreqest = Statusreqest.success;
-
-    pickedDateRange = await saveCustomDateRange();
+    update();
+    if (services.sharedPreferences.getString("start_date") != null) {
+      final String startDateParse =
+          services.sharedPreferences.getString("start_date")!;
+      final DateTime start = DateTime.parse(startDateParse);
+      if (DateTime.now().difference(start).inDays >= 30) {
+        await services.sharedPreferences.setString(
+          "start_date",
+          DateTime.now().toString(),
+        );
+        pickedDateRange = DateTimeRange(
+          start: DateTime.now(),
+          end: DateTime.now(),
+        );
+      } else {
+        pickedDateRange = DateTimeRange(start: start, end: DateTime.now());
+      }
+    } else {
+      pickedDateRange = DateTimeRange(
+        start: DateTime.now(),
+        end: DateTime.now(),
+      );
+      await services.sharedPreferences.setString(
+        "start_date",
+        DateTime.now().toString(),
+      );
+    }
+    statusreqest = Statusreqest.success;
     update();
   }
 
@@ -471,20 +455,20 @@ class ExpensesControllerImp extends ExpensesController {
       );
       try {
         if (expenses != null) {
-          localExpesesList =
+          localWithdrawnFundsList =
               expenses
                   .map((e) => Map<String, dynamic>.from(json.decode(e)))
                   .toList();
 
-          localExpesesList =
-              localExpesesList.where((expensesElement) {
+          localWithdrawnFundsList =
+              localWithdrawnFundsList.where((expensesElement) {
                 final localId = expensesElement["id"];
                 return localId != id;
               }).toList();
 
           await services.sharedPreferences.setStringList(
             AppShared.expenses,
-            localExpesesList.map((e) => json.encode(e)).toList(),
+            localWithdrawnFundsList.map((e) => json.encode(e)).toList(),
           );
         }
       } on Exception {
@@ -502,14 +486,14 @@ class ExpensesControllerImp extends ExpensesController {
         args["category_id"] != null) {
       categoryID = await args["category_id"];
       await saveStartDate();
-      getExpenses();
+      getWithdrawnFunds();
     }
   }
 
   @override
   void editLocalData(
     String id,
-    String title,
+    String userName,
     double amount,
     DateTime date,
   ) async {
@@ -519,16 +503,16 @@ class ExpensesControllerImp extends ExpensesController {
       );
       try {
         if (expenses != null) {
-          localExpesesList =
+          localWithdrawnFundsList =
               expenses
                   .map((e) => Map<String, dynamic>.from(json.decode(e)))
                   .toList();
 
-          for (int i = 0; i < localExpesesList.length; i++) {
-            if (localExpesesList[i]["id"] == id) {
-              localExpesesList[i]["title"] = title;
-              localExpesesList[i]["total_amount"] = amount;
-              localExpesesList[i]["expenses_date"] =
+          for (int i = 0; i < localWithdrawnFundsList.length; i++) {
+            if (localWithdrawnFundsList[i]["id"] == id) {
+              localWithdrawnFundsList[i]["userName"] = userName;
+              localWithdrawnFundsList[i]["total_amount"] = amount;
+              localWithdrawnFundsList[i]["expenses_date"] =
                   "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
               break;
             }
@@ -536,12 +520,7 @@ class ExpensesControllerImp extends ExpensesController {
 
           await services.sharedPreferences.setStringList(
             AppShared.expenses,
-            localExpesesList.map((e) => json.encode(e)).toList(),
-          );
-          log(
-            services.sharedPreferences
-                .getStringList(AppShared.expenses)
-                .toString(),
+            localWithdrawnFundsList.map((e) => json.encode(e)).toList(),
           );
         }
       } on Exception {

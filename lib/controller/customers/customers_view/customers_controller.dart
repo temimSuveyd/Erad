@@ -20,7 +20,7 @@ abstract class CustomersController extends GetxController {
   changeCity(String cityName);
   getCustomers();
   show_delete_dialog(String customerId);
-  dlete_customer(String customerId);
+  delete_customer(String customerId);
   show_edit_dialog(
     String customerId,
     String customerCity,
@@ -108,12 +108,12 @@ class CustomersControllerImp extends CustomersController {
   @override
   show_delete_dialog(String customerId) {
     custom_delete_dialog(() {
-      dlete_customer(customerId);
+      delete_customer(customerId);
     });
   }
 
   @override
-  dlete_customer(String customerId) {
+  delete_customer(String customerId) {
     try {
       String userID =
           services.sharedPreferences.getString(AppShared.userID)!;

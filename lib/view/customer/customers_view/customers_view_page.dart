@@ -8,7 +8,6 @@ import 'package:erad/view/custom_widgets/custom_appBar.dart';
 import 'package:erad/view/custom_widgets/custom_text_field.dart';
 import 'package:erad/view/customer/customers_view/widgets/custom_brands_heder.dart';
 import 'package:erad/view/customer/customers_view/widgets/custom_brands_listView.dart';
-import 'package:erad/view/supplier/suppliers_view/widgets/custom_suppliers_listView.dart';
 
 class CustomersViewPage extends GetView<CustomersControllerImp> {
   const CustomersViewPage({super.key});
@@ -57,7 +56,7 @@ class CustomersViewPage extends GetView<CustomersControllerImp> {
             SliverToBoxAdapter(
               child: Row(children: [Custom_customers_heder()]),
             ),
-
+            SliverToBoxAdapter(child: SizedBox(height: 10)),
             Custom_customers_listView(),
           ],
         ),

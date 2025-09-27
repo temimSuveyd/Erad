@@ -16,6 +16,7 @@ Future<dynamic> Custom_add_customer_dialog(
 ) {
   return Get.defaultDialog(
     title: "أضف عميلًا",
+    titleStyle: const TextStyle(color: AppColors.grey),
     middleText: "",
     buttonColor: AppColors.primary,
     backgroundColor: AppColors.backgroundColor,
@@ -27,7 +28,7 @@ Future<dynamic> Custom_add_customer_dialog(
     onCancel: () {},
     actions: [
       SizedBox(
-        width: double.infinity,
+        width: double.infinity ,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           spacing: 20,

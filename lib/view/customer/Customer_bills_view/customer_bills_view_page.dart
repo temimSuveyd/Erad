@@ -48,15 +48,14 @@ class CustomerBillsViewPage extends GetView<CustomerBillViewControllerImp> {
                     builder:
                         (controller) => Custom_set_date_button(
                           hintText:
-                              controller.selectedEndDate == null
-                                  ? "حدد تاريخ الفواتير"
-                                  : "${controller.selectedStartDate} - ${controller.selectedEndDate}",
+                              controller.selectedDateRange == null
+                                  ? "${controller.startedDate.year}/${controller.startedDate.month}/${controller.startedDate.day}"
+                                  : "${controller.selectedDateRange!.start.year}/${controller.selectedDateRange!.start.month}/${controller.selectedDateRange!.start.day} - ${controller.selectedDateRange!.end.year}/${controller.selectedDateRange!.end.month}/${controller.selectedDateRange!.end.day}",
                           onPressed: () {
                             show_date_range_picker(context).then((dateRange) {
-                              controller.searchByDate(
-                                dateRange!.start,
-                                dateRange.end,
-                              );
+                              if (dateRange != null) {
+                                controller.searchByDate(dateRange);
+                              }
                             });
                           },
                         ),

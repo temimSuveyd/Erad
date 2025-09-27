@@ -15,6 +15,7 @@ class Custom_listviewBuilder extends StatelessWidget {
           (controller) => HandlingDataViewWithSliverBox(
             onPressed: () => controller.getCustomersBills(),
             statusreqest: controller.statusreqest,
+            message: "لا توجد فاتورة لهذا تاريخ",
             widget: SliverList.builder(
               itemCount: controller.customer_bills_list.length,
               itemBuilder:

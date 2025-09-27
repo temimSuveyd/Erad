@@ -37,9 +37,7 @@ class CustomerBillData {
         .doc(userID)
         .collection("customer_bills")
         .doc(billId)
-        .update({
-          "discount_amount": FieldValue.increment(discountAmount)
-        });
+        .update({"discount_amount": FieldValue.increment(discountAmount)});
   }
 
   void addProductToBill(
@@ -100,6 +98,7 @@ class CustomerBillData {
           "bill_no": billNo,
         });
   }
+
   Future updatePaymentType(
     String userID,
     String billId,
@@ -112,6 +111,7 @@ class CustomerBillData {
         .doc(billId)
         .update({"paymet_type": paymentType});
   }
+
   Future update_total_price(
     String userID,
     String billId,
@@ -162,11 +162,7 @@ class CustomerBillData {
         .update({"bill_status": billStatus});
   }
 
-  Future deleteProduct(
-    String billId,
-    String productId,
-    String userID,
-  ) async {
+  Future deleteProduct(String billId, String productId, String userID) async {
     return await _firestore
         .collection("users")
         .doc(userID)
@@ -210,6 +206,7 @@ class CustomerBillData {
         .collection("users")
         .doc(userID)
         .collection("customer_bills")
+        .orderBy("bill_date", descending: false)
         .snapshots();
   }
 
