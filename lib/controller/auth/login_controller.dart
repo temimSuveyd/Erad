@@ -10,11 +10,11 @@ import 'package:erad/data/data_score/remote/user_data.dart';
 import 'package:erad/view/custom_widgets/custom_snackbar.dart';
 
 abstract class LoginController extends GetxController {
-  login();
-  saveUserDataLocal();
-  goToHomePage();
-  saveLogin();
-  changeSaveLogin();
+  void login();
+  void saveUserDataLocal();
+  void goToHomePage();
+  void saveLogin();
+  void changeSaveLogin();
 }
 
 class LoginControllerImp extends LoginController {
@@ -40,6 +40,7 @@ class LoginControllerImp extends LoginController {
         userData.add_user(email);
         saveUserDataLocal();
         goToHomePage();
+        saveLogin();
         statusreqest = Statusreqest.success;
         update();
       } on FirebaseAuthException catch (e) {
@@ -81,8 +82,5 @@ class LoginControllerImp extends LoginController {
       isLogin = true.obs;
     }
     update();
-    
   }
 }
-
-

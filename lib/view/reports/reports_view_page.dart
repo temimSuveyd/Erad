@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:erad/controller/reports/reports_controller.dart';
+import 'package:erad/core/class/handling_data_view.dart';
 import 'package:erad/data/data_score/static/reports/reports_data.dart';
+import 'package:erad/data/data_score/static/witdrawn_fund/total_amounts_cards_data.dart';
 import 'package:erad/view/custom_widgets/custom_appBar.dart';
 import 'package:erad/view/reports/widgets/charts_gridView.dart';
 import 'package:flutter/material.dart';
@@ -11,61 +15,6 @@ import 'package:get/get.dart';
 
 class ReportsViewPage extends StatelessWidget {
   const ReportsViewPage({super.key});
-
-  // Example data for each category (replace with your real data)
-  static const double borclarim = 8000;
-  static const double musteriBorclari = 6000;
-  static const double masraflar = 4000;
-  static const double toplamKazanc = 50000;
-  static const double cekilenParalar = 3000;
-  static const double mallar = 2000;
-
-  // Example monthly data for each category (replace with your real data)
-  static const double borclarimAylik = 1200;
-  static const double musteriBorclariAylik = 900;
-  static const double masraflarAylik = 700;
-  static const double toplamKazancAylik = 8000;
-  static const double cekilenParalarAylik = 500;
-  static const double mallarAylik = 350;
-
-  static final List<Map<String, dynamic>> cards = [
-    {
-      'icon': Icons.trending_up_rounded,
-      'iconColor': Colors.green,
-      'label': "مجمل أرباحي",
-      'value': toplamKazanc,
-      'monthly': toplamKazancAylik,
-      'highlight': true,
-    },
-    {
-      'icon': Icons.account_balance_wallet_rounded,
-      'iconColor': Colors.redAccent,
-      'label': "ديوني",
-      'value': borclarim,
-      'monthly': borclarimAylik,
-    },
-    {
-      'icon': Icons.people_alt_rounded,
-      'iconColor': Colors.orange,
-      'label': "ديون العملاء",
-      'value': musteriBorclari,
-      'monthly': musteriBorclariAylik,
-    },
-    {
-      'icon': Icons.money_off_csred_rounded,
-      'iconColor': Colors.blueGrey,
-      'label': "مصاريفي",
-      'value': masraflar,
-      'monthly': masraflarAylik,
-    },
-    {
-      'icon': Icons.outbound_rounded,
-      'iconColor': Colors.purple,
-      'label': "مجمل سحب الأموال",
-      'value': cekilenParalar,
-      'monthly': cekilenParalarAylik,
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -88,13 +37,33 @@ class ReportsViewPage extends StatelessWidget {
                       runSpacing: 16,
                       alignment: WrapAlignment.center,
                       children: List.generate(controller.cardsList.length, (i) {
-                        final card = cards[i];
+                        final card = totalAmountCards[i];
                         return ReportCard(
-                          icon: card['icon'],
-                          iconColor: card['iconColor'],
-                          label: card['label'],
+                          includeDebts: controller.includeDebts,
+                          onDebtCheckChanged: (value) {
+                            controller.debtCheckChanged();
+                          },
+                          showDebtCheck: card.showDebtCheck!,
+                          dropdownIds:
+                              controller.allUsersList
+                                  .map((e) => e.toString())
+                                  .toList(),
+                          dropdownItems:
+                              controller.allUsersNameList
+                                  .map((e) => e.toString())
+                                  .toList(),
+                          dropdownValue:
+                              controller.selectedUserId != null
+                                  ? controller.selectedUserId!
+                                  : "كافة المستخدمين",
+                          onChanged: (value) {
+                            controller.changeUser(value);
+                          },
+                          showDropDownMenu: card.showDropDownMenu!,
+                          icon: card.icon!,
+                          iconColor: card.color!,
+                          label: card.title!,
                           value: controller.cardsList[i],
-                          monthlyValue: card['monthly'],
                         );
                       }),
                     ),

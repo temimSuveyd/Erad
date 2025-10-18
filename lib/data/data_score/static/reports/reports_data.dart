@@ -5,11 +5,11 @@ List<ReportsChartCardsModel> reportsChartsData = [
   ReportsChartCardsModel(
     title: "إجمالي مصاريفي",
     value: [],
-    color: Colors.orange, // Orange
+    color: Colors.blueGrey,
   ),
   ReportsChartCardsModel(
     title: "إجمالي المبالغ المسحوبة",
     value: [],
-    color: Colors.purple, // Purple
+    color: Colors.purple,
   ),
 ];

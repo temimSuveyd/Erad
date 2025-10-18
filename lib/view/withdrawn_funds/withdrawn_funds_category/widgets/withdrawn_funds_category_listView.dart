@@ -20,7 +20,7 @@ class ExpensesCategoryListView extends StatelessWidget {
               itemBuilder: (context, index) {
                 return ExpensesCategoryCard(
                   id: controller.withdrawnFundDataList[index].id,
-                  title: controller.withdrawnFundDataList[index]["title"],
+                  title: controller.withdrawnFundDataList[index]["userId"],
                 );
               },
             ),

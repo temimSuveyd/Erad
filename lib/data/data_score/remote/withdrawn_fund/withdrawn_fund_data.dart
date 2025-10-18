@@ -12,8 +12,7 @@ class WithdrawnFundData {
     String userId,
     String id,
   ) async {
-    final doc =
-    await _firestore
+    final doc = await _firestore
         .collection("users")
         .doc(userID)
         .collection("withdrawn_fund_category")
@@ -26,7 +25,7 @@ class WithdrawnFundData {
           "repeat_date": repeatDate,
           "userId": userId,
         });
-        return doc.id;
+    return doc.id;
   }
 
   Future editWithdrawnFund(
@@ -53,7 +52,11 @@ class WithdrawnFundData {
         });
   }
 
-  Future deleteWithdrawnFund(String userID, String id, String categoryID) async {
+  Future deleteWithdrawnFund(
+    String userID,
+    String id,
+    String categoryID,
+  ) async {
     await _firestore
         .collection("users")
         .doc(userID)
@@ -87,7 +90,11 @@ class WithdrawnFundData {
         .add({"userId": userId});
   }
 
-  Future editWithdrawnFundCategory(String userID, String userId, String id) async {
+  Future editWithdrawnFundCategory(
+    String userID,
+    String userId,
+    String id,
+  ) async {
     await _firestore
         .collection("users")
         .doc(userID)

@@ -4,6 +4,7 @@ import 'package:erad/data/data_score/static/reports/reports_data.dart';
 import 'package:erad/view/reports/widgets/chart_area.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:get/route_manager.dart';
 
 class ChartsGridViewBuilder extends StatelessWidget {
   const ChartsGridViewBuilder({super.key});
@@ -13,7 +14,9 @@ class ChartsGridViewBuilder extends StatelessWidget {
     return GetBuilder<ReportsControllerImpl>(
       builder:
           (controller) => HandlingDataViewWithSliverBox(
-            onPressed: () => controller.getAllCustomerBills(),
+            onPressed: () {
+              Get.back();
+            },
             statusreqest: controller.statusreqest,
             widget: SliverGrid.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -22,7 +25,7 @@ class ChartsGridViewBuilder extends StatelessWidget {
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
               ),
-              itemCount:  controller.chartsLists.length,
+              itemCount: controller.chartsLists.length,
               itemBuilder:
                   (context, index) => ChartArea(
                     totalList: controller.chartsLists[index],
