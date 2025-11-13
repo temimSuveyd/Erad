@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
+// import 'package:share_plus/share_plus.dart';
 
 abstract class PdfViewController extends GetxController {
   initData();
@@ -25,14 +25,14 @@ class PdfViewControllerImp extends PdfViewController {
       final file = File('${directory.path}/invoice.pdf');
       await file.writeAsBytes(pdfBytes!.toList());
     if (pdfBytes != null) {
-      Share.shareXFiles(
-        [
-  XFile.fromData(
-    pdfBytes!,
-  ),
-        ],
-        text: 'سويد للتجارة',
-      );
+  //     Share.shareXFiles(
+  //       [
+  // XFile.fromData(
+  //   pdfBytes!,
+  // ),
+  //       ],
+  //       text: 'سويد للتجارة',
+  //     );
     }
 } on Exception {
 Get.defaultDialog();

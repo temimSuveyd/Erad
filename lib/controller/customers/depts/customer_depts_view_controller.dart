@@ -72,14 +72,13 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
 
   @override
   searchForBillBayCity(String cityName) {
+    final String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
     if (cityName.isEmpty || cityName == "جميع المدن") {
       getDepts();
     } else {
-      final String userID =
-          services.sharedPreferences.getString(AppShared.userID)!;
       _customerDeptsData.getAllDepts(userID).listen((event) {
         customersDeptsList.value = event.docs;
-
         customersDeptsList.value =
             customersDeptsList.where((doc) {
               final data = doc.data();

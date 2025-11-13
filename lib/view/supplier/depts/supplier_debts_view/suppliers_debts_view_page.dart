@@ -1,4 +1,3 @@
-
 import 'package:erad/controller/suppliers/depts/supplier_depts_view_controller.dart';
 import 'package:erad/core/constans/colors.dart';
 import 'package:erad/data/data_score/static/city_data.dart';
@@ -21,15 +20,15 @@ class SupplierDebtsViewPage extends GetView<SupplierDeptsViewControllerImp> {
 
     return Scaffold(
       appBar: Custom_appBar(title: "ديون الموردين"),
-backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.backgroundColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
               child: Row(
-                spacing: 20, 
-               
+                spacing: 20,
+
                 children: [
                   Custom_textfield(
                     hintText: 'اسم او رقم الفاتورة',
@@ -42,23 +41,6 @@ backgroundColor: AppColors.backgroundColor,
                         (value) => controller.searchForBillsBaySupplierName(),
                   ),
 
-                  GetBuilder<SupplierDeptsViewControllerImp>(
-                    builder:
-                        (controller) => Custom_set_date_button(
-                          hintText:
-                              controller.selectedEndDate == null
-                                  ? "حدد تاريخ الفواتير"
-                                  : "${controller.selectedStartDate} - ${controller.selectedEndDate}",
-                          onPressed: () {
-                            show_date_range_picker(context).then((dateRange) {
-                              controller.searchByDate(
-                                dateRange!.start,
-                                dateRange.end,
-                              );
-                            });
-                          },
-                        ),
-                  ),
                   Custom_dropDownButton(
                     value:
                         controller
