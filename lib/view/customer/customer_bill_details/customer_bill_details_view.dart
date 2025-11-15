@@ -9,7 +9,8 @@ import 'package:erad/view/customer/customer_bill_details/widgets/custom_bill_det
 import 'package:erad/view/customer/customer_bill_details/widgets/custom_prodects_details_sliverListBuilder.dart';
 import 'package:erad/view/customer/customer_bill_details/widgets/custom_text_body.dart';
 
-class CustomerBillDetailsPage extends GetView<CustomerBillDetailsControllerImp> {
+class CustomerBillDetailsPage
+    extends GetView<CustomerBillDetailsControllerImp> {
   const CustomerBillDetailsPage({super.key});
 
   @override
@@ -33,22 +34,26 @@ class CustomerBillDetailsPage extends GetView<CustomerBillDetailsControllerImp> 
               child: Row(
                 spacing: 20,
                 children: [
-                  Custom_button( color: AppColors.primary,
+                  Custom_button(
+                    color: AppColors.primary,
                     icon: Icons.discount,
                     title: 'خصم على الفاتورة',
                     onPressed: () => controller.discount_on_bill(),
                   ),
-                  Custom_button( color: AppColors.primary,
+                  Custom_button(
+                    color: AppColors.primary,
                     icon: Icons.print,
                     title: 'طباعة (PDF)',
                     onPressed: () => controller.createPdf(),
                   ),
-                  Custom_button( color: AppColors.primary,
+                  Custom_button(
+                    color: AppColors.primary,
                     icon: Icons.delete,
                     title: "حذف",
                     onPressed: () => controller.show_delete_bill_dialog(),
                   ),
-                       Custom_button( color: AppColors.primary,
+                  Custom_button(
+                    color: AppColors.primary,
                     icon: Icons.payments_outlined,
                     title: "تغيير طريقة الدفع",
                     onPressed: () => controller.showEditPaymentTypeDailog(),

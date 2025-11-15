@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
       backgroundColor: AppColors.backgroundColor,
       appBar: Custom_home_appBar(),
       body: Padding(
-        padding: const EdgeInsets.all(50),
+        padding: const EdgeInsets.symmetric(horizontal: 40,vertical: 30),
         child: Custom_home_gridViewBuilder(),
       ),
     );

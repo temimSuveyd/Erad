@@ -11,25 +11,24 @@ class Custom_home_gridViewBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeControllerImp>(
-      builder: (controller) => 
-     GridView.builder(
-  
-        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 200,
-          mainAxisExtent: 250,
-          crossAxisSpacing: 40,
-          mainAxisSpacing: 50,
-        ),
-        itemCount: home_page_data.length ,
-        itemBuilder:
-            (context, index) => Custom_home_card(
-              homeModle: HomeModle(
-               home_page_data[index].imagePath,
-               home_page_data[index].pageName,
-               home_page_data[index].title,
-              ),
+      builder:
+          (controller) => GridView.builder(
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 200,
+              mainAxisExtent: 250,
+              crossAxisSpacing: 70,
+              mainAxisSpacing: 50,
             ),
-      ),
+            itemCount: home_page_data.length,
+            itemBuilder:
+                (context, index) => Custom_home_card(
+                  homeModle: HomeModle(
+                    home_page_data[index].imagePath,
+                    home_page_data[index].pageName,
+                    home_page_data[index].title,
+                  ),
+                ),
+          ),
     );
   }
 }

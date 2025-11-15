@@ -163,7 +163,7 @@ class CustomerDeptsDetailsControllerImp extends CustomerDeptsDetailsController {
     if (calculatesAmountOfRemainingDebt() == true) {
       Get.defaultDialog(
         title: "دفعة جديدة",
-        titleStyle: TextStyle(color: AppColors.wihet),
+        titleStyle: TextStyle(color: AppColors.primary),
         buttonColor: AppColors.primary,
         backgroundColor: AppColors.backgroundColor,
         content: Column(
@@ -182,41 +182,49 @@ class CustomerDeptsDetailsControllerImp extends CustomerDeptsDetailsController {
             SizedBox(height: 10),
             SizedBox(
               width: 250,
-              child: Custom_set_date_button(
-                hintText: "تاريخ الدفعة",
-                onPressed: () {
-                  showDatePicker(
-                  context: Get.context!,
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2100),
-                    builder: (context, child) {
-                      return Theme(
-                        data: Theme.of(context).copyWith(
-                          colorScheme: ColorScheme.light(
-                            primary:
-                                AppColors.primary, // header background color
-                            onPrimary: Colors.white, // header text color
-                            onSurface: AppColors.primary, // body text color
-                            surface:
-                                AppColors
-                                    .backgroundColor, // background color of the date picker itself
-                          ),
-                          textButtonTheme: TextButtonThemeData(
-                            style: TextButton.styleFrom(
-                              foregroundColor:
-                                  AppColors.primary, // button text color
-                            ),
-                          ),
-                        ),
-                        child: child!,
-                      );
-                    },
-                  ).then((selectedDate) {
-                    if (selectedDate != null) {
-                      setPaymentDate(selectedDate);
-                    }
-                  });
-                },
+              child: GetBuilder<CustomerDeptsDetailsControllerImp>(
+                id: "paymentDatePicker", // You may want to specify an ID for finer-grained updates.
+                builder:
+                    (controller) => Custom_set_date_button(
+                      hintText:
+                          "${controller.paymentDate.year}/${controller.paymentDate.month.toString().padLeft(2, '0')}/${controller.paymentDate.day.toString().padLeft(2, '0')}",
+                      onPressed: () {
+                        showDatePicker(
+                          context: Get.context!,
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100),
+                          builder: (context, child) {
+                            return Theme(
+                              data: Theme.of(context).copyWith(
+                                colorScheme: ColorScheme.light(
+                                  primary:
+                                      AppColors
+                                          .primary, // header background color
+                                  onPrimary: Colors.white, // header text color
+                                  onSurface:
+                                      AppColors.primary, // body text color
+                                  surface:
+                                      AppColors
+                                          .backgroundColor, // date picker bg color
+                                ),
+                                textButtonTheme: TextButtonThemeData(
+                                  style: TextButton.styleFrom(
+                                    foregroundColor:
+                                        AppColors.primary, // button text color
+                                  ),
+                                ),
+                              ),
+                              child: child!,
+                            );
+                          },
+                        ).then((selectedDate) {
+                          if (selectedDate != null) {
+                            controller.setPaymentDate(selectedDate);
+                            controller.update(["paymentDatePicker"]);
+                          }
+                        });
+                      },
+                    ),
               ),
             ),
           ],
@@ -407,6 +415,7 @@ class CustomerDeptsDetailsControllerImp extends CustomerDeptsDetailsController {
   @override
   void setPaymentDate(DateTime date) {
     paymentDate = date;
+    update();
   }
 
   @override

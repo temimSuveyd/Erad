@@ -7,7 +7,7 @@ AppBar Custom_appBar({required String title}) {
     title: Text(
       title,
       style: TextStyle(
-        color: AppColors.wihet,
+        color: AppColors.black,
         fontSize: 22,
         fontWeight: FontWeight.bold,
       ),
@@ -17,7 +17,7 @@ AppBar Custom_appBar({required String title}) {
       onPressed: () {
         Get.back();
       },
-      icon: Icon(Icons.arrow_back, color: AppColors.wihet),
+      icon: Icon(Icons.arrow_back, color: AppColors.black),
     ),
     backgroundColor: Colors.transparent,
   );

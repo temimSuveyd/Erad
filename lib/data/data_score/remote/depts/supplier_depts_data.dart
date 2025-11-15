@@ -87,6 +87,7 @@ class SupplierDeptsData {
         .doc(billId)
         .delete();
   }
+
   Future deltePaymentFromDepts(
     String paymentId,
     String supplierId,
@@ -101,6 +102,7 @@ class SupplierDeptsData {
         .doc(paymentId)
         .delete();
   }
+
   Future updateTotalPriceInBill(
     String billId,
     String supplierId,
@@ -153,7 +155,8 @@ class SupplierDeptsData {
     return _firestore
         .collection("users")
         .doc(userID)
-        .collection("supplier_depts").orderBy("bill_date", descending: false)
+        .collection("supplier_depts")
+        .orderBy("bill_date", descending: false)
         .snapshots();
   }
 
@@ -166,7 +169,8 @@ class SupplierDeptsData {
         .doc(userID)
         .collection("supplier_depts")
         .doc(supplierId)
-        .collection("payments").orderBy("payment_date", descending: false)
+        .collection("payments")
+        .orderBy("payment_date", descending: false)
         .snapshots();
   }
 

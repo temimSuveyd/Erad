@@ -148,13 +148,7 @@ class ExpensesCard extends GetView<ExpensesControllerImp> {
                 ),
               ),
               // Edit & Delete buttons
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(226, 11, 27, 82),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
-                child: Row(
+            Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Custom_button(
@@ -181,7 +175,7 @@ class ExpensesCard extends GetView<ExpensesControllerImp> {
                     ),
                   ],
                 ),
-              ),
+              
             ],
           ),
         ),

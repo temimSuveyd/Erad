@@ -22,7 +22,7 @@ class Custom_button extends StatelessWidget {
       },
       padding: EdgeInsets.symmetric(horizontal: 20),
       minWidth: 120,
-      height: 45,
+      height: 40,
       shape: OutlineInputBorder(
         borderRadius: BorderRadius.circular(5),
         borderSide: BorderSide.none,

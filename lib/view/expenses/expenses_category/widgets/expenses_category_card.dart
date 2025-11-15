@@ -18,9 +18,9 @@ class ExpensesCategoryCard extends GetView<ExpensesCategoryControllerImp> {
       padding: const EdgeInsets.only(top: 10),
       child: ListTile(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        tileColor: AppColors.primary.withOpacity(0.08),
+        tileColor: AppColors.grey,
         leading: CircleAvatar(
-          backgroundColor: AppColors.primary.withOpacity(0.18),
+          backgroundColor: AppColors.primary,
           child: const Icon(Icons.attach_money, color: Colors.white),
         ),
         trailing: SizedBox(
@@ -44,7 +44,7 @@ class ExpensesCategoryCard extends GetView<ExpensesCategoryControllerImp> {
                 onPressed: () {
                   controller.showaDeleteExpensesCategoryDailog(id);
                 },
-                color: AppColors.red,
+                color: AppColors.primary,
               ),
               Custom_button(
                 icon: Icons.open_in_new,
@@ -52,7 +52,7 @@ class ExpensesCategoryCard extends GetView<ExpensesCategoryControllerImp> {
                 onPressed: () {
                   controller.goTOExpensesPage(id);
                 },
-                color: AppColors.grey,
+                color: AppColors.primary,
               ),
             ],
           ),
@@ -66,7 +66,6 @@ class ExpensesCategoryCard extends GetView<ExpensesCategoryControllerImp> {
           ),
           overflow: TextOverflow.ellipsis,
         ),
-
         titleAlignment: ListTileTitleAlignment.center,
       ),
     );

@@ -5,7 +5,8 @@ import 'package:erad/view/custom_widgets/custom_add_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ExpensesCategoryCard extends GetView<WithdrawnFundsCategoryControllerImp> {
+class ExpensesCategoryCard
+    extends GetView<WithdrawnFundsCategoryControllerImp> {
   const ExpensesCategoryCard({
     super.key,
     required this.id,
@@ -19,13 +20,13 @@ class ExpensesCategoryCard extends GetView<WithdrawnFundsCategoryControllerImp> 
       padding: const EdgeInsets.only(top: 10),
       child: ListTile(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        tileColor: AppColors.primary.withOpacity(0.08),
+        tileColor: AppColors.grey,
         leading: CircleAvatar(
           backgroundColor: AppColors.primary.withOpacity(0.18),
           child: const Icon(Icons.attach_money, color: Colors.white),
         ),
         trailing: SizedBox(
-          width: 450,
+          width: 500,
           height: 35,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -45,7 +46,7 @@ class ExpensesCategoryCard extends GetView<WithdrawnFundsCategoryControllerImp> 
                 onPressed: () {
                   controller.showaDeleteWithdrawnFundsCategoryDailog(id);
                 },
-                color: AppColors.red,
+                color: AppColors.primary,
               ),
               Custom_button(
                 icon: Icons.open_in_new,
@@ -53,7 +54,7 @@ class ExpensesCategoryCard extends GetView<WithdrawnFundsCategoryControllerImp> 
                 onPressed: () {
                   controller.goTOWithdrawnFundsPage(id);
                 },
-                color: AppColors.grey,
+                color: AppColors.primary,
               ),
             ],
           ),

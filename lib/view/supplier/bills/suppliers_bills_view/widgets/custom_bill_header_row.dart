@@ -1,4 +1,3 @@
-
 import 'package:erad/controller/suppliers/bills/suppliers_bill_view_controller.dart';
 import 'package:erad/view/custom_widgets/custom_bill_status_dialog.dart';
 import 'package:erad/view/custom_widgets/handling_bill_status.dart';
@@ -10,7 +9,6 @@ import 'package:erad/core/constans/colors.dart';
 import 'package:erad/view/custom_widgets/custom_add_button.dart';
 
 import '../../../../../data/model/supplier_bill_view/bill_model.dart';
-
 
 class Custom_bill_view_card extends GetView<SuppliersBillViewControllerImp> {
   const Custom_bill_view_card({super.key, required this.billModel});
@@ -68,7 +66,11 @@ class Custom_bill_view_card extends GetView<SuppliersBillViewControllerImp> {
                 billStatus: billModel.bill_status!,
                 onPressed: () {
                   custom_bill_status_dialog(billModel.bill_status!, (value) {
-                    controller.updateBillStaus(value, billModel.bill_id!);
+                    controller.updateBillStaus(
+                      value,
+                      billModel.bill_id!,
+                      billModel,
+                    );
                   });
                 },
               ),

@@ -1,4 +1,3 @@
-
 import 'dart:typed_data';
 
 import 'package:erad/core/constans/routes.dart';
@@ -502,8 +501,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
 
   @override
   addBillToDepts() async {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       await customerDeptsData.addBillToDepts(
         billModel!.bill_no!,
@@ -525,8 +523,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
 
   @override
   addDept() async {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       await customerDeptsData.addDepts(
         billModel!.customer_id!,
@@ -571,28 +568,77 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
     Get.defaultDialog(
       title: "تغيير طريقة الدفع",
       backgroundColor: AppColors.backgroundColor,
-      content: Row(
-        spacing: 20,
-        children: [
-          Custom_button(
-            icon: Icons.attach_money_rounded,
-            title: "نقدي",
-            onPressed: () {
-              updatePaymentType("monetary");
-              Get.back();
-            },
-            color: AppColors.primary,
-          ),
-          Custom_button(
-            icon: Icons.money_off_csred_outlined,
-            title: "دَين",
-            onPressed: () {
-              updatePaymentType("Religion");
-              Get.back();
-            },
-            color: AppColors.red,
-          ),
-        ],
+      content: Container(
+        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+        decoration: BoxDecoration(
+          color: AppColors.backgroundColor,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "اختَر طريقة الدفع التي تريدها:",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: AppColors.primary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 20),
+            Column(
+              children: [
+                ListTile(
+                  leading: Icon(
+                    Icons.attach_money_rounded,
+                    color: AppColors.primary,
+                  ),
+                  title: Text(
+                    "نقدي",
+                    style: TextStyle(color: AppColors.primary),
+                  ),
+                  onTap:
+                      billModel?.payment_type == "monetary"
+                          ? null
+                          : () {
+                            updatePaymentType("monetary");
+                            Get.back();
+                          },
+                  tileColor:
+                      billModel?.payment_type == "monetary"
+                          ? AppColors.primary.withOpacity(0.12)
+                          : null,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                SizedBox(height: 12),
+                ListTile(
+                  leading: Icon(
+                    Icons.money_off_csred_outlined,
+                    color: AppColors.red,
+                  ),
+                  title: Text("دَين", style: TextStyle(color: AppColors.red)),
+                  onTap:
+                      billModel?.payment_type != "monetary"
+                          ? null
+                          : () {
+                            updatePaymentType("Religion");
+                            Get.back();
+                          },
+                  tileColor:
+                      billModel?.payment_type != "monetary"
+                          ? AppColors.red.withOpacity(0.12)
+                          : null,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
       textCancel: "إلغاء",
       onCancel: () {},

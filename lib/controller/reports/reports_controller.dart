@@ -1,4 +1,3 @@
-
 import 'package:erad/core/class/handling_data.dart';
 import 'package:erad/core/constans/sharedPreferences.dart';
 import 'package:erad/core/function/add_monthly.dart';
@@ -33,6 +32,7 @@ abstract class ReportsController extends GetxController {
   void calculatingTotalErnings();
   void calculatingTotalExpenses();
   void calculatingTotalWithdrawnFunds();
+  void setYear(int year);
 }
 
 class ReportsControllerImpl extends ReportsController {
@@ -66,10 +66,10 @@ class ReportsControllerImpl extends ReportsController {
   Services services = Get.find();
   DateTime selectedDate = DateTime.now();
   String? selectedUserId;
-  bool includeDebts = true;
+  bool includeDebts = false;
   // ui lists
   List chartsLists = [];
-  List cardsList = [];
+  List cardsList = [0.0, 0.0, 0.0, 0.0, 0.0];
 
   @override
   void getAllCustomerBills() {
@@ -83,16 +83,15 @@ class ReportsControllerImpl extends ReportsController {
         customerBillList.value =
             customerBillList.where((data) {
               return data['paymet_type'] == 'monetary' &&
-                  data['bill_status'] == 'deliveryd'
-              // &&data['bill_date'].toDate().year == selectedDate.year
-              ;
+                  data['bill_status'] == 'deliveryd' &&
+                  data['bill_date'].toDate().year == selectedDate.year;
             }).toList();
         calculationTotalMonthlyEarning();
         calculatingTotalErnings();
         statusreqest = Statusreqest.success;
         update();
       });
-    } on Exception catch (e) {
+    } on Exception {
       statusreqest = Statusreqest.faliure;
       update();
     }
@@ -105,19 +104,28 @@ class ReportsControllerImpl extends ReportsController {
     final String userID =
         services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      expensesData.getExpensesCategory(userID).listen((event) {
+      expensesList.clear();
+      expensesData.getExpensesCategory(userID).listen((event) async {
+        List allExpenses = [];
         for (var data in event.docs) {
           final String categoryID = data.id;
-          expensesData.getExpenses(userID, categoryID).listen((event) {
-            expensesList.value = event.docs;
-            calculationTotalMonthlyExpenses();
-            calculatingTotalExpenses();
-            statusreqest = Statusreqest.success;
-            update();
-          });
+          final docs =
+              (await expensesData.getExpenses(userID, categoryID).first).docs;
+          final filteredDocs =
+              docs.where((exp) {
+                final expDate = exp['date'].toDate();
+                return expDate.year == selectedDate.year;
+              }).toList();
+          allExpenses.addAll(filteredDocs);
         }
+        expensesList.value = allExpenses;
+        calculationTotalMonthlyExpenses();
+        calculatingTotalExpenses();
+        calculatingTotalErnings();
+        statusreqest = Statusreqest.success;
+        update();
       });
-    } on Exception catch (e) {
+    } on Exception catch (_) {
       statusreqest = Statusreqest.faliure;
       update();
     }
@@ -139,7 +147,7 @@ class ReportsControllerImpl extends ReportsController {
         }
         getWithdrawnFunds();
       });
-    } on Exception catch (e) {
+    } on Exception catch (_) {
       statusreqest = Statusreqest.faliure;
       update();
     }
@@ -150,24 +158,26 @@ class ReportsControllerImpl extends ReportsController {
     withdrawnFundList.clear();
     statusreqest = Statusreqest.loading;
     update();
-
     final userID = services.sharedPreferences.getString(AppShared.userID)!;
-
     try {
       final users =
           (selectedUserId == null || selectedUserId == "all")
               ? allUsersList
               : [selectedUserId!];
-
       for (var user in users) {
         final docs =
             (await withdrawnFundData.getWithdrawnFund(userID, user).first).docs;
-        withdrawnFundList.addAll(docs);
+        final filteredDocs =
+            docs.where((doc) {
+              final docDate = doc['date'].toDate();
+              return docDate.year == selectedDate.year;
+            }).toList();
+        withdrawnFundList.addAll(filteredDocs);
       }
       calculatingTotalWithdrawnFunds();
       calculationTotalMonthlyWithdrawnFunds();
       statusreqest = Statusreqest.success;
-    } catch (e) {
+    } catch (_) {
       statusreqest = Statusreqest.faliure;
     }
     update();
@@ -181,12 +191,17 @@ class ReportsControllerImpl extends ReportsController {
         services.sharedPreferences.getString(AppShared.userID)!;
     try {
       customerDeptsData.getAllDepts(userID).listen((event) {
-        customerDeptsList.value = event.docs;
+        final filteredDocs =
+            event.docs.where((doc) {
+              final docDate = doc['bill_date']?.toDate();
+              return docDate != null && docDate.year == selectedDate.year;
+            }).toList();
+        customerDeptsList.value = filteredDocs;
         calculatingTotalCustomerDepts();
         statusreqest = Statusreqest.success;
         update();
       });
-    } on Exception catch (e) {
+    } on Exception catch (_) {
       statusreqest = Statusreqest.faliure;
       update();
     }
@@ -200,12 +215,17 @@ class ReportsControllerImpl extends ReportsController {
         services.sharedPreferences.getString(AppShared.userID)!;
     try {
       supplierDeptsData.getAllDepts(userID).listen((event) {
-        supplierDeptsList.value = event.docs;
+        final filteredDocs =
+            event.docs.where((doc) {
+              final docDate = doc['bill_date']?.toDate();
+              return docDate != null && docDate.year == selectedDate.year;
+            }).toList();
+        supplierDeptsList.value = filteredDocs;
         calculatingTotalSupplierDepts();
         statusreqest = Statusreqest.success;
         update();
       });
-    } on Exception catch (e) {
+    } on Exception catch (_) {
       statusreqest = Statusreqest.faliure;
       update();
     }
@@ -222,12 +242,7 @@ class ReportsControllerImpl extends ReportsController {
         customerBillList,
         totalEraningsMonthly,
       );
-      if (includeDebts) {
-      groupAndSumMonthlyTotals("amount", totalEraningsMonthly, debts: totalCustomerDepts,expenses: totalExpenses,includeDebts: true);
-      }else{
-      groupAndSumMonthlyTotals("amount", totalEraningsMonthly,);
-
-      }
+      groupAndSumMonthlyTotals("amount", totalEraningsMonthly);
       update();
     }
   }
@@ -238,7 +253,6 @@ class ReportsControllerImpl extends ReportsController {
       addMonthly("amount", "date", expensesList, totalExpensesMonthly);
       groupAndSumMonthlyTotals("amount", totalExpensesMonthly);
       chartsLists.add(totalExpensesMonthly);
-
       update();
     }
   }
@@ -271,32 +285,31 @@ class ReportsControllerImpl extends ReportsController {
   @override
   void calculatingTotalCustomerDepts() {
     totalCustomerDepts = calculateTotalAmount(customerDeptsList, "total_price");
-    cardsList.add(totalCustomerDepts);
+    cardsList[2] = totalCustomerDepts;
   }
 
   @override
   void calculatingTotalSupplierDepts() {
     totalSupplierDepts = calculateTotalAmount(supplierDeptsList, "total_price");
-    cardsList.add(totalSupplierDepts);
-  }
-
-  @override
-  void calculatingTotalErnings() {
-    totalEarning = calculateTotalAmount(customerBillList, "total_profits");
-    if (includeDebts) {
-      totalEarning = totalEarning - totalCustomerDepts - totalExpenses;
-    }
-    if (cardsList.length >= 1) {
-      cardsList[0] = totalEarning;
-    } else {
-      cardsList.add(totalEarning);
-    }
+    cardsList[1] = totalSupplierDepts;
+    update();
   }
 
   @override
   void calculatingTotalExpenses() {
     totalExpenses = calculateTotalAmount(expensesList, "amount");
-    cardsList.add(totalExpenses);
+    cardsList[3] = totalExpenses;
+  }
+
+  @override
+  void calculatingTotalErnings() {
+    totalEarning = calculateTotalAmount(customerBillList, "total_profits");
+    totalEarning = totalEarning - totalExpenses;
+    if (includeDebts == true) {
+      totalEarning = totalEarning - totalCustomerDepts;
+    }
+    cardsList[0] = totalEarning;
+    update();
   }
 
   @override
@@ -307,14 +320,7 @@ class ReportsControllerImpl extends ReportsController {
         final amount = data["amount"];
         totalWithdrawnFunds = amount + totalWithdrawnFunds;
       }
-      if (cardsList.length >= 5) {
-        cardsList[4] = totalWithdrawnFunds;
-      } else if (cardsList.length < 5) {
-        while (cardsList.length < 4) {
-          cardsList.add(0.0);
-        }
-        cardsList.add(totalWithdrawnFunds);
-      }
+      cardsList[4] = totalWithdrawnFunds;
     }
     update();
   }
@@ -328,26 +334,35 @@ class ReportsControllerImpl extends ReportsController {
 
   @override
   void debtCheckChanged() {
-    if (includeDebts == true) {
-      includeDebts = false;
-    } else {
-      includeDebts = true;
-    }
-    getAllCustomerBills();
+    includeDebts = !includeDebts;
+    calculatingTotalErnings();
     update();
   }
 
   @override
   void onInit() {
     chartsLists.clear();
-    cardsList.clear();
-    // monthly
+    cardsList = [0.0, 0.0, 0.0, 0.0, 0.0];
     getAllCustomerBills();
-    getAllCustomerDepts();
     getAllSupplierDepts();
+    getAllCustomerDepts();
     getAllExpenses();
     getAllUsers();
     update();
+
     super.onInit();
+  }
+
+  @override
+  void setYear(int year) {
+    selectedDate = DateTime(year);
+    chartsLists.clear();
+    cardsList = [0.0, 0.0, 0.0, 0.0, 0.0];
+    getAllCustomerBills();
+    getAllSupplierDepts();
+    getAllCustomerDepts();
+    getAllExpenses();
+    getAllUsers();
+    update();
   }
 }

@@ -1,4 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:erad/core/function/is_date_in_range.dart';
+import 'package:erad/data/data_score/remote/depts/supplier_depts_data.dart';
+import 'package:erad/data/model/supplier_bill_view/bill_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:erad/core/class/handling_data.dart';
@@ -8,34 +10,52 @@ import 'package:erad/core/services/app_services.dart';
 import 'package:erad/data/data_score/remote/Supplier/Supplier_bill_data.dart';
 
 abstract class SuppliersBillViewController extends GetxController {
-  getSuppliersBills();
-  searchForBillsBaySupplierName();
-  searchForBillBayCity(String cityName);
-  searchByDate(DateTime searchStartDate, DateTime searchEndDate);
-  goToDetailsPage(String billId);
-  updateBillStaus(String billStatus, String billId);
+  void getSuppliersBills();
+  void searchForBillsBaySupplierName();
+  void searchForBillBayCity(String cityName);
+  void searchByDate(DateTimeRange dateRange);
+  void goToDetailsPage(String billId);
+  void updateBillStaus(String billStatus, String billId, BillModel billModel);
+  void addDept(BillModel? billModel);
+  void addBillToDepts(BillModel? billModel);
+  void deleteDept(String customerId, String billId);
 }
 
 class SuppliersBillViewControllerImp extends SuppliersBillViewController {
   SupplierBillData supplierBillData = SupplierBillData();
+  SupplierDeptsData supplierDeptsData = SupplierDeptsData();
   var supplier_bills_list = [].obs;
   Services services = Get.find();
   Statusreqest statusreqest = Statusreqest.success;
   late TextEditingController searchBillsTextController =
       TextEditingController();
   String? selectedSupplierCity;
-  String? selectedStartDate;
-  String? selectedEndDate;
+  DateTimeRange? selectedDateRange;
+  DateTime startedDate = DateTime.now();
 
   @override
-  getSuppliersBills() {
+  void getSuppliersBills() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       supplierBillData.getAllBils(userID).listen((event) {
         supplier_bills_list.value = event.docs;
+        supplier_bills_list.value =
+            supplier_bills_list.where((doc) {
+              final data = doc.data();
+              final DateTime billDate = data["bill_date"].toDate();
+              if (selectedDateRange == null) {
+                return (billDate.year == startedDate.year &&
+                    billDate.month == startedDate.month &&
+                    billDate.day == startedDate.day);
+              } else {
+                return isDateInRange(
+                  billDate: billDate,
+                  range: selectedDateRange!,
+                );
+              }
+            }).toList();
         if (supplier_bills_list.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {
@@ -50,7 +70,7 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
   }
 
   @override
-  searchForBillsBaySupplierName() {
+  void searchForBillsBaySupplierName() {
     String search = searchBillsTextController.text;
     if (search.isEmpty) {
       getSuppliersBills();
@@ -58,9 +78,7 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
       supplier_bills_list.value =
           supplier_bills_list.where((doc) {
             final data = doc.data();
-            final supplierName =
-                data["supplier_name"].toString().toLowerCase();
-
+            final supplierName = data["supplier_name"].toString().toLowerCase();
             final billId = data["bill_no"].toString().toLowerCase();
             if (supplierName.contains(search.toLowerCase()) ||
                 billId.contains(search.toLowerCase())) {
@@ -77,62 +95,41 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
   }
 
   @override
-  searchForBillBayCity(String cityName) {
+  void searchForBillBayCity(String cityName) {
     if (cityName.isEmpty || cityName == "جميع المدن") {
       getSuppliersBills();
     } else {
-      supplier_bills_list.value =
-          supplier_bills_list.where((doc) {
-            final data = doc.data();
-            final fileView = data["supplier_city"].toLowerCase();
-            return fileView.contains(cityName.toLowerCase());
-          }).toList();
-      if (supplier_bills_list.isEmpty) {
-        statusreqest = Statusreqest.empty;
-      }
-      selectedSupplierCity = cityName;
+      String userID = services.sharedPreferences.getString(AppShared.userID)!;
+      supplierBillData.getAllBils(userID).listen((event) {
+        supplier_bills_list.value = event.docs;
+        supplier_bills_list.value =
+            supplier_bills_list.where((doc) {
+              final data = doc.data();
+              final fileView = data["supplier_city"].toLowerCase();
+              return fileView.contains(cityName.toLowerCase());
+            }).toList();
+        if (supplier_bills_list.isEmpty) {
+          statusreqest = Statusreqest.empty;
+        }
+        selectedSupplierCity = cityName;
+        update();
+      });
     }
-    update();
   }
 
   @override
-  searchByDate(DateTime searchStartDate, DateTime searchEndDate) {
+  void searchByDate(DateTimeRange dateRange) async {
     try {
+      selectedDateRange = dateRange;
       getSuppliersBills();
-      selectedStartDate = _formatDate(searchStartDate);
-      selectedEndDate = _formatDate(searchEndDate);
-
-
-      supplier_bills_list.value =
-          supplier_bills_list.where((doc) {
-            final data = doc.data();
-            final DateTime billDate = (data["bill_date"] as Timestamp).toDate();
-
-            // Check if bill date is within range (inclusive)
-            return billDate.isAfter(
-                  searchStartDate.subtract(const Duration(days: 1)),
-                ) &&
-                billDate.isBefore(searchEndDate.add(const Duration(days: 1)));
-          }).toList();
-
-      if (supplier_bills_list.isEmpty) {
-        statusreqest = Statusreqest.empty;
-      }
-
-      update();
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();
     }
   }
 
-  // Helper method to format dates consistently
-  String _formatDate(DateTime date) {
-    return "${date.day}/${date.month}/${date.year}";
-  }
-
   @override
-  goToDetailsPage(String billId) {
+  void goToDetailsPage(String billId) {
     Get.toNamed(
       AppRoutes.supplier_bill_details_page,
       arguments: {"bill_id": billId},
@@ -140,24 +137,89 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
   }
 
   @override
-  Future updateBillStaus(String billStatus, String billId) async {
+  Future updateBillStaus(
+    String billStatus,
+    String billId,
+    BillModel billModel,
+  ) async {
     try {
-      String userID =
-          services.sharedPreferences.getString(AppShared.userID)!;
+      String userID = services.sharedPreferences.getString(AppShared.userID)!;
       statusreqest = Statusreqest.loading;
       update();
-
       await supplierBillData.updateBillStatus(userID, billId, billStatus);
+      if (billStatus == 'deliveryd' && billModel.payment_type != 'monetary') {
+        await addDept(billModel);
+        await addBillToDepts(billModel);
+      } else {
+        deleteDept(billModel.supplier_id!, billId);
+      }
       statusreqest = Statusreqest.success;
     } catch (e) {
       statusreqest = Statusreqest.success;
     }
-
     update();
   }
 
   @override
-  void onInit() {
+  Future addDept(BillModel? billModel) async {
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
+    try {
+      await supplierDeptsData.addDepts(
+        billModel!.supplier_id!,
+        billModel.supplier_name!,
+        billModel.supplier_city!,
+        userID,
+        billModel.total_price!,
+        billModel.bill_date!,
+      );
+      addBillToDepts(billModel);
+      statusreqest = Statusreqest.success;
+      update();
+    } catch (e) {
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
+  }
+
+  @override
+  Future addBillToDepts(BillModel? billModel) async {
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
+    try {
+      await supplierDeptsData.addBillToDepts(
+        billModel!.bill_no!,
+        billModel.bill_id!,
+        billModel.supplier_id!,
+        billModel.payment_type!,
+        userID,
+        billModel.total_price!,
+        billModel.bill_date!,
+      );
+      statusreqest = Statusreqest.success;
+      update();
+    } catch (e) {
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
+  }
+
+  @override
+  void deleteDept(String customerId, String billId) async {
+    statusreqest = Statusreqest.loading;
+    update();
+    try {
+      final String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
+      await supplierDeptsData.delteBillFromDepts(billId, customerId, userID);
+      statusreqest = Statusreqest.success;
+      update();
+    } catch (e) {
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
+  }
+
+  @override
+  void onInit() async {
     getSuppliersBills();
     super.onInit();
   }

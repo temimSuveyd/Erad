@@ -1,5 +1,6 @@
 import 'package:erad/core/function/is_date_in_range.dart';
-import 'package:erad/core/function/save_started_date.dart';
+import 'package:erad/data/data_score/remote/depts/customer_depts_data.dart';
+import 'package:erad/data/model/customer_bills_view/bill_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:erad/core/class/handling_data.dart';
@@ -14,11 +15,15 @@ abstract class CustomerBillViewController extends GetxController {
   void searchForBillBayCity(String cityName);
   void searchByDate(DateTimeRange dateRange);
   void goToDetailsPage(String billId);
-  void updateBillStaus(String billStatus, String billId);
+  void updateBillStaus(String billStatus, String billId, BillModel billModel);
+  void addDept(BillModel? billModel);
+  void addBillToDepts(BillModel? billModel);
+  void deleteDept(String customerId, String billId);
 }
 
 class CustomerBillViewControllerImp extends CustomerBillViewController {
   CustomerBillData customerBillData = CustomerBillData();
+  CustomerDeptsData customerDeptsData = CustomerDeptsData();
   var customer_bills_list = [].obs;
   Services services = Get.find();
   Statusreqest statusreqest = Statusreqest.success;
@@ -135,19 +140,69 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
   }
 
   @override
-  Future updateBillStaus(String billStatus, String billId) async {
+  Future updateBillStaus(
+    String billStatus,
+    String billId,
+    BillModel billModel,
+  ) async {
     try {
       String userID = services.sharedPreferences.getString(AppShared.userID)!;
       statusreqest = Statusreqest.loading;
       update();
-
       await customerBillData.updateBillStatus(userID, billId, billStatus);
+      if (billStatus == 'deliveryd' && billModel.payment_type != 'Religion') {
+        await addDept(billModel);
+        await addBillToDepts(billModel);
+      } else {
+        deleteDept(billModel.customer_id!, billId);
+      }
       statusreqest = Statusreqest.success;
     } catch (e) {
       statusreqest = Statusreqest.success;
     }
-
     update();
+  }
+
+  @override
+  Future addDept(BillModel? billModel) async {
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
+    try {
+      await customerDeptsData.addDepts(
+        billModel!.customer_id!,
+        billModel.customer_name!,
+        billModel.customer_city!,
+        userID,
+        billModel.total_price!,
+        billModel.bill_date!,
+      );
+      addBillToDepts(billModel);
+      statusreqest = Statusreqest.success;
+      update();
+    } catch (e) {
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
+  }
+
+  @override
+  Future addBillToDepts(BillModel? billModel) async {
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
+    try {
+      await customerDeptsData.addBillToDepts(
+        billModel!.bill_no!,
+        billModel.bill_id!,
+        billModel.customer_id!,
+        billModel.payment_type!,
+        userID,
+        billModel.total_price!,
+        billModel.bill_date!,
+      );
+      statusreqest = Statusreqest.success;
+      update();
+    } catch (e) {
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
   }
 
   @override
@@ -155,50 +210,20 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
     getCustomersBills();
     super.onInit();
   }
+
+  @override
+  void deleteDept(String customerId, String billId) async {
+    statusreqest = Statusreqest.loading;
+    update();
+    try {
+      final String userID =
+          services.sharedPreferences.getString(AppShared.userID)!;
+      await customerDeptsData.delteBillFromDepts(billId, customerId, userID);
+      statusreqest = Statusreqest.success;
+      update();
+    } catch (e) {
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
+  }
 }
-
-
-
-
-  // customerBillData.getAllBils(userID).listen((event) {
-      //   customer_bills_list.value = event.docs;
-      //   customer_bills_list.value =
-      //       customer_bills_list.where((doc) {
-      //         final data = doc.data();
-      //         final billDate = data["bill_date"].toDate();
-      //         // Tarih aralığı tek bir günse, o günün tüm faturalarını dahil et
-      //         if (selectedDateRange!.start.year == selectedDateRange!.end.year &&
-      //             selectedDateRange!.start.month == dateRange.end.month &&
-      //             dateRange.start.day == dateRange.end.day) {
-      //           return billDate.year == dateRange.start.year &&
-      //               billDate.month == dateRange.start.month &&
-      //               billDate.day == dateRange.start.day;
-      //         } else {
-      //           // Tarih aralığı ise, başlangıç ve bitiş dahil aradaki tüm faturaları dahil et
-      //           final billDateOnly = DateTime(
-      //             billDate.year,
-      //             billDate.month,
-      //             billDate.day,
-      //           );
-      //           final startOnly = DateTime(
-      //             dateRange.start.year,
-      //             dateRange.start.month,
-      //             dateRange.start.day,
-      //           );
-      //           final endOnly = DateTime(
-      //             dateRange.end.year,
-      //             dateRange.end.month,
-      //             dateRange.end.day,
-      //           );
-      //           return (billDateOnly.isAtSameMomentAs(startOnly) ||
-      //                   billDateOnly.isAfter(startOnly)) &&
-      //               (billDateOnly.isAtSameMomentAs(endOnly) ||
-      //                   billDateOnly.isBefore(endOnly));
-      //         }
-      //       }).toList();
-      //   if (customer_bills_list.isEmpty) {
-      //     statusreqest = Statusreqest.empty;
-      //   }
-      //   selectedDateRange = dateRange;
-      //   update();
-      // });

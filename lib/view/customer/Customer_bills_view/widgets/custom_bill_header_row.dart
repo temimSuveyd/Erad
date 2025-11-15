@@ -66,7 +66,7 @@ class Custom_bill_view_card extends GetView<CustomerBillViewControllerImp> {
                 billStatus: billModel.bill_status!,
                 onPressed: () {
                   custom_bill_status_dialog(billModel.bill_status!, (value) {
-                    controller.updateBillStaus(value, billModel.bill_id!);
+                    controller.updateBillStaus(value, billModel.bill_id!,billModel);
                   });
                 },
               ),

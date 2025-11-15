@@ -1,16 +1,14 @@
 import 'package:erad/controller/suppliers/bills/suppliers_bill_view_controller.dart';
 import 'package:erad/core/constans/colors.dart';
 import 'package:erad/data/data_score/static/city_data.dart';
-
-import 'package:erad/view/custom_widgets/custom_dropDownButton.dart';
 import 'package:erad/view/custom_widgets/custom_add_button.dart';
 import 'package:erad/view/custom_widgets/custom_appBar.dart';
 import 'package:erad/view/custom_widgets/custom_text_field.dart';
+import 'package:erad/view/custom_widgets/custom_dropDownButton.dart';
 import 'package:erad/view/custom_widgets/custom_set_date_button.dart';
 import 'package:erad/view/custom_widgets/show_date_range_picker.dart';
-import 'package:erad/view/supplier/bills/suppliers_bills_view/widgets/custom_bill_name_list.dart';
 import 'package:erad/view/supplier/bills/suppliers_bills_view/widgets/custom_list_view_builder.dart';
-
+import 'package:erad/view/supplier/bills/suppliers_bills_view/widgets/custom_bill_name_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,19 +21,18 @@ class SuppliersBillsViewPage extends GetView<SuppliersBillViewControllerImp> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: Custom_appBar(title: "فواتير الموردين"),
-
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: GetBuilder<SuppliersBillViewControllerImp>(
-                builder:
-                    (controller) => Row(
-                      spacing: 10,
-                      children: [
-                        Custom_textfield(
-                          hintText: 'اسم العميل',
+              child: Row(
+                spacing: 10,
+                children: [
+                  GetBuilder<SuppliersBillViewControllerImp>(
+                    builder:
+                        (controller) => Custom_textfield(
+                          hintText: 'اسم المورد',
                           suffixIcon: Icons.search,
                           validator: (String? validator) {
                             return null;
@@ -45,21 +42,26 @@ class SuppliersBillsViewPage extends GetView<SuppliersBillViewControllerImp> {
                             controller.searchForBillsBaySupplierName();
                           },
                         ),
-                        Custom_set_date_button(
+                  ),
+                  GetBuilder<SuppliersBillViewControllerImp>(
+                    builder:
+                        (controller) => Custom_set_date_button(
                           hintText:
-                              controller.selectedEndDate == null
-                                  ? "حدد تاريخ الفواتير"
-                                  : "${controller.selectedStartDate} - ${controller.selectedEndDate}",
+                              controller.selectedDateRange == null
+                                  ? "${controller.startedDate.year}/${controller.startedDate.month}/${controller.startedDate.day}"
+                                  : "${controller.selectedDateRange!.start.year}/${controller.selectedDateRange!.start.month}/${controller.selectedDateRange!.start.day} - ${controller.selectedDateRange!.end.year}/${controller.selectedDateRange!.end.month}/${controller.selectedDateRange!.end.day}",
                           onPressed: () {
                             show_date_range_picker(context).then((dateRange) {
-                              controller.searchByDate(
-                                dateRange!.start,
-                                dateRange.end,
-                              );
+                              if (dateRange != null) {
+                                controller.searchByDate(dateRange);
+                              }
                             });
                           },
                         ),
-                        Custom_dropDownButton(
+                  ),
+                  GetBuilder<SuppliersBillViewControllerImp>(
+                    builder:
+                        (controller) => Custom_dropDownButton(
                           value: "value",
                           onChanged:
                               (value) => controller.searchForBillBayCity(value),
@@ -67,18 +69,10 @@ class SuppliersBillsViewPage extends GetView<SuppliersBillViewControllerImp> {
                               controller.selectedSupplierCity ?? "حدد المدينة",
                           items: city_data,
                         ),
-
-                        Custom_button(
-                          icon: Icons.filter_list_off_outlined,
-                          title: "إزالة جميع الفلاتر",
-                          onPressed: () => controller.getSuppliersBills(),
-                          color: AppColors.red,
-                        ),
-                      ],
-                    ),
+                  ),
+                ],
               ),
             ),
-
             SliverToBoxAdapter(child: SizedBox(height: 30)),
             CustomerNameList(),
             SliverToBoxAdapter(child: SizedBox(height: 10)),

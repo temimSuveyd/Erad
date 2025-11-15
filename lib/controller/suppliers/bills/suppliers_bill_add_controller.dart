@@ -11,17 +11,13 @@ import 'package:erad/core/constans/colors.dart';
 import 'package:erad/core/constans/routes.dart';
 import 'package:erad/core/constans/sharedPreferences.dart';
 import 'package:erad/core/function/convertToDropdownItems.dart';
-import 'package:erad/core/function/pdf_maker.dart';
 import 'package:erad/core/services/app_services.dart';
 import 'package:erad/data/data_score/remote/Supplier/Suppliers_data.dart';
-import 'package:erad/data/data_score/remote/Supplier/Supplier_bill_data.dart' hide SupplierBillData;
 import 'package:erad/data/data_score/remote/brands/product_data.dart';
 import 'package:erad/view/custom_widgets/custom_snackbar.dart';
 
 abstract class SupplieraddBiilController extends GetxController {
-  addSupplierBill();
-  addDept();
-  addBillToDepts();
+  Future addSupplierBill();
   getSupplierById();
   getAllSuppliers();
   setSupplierId(String id);
@@ -102,8 +98,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
     } else {
       statusreqest = Statusreqest.loading;
       update();
-      String userID =
-          services.sharedPreferences.getString(AppShared.userID)!;
+      String userID = services.sharedPreferences.getString(AppShared.userID)!;
       try {
         bill_id = await supplierBillData.addSupplierBill(
           supplier_name!,
@@ -137,8 +132,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   getSupplierById() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
 
     try {
       suppliersData.getSupplierByID(userID, supplier_id!).listen((event) {
@@ -181,8 +175,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   getAllSuppliers() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       suppliersData.getAllSuppliers(userID).listen((event) {
         SuppliersList.value = event.docs;
@@ -205,8 +198,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
 
   @override
   deleteBill() {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     if (bill_id == null) {
       Get.back();
     } else {
@@ -225,8 +217,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   @override
   getAllProducts() {
     statusreqest = Statusreqest.loading;
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       _productData.getAllproduct(userID).listen((event) {
         all_product_list.value = event.docs;
@@ -299,8 +290,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   @override
   getProductById(String productId) async {
     try {
-      String userID =
-          services.sharedPreferences.getString(AppShared.userID)!;
+      String userID = services.sharedPreferences.getString(AppShared.userID)!;
       final productData = await _productData.getBrandsTypeBayId(
         userID,
         productId,
@@ -320,8 +310,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
       statusreqest = Statusreqest.loading;
       update();
 
-      String userID =
-          services.sharedPreferences.getString(AppShared.userID)!;
+      String userID = services.sharedPreferences.getString(AppShared.userID)!;
       try {
         supplierBillData.getBillProdects(userID, bill_id!).listen((event) {
           bill_prodects_list.value = event.docs;
@@ -391,8 +380,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
 
   @override
   saveBillData() async {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     if (!is_saved) {
       statusreqest = Statusreqest.loading;
       update();
@@ -411,11 +399,6 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
             total_product_price,
             total_product_profits,
           );
-
-          if (bill_payment_type == "Religion") {
-            await addDept();
-            addBillToDepts();
-          }
           Get.back();
           custom_success_snackbar();
         } else {
@@ -442,10 +425,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   }
 
   @override
-  Future<void> addProductListToFirebase(
-    String userID,
-    String billId,
-  ) async {
+  Future<void> addProductListToFirebase(String userID, String billId) async {
     for (var product in bill_prodects_list) {
       String productName = product["product_name"];
 
@@ -481,8 +461,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   createPdf() async {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     await addSupplierBill();
     if (bill_id != null) {
       try {
@@ -544,7 +523,6 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
     update();
   }
 
-
   @override
   deleteProduct(int productIndex) {
     bill_prodects_list.removeAt(productIndex);
@@ -563,60 +541,8 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
       final numberStr = randomNumber.toString().padLeft(5, '0');
       return '$initials-$date-$numberStr';
     }
+
     bill_no = generateRandomInvoiceId(username);
-  }
-
-  @override
-  addDept() async {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
-    try {
-      if (supplier_name != null && supplier_id != null) {
-        await supplierDeptsData.addDepts(
-          supplier_id!,
-          supplier_name!,
-          supplier_city!,
-          userID,
-          total_product_price,
-          bill_add_date,
-        );
-      } else {
-        statusreqest = Statusreqest.faliure;
-        update();
-      }
-      statusreqest = Statusreqest.success;
-      update();
-    } catch (e) {
-      statusreqest = Statusreqest.faliure;
-      update();
-    }
-  }
-
-  @override
-  addBillToDepts() async {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
-    try {
-      if (supplier_name != null && supplier_id != null) {
-        await supplierDeptsData.addBillToDepts(
-          bill_no!,
-          bill_id!,
-          supplier_id!,
-          bill_payment_type!,
-          userID,
-          total_product_price,
-          bill_add_date,
-        );
-      } else {
-        statusreqest = Statusreqest.faliure;
-        update();
-      }
-      statusreqest = Statusreqest.success;
-      update();
-    } catch (e) {
-      statusreqest = Statusreqest.faliure;
-      update();
-    }
   }
 
   @override

@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'dart:developer';
 
 /// [expenses] listesindeki stringleri güvenli ve hatasız şekilde Map'e çevirir.
 /// Sadece geçerli JSON stringlerini parse eder.
 /// JSON olmayan veya bozuk stringleri tamamen atlar.
 /// Hiçbir regex veya manuel düzeltme yapmaz, sadece jsonDecode kullanır.
-/// Hatalı stringler loglanır, uygulama asla crash olmaz.
+/// Hatalı stringler atlanır, uygulama asla crash olmaz.
 List<Map<String, dynamic>> fromStringToList(List<String>? expenses) {
   if (expenses == null || expenses.isEmpty) return [];
 
@@ -19,11 +18,8 @@ List<Map<String, dynamic>> fromStringToList(List<String>? expenses) {
       final decoded = jsonDecode(cleaned);
       if (decoded is Map<String, dynamic>) {
         result.add(decoded);
-      } else {
-        log("Geçersiz veri, Map bekleniyordu: $str");
       }
     } catch (e) {
-      log("JSON parse hatası: $str\nHata: $e");
       // Hatalı stringi atla
     }
   }

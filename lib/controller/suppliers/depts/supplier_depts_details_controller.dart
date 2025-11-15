@@ -2,6 +2,8 @@ import 'package:erad/core/class/handling_data.dart';
 import 'package:erad/core/constans/colors.dart';
 import 'package:erad/core/constans/routes.dart';
 import 'package:erad/core/constans/sharedPreferences.dart';
+import 'package:erad/core/function/is_date_in_range.dart';
+import 'package:erad/core/function/save_started_date.dart';
 import 'package:erad/core/services/app_services.dart';
 import 'package:erad/data/data_score/remote/depts/supplier_depts_data.dart';
 import 'package:erad/data/model/supplier_depts/supplier_depts_model.dart';
@@ -12,22 +14,26 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 abstract class SupplierDeptsDetailsController extends GetxController {
-  getBills();
-  getPayments();
-  getDeptDetails();
-  initData();
-  goToBillDetails(String billId);
-  showAddPaymentDialog();
-  addPayment();
+  void getBills();
+  void getPayments();
+  void getDeptDetails();
+  void initData();
+  void goToBillDetails(String billId);
+  void showAddPaymentDialog();
+  void addPayment();
   bool calculatesAmountOfRemainingDebt();
-  updateDeptData();
-  showDeleteDeptDialog();
-  deleteDept();
-  showDeletePayment(String id);
-  deletePayment(String id);
+  void updateDeptData();
+  void showDeleteDeptDialog();
+  void deleteDept();
+  void showDeletePayment(String id);
+  void deletePayment(String id);
+  Future startedDate();
+  void setDateRenage(DateTimeRange dateRange);
+  void setPaymentDate(DateTime date);
 }
 
-class SupplierDeptsDetailsControllerImpl extends SupplierDeptsDetailsController {
+class SupplierDeptsDetailsControllerImpl
+    extends SupplierDeptsDetailsController {
   final addPaymentController = TextEditingController();
   final SupplierDeptsData _supplierDeptsData = SupplierDeptsData();
   Statusreqest statusreqest = Statusreqest.success;
@@ -40,6 +46,8 @@ class SupplierDeptsDetailsControllerImpl extends SupplierDeptsDetailsController 
 
   DeptsModel? deptModel;
   DateTime paymentDate = DateTime.now();
+  DateTimeRange? startedDateRange;
+  DateTimeRange? selectedDateRange;
 
   @override
   getBills() {
@@ -50,6 +58,21 @@ class SupplierDeptsDetailsControllerImpl extends SupplierDeptsDetailsController 
           services.sharedPreferences.getString(AppShared.userID)!;
       _supplierDeptsData.getBillById(userID, deptId!).listen((event) {
         deptsList.value = event.docs;
+        deptsList.value =
+            deptsList.where((data) {
+              final DateTime billDate = data['bill_date'].toDate();
+              if (selectedDateRange == null) {
+                return isDateInRange(
+                  billDate: billDate,
+                  range: startedDateRange!,
+                );
+              } else {
+                return isDateInRange(
+                  billDate: billDate,
+                  range: selectedDateRange!,
+                );
+              }
+            }).toList();
         calculatesAmountOfRemainingDebt();
         if (deptsList.isEmpty) {
           statusreqest = Statusreqest.empty;
@@ -73,6 +96,21 @@ class SupplierDeptsDetailsControllerImpl extends SupplierDeptsDetailsController 
           services.sharedPreferences.getString(AppShared.userID)!;
       _supplierDeptsData.getAllPayments(userID, deptId!).listen((event) {
         paymentsList.value = event.docs;
+        paymentsList.value =
+            paymentsList.where((data) {
+              final DateTime billDate = data['payment_date'].toDate();
+              if (selectedDateRange == null) {
+                return isDateInRange(
+                  billDate: billDate,
+                  range: startedDateRange!,
+                );
+              } else {
+                return isDateInRange(
+                  billDate: billDate,
+                  range: selectedDateRange!,
+                );
+              }
+            }).toList();
         if (paymentsList.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {
@@ -116,7 +154,7 @@ class SupplierDeptsDetailsControllerImpl extends SupplierDeptsDetailsController 
   @override
   goToBillDetails(String billId) {
     Get.toNamed(
-      AppRoutes.supplier_bill_details_page,
+      AppRoutes.supplier_depts_details_page,
       arguments: {"bill_id": billId},
     );
   }
@@ -126,12 +164,14 @@ class SupplierDeptsDetailsControllerImpl extends SupplierDeptsDetailsController 
     if (calculatesAmountOfRemainingDebt() == true) {
       Get.defaultDialog(
         title: "دفعة جديدة",
+        titleStyle: TextStyle(color: AppColors.primary),
         buttonColor: AppColors.primary,
-backgroundColor: AppColors.backgroundColor,
+        backgroundColor: AppColors.backgroundColor,
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Custom_textfield(
+              height: 43,
               hintText: "أضف سعر الدفع",
               suffixIcon: Icons.attach_money_rounded,
               validator: (p0) {
@@ -141,21 +181,52 @@ backgroundColor: AppColors.backgroundColor,
               onChanged: (p0) {},
             ),
             SizedBox(height: 10),
-            Custom_set_date_button(
-              hintText: "تاريخ الدفعة",
-              onPressed: () {
-                showDatePicker(
-                  context: Get.context!,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2100),
-                ).then((selectedDate) {
-                  if (selectedDate != null) {
-                    paymentDate = selectedDate;
-                    update();
-                  }
-                });
-              },
+            SizedBox(
+              width: 250,
+              child: GetBuilder<SupplierDeptsDetailsControllerImpl>(
+                id: "paymentDatePicker", // You may want to specify an ID for finer-grained updates.
+                builder:
+                    (controller) => Custom_set_date_button(
+                      hintText:
+                          "${controller.paymentDate.year}/${controller.paymentDate.month.toString().padLeft(2, '0')}/${controller.paymentDate.day.toString().padLeft(2, '0')}",
+                      onPressed: () {
+                        showDatePicker(
+                          context: Get.context!,
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100),
+                          builder: (context, child) {
+                            return Theme(
+                              data: Theme.of(context).copyWith(
+                                colorScheme: ColorScheme.light(
+                                  primary:
+                                      AppColors
+                                          .primary, // header background color
+                                  onPrimary: Colors.white, // header text color
+                                  onSurface:
+                                      AppColors.primary, // body text color
+                                  surface:
+                                      AppColors
+                                          .backgroundColor, // date picker bg color
+                                ),
+                                textButtonTheme: TextButtonThemeData(
+                                  style: TextButton.styleFrom(
+                                    foregroundColor:
+                                        AppColors.primary, // button text color
+                                  ),
+                                ),
+                              ),
+                              child: child!,
+                            );
+                          },
+                        ).then((selectedDate) {
+                          if (selectedDate != null) {
+                            controller.setPaymentDate(selectedDate);
+                            controller.update(["paymentDatePicker"]);
+                          }
+                        });
+                      },
+                    ),
+              ),
             ),
           ],
         ),
@@ -227,7 +298,9 @@ backgroundColor: AppColors.backgroundColor,
     for (var total_payments in paymentsList) {
       totalPayment = total_payments['total_price'] + totalPayment;
     }
-    if (totalDepts - totalPayment <= -1) {
+    if (totalDepts - totalPayment <= -1 &&
+        paymentsList.isNotEmpty &&
+        deptsList.isNotEmpty) {
       custom_snackBar(
         AppColors.primary,
         "لقد انتهى الدين",
@@ -248,11 +321,7 @@ backgroundColor: AppColors.backgroundColor,
     final String userID =
         services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      _supplierDeptsData.updateTotalDept(
-        deptId!,
-        userID,
-        remainingDebtAamount,
-      );
+      _supplierDeptsData.updateTotalDept(deptId!, userID, remainingDebtAamount);
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();
@@ -333,7 +402,25 @@ backgroundColor: AppColors.backgroundColor,
   }
 
   @override
-  void onInit() {
+  Future startedDate() async {
+    startedDateRange = await saveCustomDateRange();
+  }
+
+  @override
+  void setDateRenage(DateTimeRange dateRange) {
+    selectedDateRange = dateRange;
+    getBills();
+    getPayments();
+  }
+
+  @override
+  void setPaymentDate(DateTime date) {
+    paymentDate = date;
+  }
+
+  @override
+  void onInit() async {
+    await startedDate();
     initData();
     getPayments();
     getDeptDetails();

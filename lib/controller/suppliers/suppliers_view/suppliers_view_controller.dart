@@ -1,4 +1,5 @@
 import 'package:erad/data/data_score/remote/supplier/suppliers_data.dart';
+import 'package:erad/data/model/suppliers/suppliers_model.dart';
 import 'package:erad/view/supplier/suppliers_view/widgets/custom_add_suppliers_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -17,11 +18,7 @@ abstract class SuppliersController extends GetxController {
   getSuppliers();
   show_delete_dialog(String suppliersId);
   dlete_Suppliers(String suppliersId);
-  show_edit_dialog(
-    String suppliersId,
-    String suppliersCity,
-    String suppliersName,
-  );
+  show_edit_dialog(SuppliersModel supplierModle);
   editSuppliers(String suppliersId, String suppliersCity, String suppliersName);
   searchForSuppliersBayName();
   searchForSuppliersBayCity(String cityName);
@@ -119,22 +116,22 @@ class SuppliersControllerImp extends SuppliersController {
   }
 
   @override
-  show_edit_dialog(
-    String suppliers_id,
-    String suppliers_city,
-    String suppliersName,
-  ) {
+  show_edit_dialog(SuppliersModel supplierModle) {
     Custom_add_suppliers_dialog(
       suppliers_name_controller,
       suppliers_city,
       () {
-        editSuppliers(suppliers_id, suppliers_city, suppliersName);
+        editSuppliers(
+          supplierModle.supplier_id!,
+          supplierModle.supplier_city!,
+          supplierModle.supplier_city!,
+        );
         Get.close(0);
       },
       (p0) {
         changeCity(p0);
       },
-      suppliersName,
+      supplierModle.supplier_name!,
       suppliers_city,
     );
   }

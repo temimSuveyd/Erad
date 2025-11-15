@@ -32,7 +32,7 @@ class SupplierDebtsViewPage extends GetView<SupplierDeptsViewControllerImp> {
                 children: [
                   Custom_textfield(
                     hintText: 'اسم او رقم الفاتورة',
-                    suffixIcon: Icons.add,
+                    suffixIcon: Icons.search,
                     validator: (p0) {
                       return null;
                     },
@@ -49,12 +49,6 @@ class SupplierDebtsViewPage extends GetView<SupplierDeptsViewControllerImp> {
                         (value) => controller.searchForBillBayCity(value),
                     hint: 'اختر المدينة',
                     items: city_data,
-                  ),
-                  Custom_button(
-                    icon: Icons.filter_list_off_outlined,
-                    title: "إزالة جميع الفلاتر",
-                    onPressed: () => controller.getDepts(),
-                    color: AppColors.red,
                   ),
                 ],
               ),

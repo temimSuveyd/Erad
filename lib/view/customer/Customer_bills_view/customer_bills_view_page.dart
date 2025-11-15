@@ -71,13 +71,6 @@ class CustomerBillsViewPage extends GetView<CustomerBillViewControllerImp> {
                           items: city_data,
                         ),
                   ),
-
-                  Custom_button(
-                    icon: Icons.filter_list_off_outlined,
-                    title: "إزالة جميع الفلاتر",
-                    onPressed: () => controller.getCustomersBills(),
-                    color: AppColors.red,
-                  ),
                 ],
               ),
             ),

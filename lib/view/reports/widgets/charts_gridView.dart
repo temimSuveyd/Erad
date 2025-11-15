@@ -21,7 +21,7 @@ class ChartsGridViewBuilder extends StatelessWidget {
             widget: SliverGrid.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 3 / 1.3,
+                childAspectRatio: 3 / 1.5,
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
               ),

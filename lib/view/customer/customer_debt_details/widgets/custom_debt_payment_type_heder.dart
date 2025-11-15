@@ -1,15 +1,15 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:erad/core/constans/colors.dart';
 
 class Custom_debt_payment_type_heder extends StatelessWidget {
   const Custom_debt_payment_type_heder({
-    super.key, required this.titles_list, required this.width,
-
+    super.key,
+    required this.titles_list,
+    required this.width,
   });
 
-final List<Widget> titles_list ;
-final double width;
+  final List<Widget> titles_list;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +21,7 @@ final double width;
           height: 40,
           color: AppColors.primary,
 
-          child: Row(
-            spacing: 10,
-
-            children: titles_list,
-          ),
+          child: Row(spacing: 10, children: titles_list),
         ),
       ],
     );

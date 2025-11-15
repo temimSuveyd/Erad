@@ -30,66 +30,59 @@ class Custom_bill_details_heder extends StatelessWidget {
 
                 child: GetBuilder<CustomerBillDetailsControllerImp>(
                   builder:
-                      (controller) => HandlingDataView(
-                        onPressed: () => controller.getBillDetails(),
-                        statusreqest:
-                            controller.statusreqest == Statusreqest.empty
-                                ? Statusreqest.success
-                                : controller.statusreqest,
-                        widget: Row(
-                          spacing: 10,
-                          children: [
-                            Custom_biil_details_text_container(
-                              title_1:
-                                  controller.billModel?.customer_name ??
-                                  "قيمة فارغة",
-                              title_2: "اسم العميل :",
-                              color: AppColors.black,
-                            ),
-                            Custom_biil_details_text_container(
-                              title_1:
-                                  controller.billModel?.customer_city ??
-                                  "قيمة فارغة",
-                              title_2: 'مدينة',
-                              color: AppColors.black,
-                            ),
-                            Custom_biil_details_text_container(
-                              title_1:
-                                  controller.billModel?.bill_no ?? "قيمة فارغة",
-                              title_2: "رقم الفاتورة",
-                              color: AppColors.black,
-                            ),
-                            Custom_biil_details_text_container(
-                              title_1:
-                                  (() {
-                                    final billDate =
-                                        controller.billModel?.bill_date;
-                                    if (billDate == null) return "قيمة فارغة";
-                                    final date = DateTime.tryParse(
-                                      billDate.toString(),
-                                    );
-                                    if (date != null) {
-                                      return "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}";
-                                    } else {
-                                      return billDate.toString();
-                                    }
-                                  })(),
-                              title_2: "تاريخ الفاتورة",
-                              color: AppColors.black,
-                            ),
-                            Custom_biil_details_text_container(
-                              title_1:
-                                  controller.billModel?.payment_type == null
-                                      ? "قيمة فارغة"
-                                      : controller.billModel!.payment_type ==
-                                          "monetary"
-                                      ? "نقدي"
-                                      : "دَين",
-                              title_2: "طريقة الدفع",
-                              color: AppColors.black,
-                            ),
-                          ],
-                        ),
+                      (controller) => Row(
+                        spacing: 10,
+                        children: [
+                          Custom_biil_details_text_container(
+                            title_1:
+                                controller.billModel?.customer_name ??
+                                "قيمة فارغة",
+                            title_2: "اسم العميل",
+                            color: AppColors.black,
+                          ),
+                          Custom_biil_details_text_container(
+                            title_1:
+                                controller.billModel?.customer_city ??
+                                "قيمة فارغة",
+                            title_2: 'مدينة',
+                            color: AppColors.black,
+                          ),
+                          Custom_biil_details_text_container(
+                            title_1:
+                                controller.billModel?.bill_no ?? "قيمة فارغة",
+                            title_2: "رقم الفاتورة",
+                            color: AppColors.black,
+                          ),
+                          Custom_biil_details_text_container(
+                            title_1:
+                                (() {
+                                  final billDate =
+                                      controller.billModel?.bill_date;
+                                  if (billDate == null) return "قيمة فارغة";
+                                  final date = DateTime.tryParse(
+                                    billDate.toString(),
+                                  );
+                                  if (date != null) {
+                                    return "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}";
+                                  } else {
+                                    return billDate.toString();
+                                  }
+                                })(),
+                            title_2: "تاريخ الفاتورة",
+                            color: AppColors.black,
+                          ),
+                          Custom_biil_details_text_container(
+                            title_1:
+                                controller.billModel?.payment_type == null
+                                    ? "قيمة فارغة"
+                                    : controller.billModel!.payment_type ==
+                                        "monetary"
+                                    ? "نقدي"
+                                    : "دَين",
+                            title_2: "طريقة الدفع",
+                            color: AppColors.black,
+                          ),
+                        ],
                       ),
                 ),
               ),
@@ -105,13 +98,7 @@ class Custom_bill_details_heder extends StatelessWidget {
 
                 child: GetBuilder<CustomerBillDetailsControllerImp>(
                   builder:
-                      (controller) => HandlingDataView(
-                        onPressed: () => controller.getBillDetails(),
-                        statusreqest:
-                            controller.statusreqest == Statusreqest.empty
-                                ? Statusreqest.success
-                                : controller.statusreqest,
-                        widget: Row(
+                      (controller) => Row(
                           spacing: 10,
                           children: [
                             Custom_biil_details_text_container(
@@ -151,7 +138,7 @@ class Custom_bill_details_heder extends StatelessWidget {
                         ),
                       ),
                 ),
-              ),
+              
             ],
           ),
         ],

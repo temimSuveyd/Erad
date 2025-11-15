@@ -19,15 +19,15 @@ class Custom_products_details_sliverListBuilder extends StatelessWidget {
           (controller) => HandlingDataViewWithSliverBox(
             statusreqest: controller.statusreqest,
             widget: SliverList.builder(
-              itemCount: controller.productList.length,
+              itemCount: controller.supplierProductList.length,
               itemBuilder:
                   (context, index) => Custom_product_details_card(
                     billProductsModel: BillDetailsProductsModel.formatJson(
-                      controller.productList[index],
+                      controller.supplierProductList[index],
                     ),
                   ),
             ),
-            onPressed: () => controller.getBillProducts(),
+            onPressed: () => controller.getSupplierBillDetails(),
           ),
     );
   }

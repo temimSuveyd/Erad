@@ -4,6 +4,7 @@ import 'package:erad/core/function/pdf_maker.dart';
 import 'package:erad/data/data_score/remote/depts/supplier_depts_data.dart';
 import 'package:erad/data/data_score/remote/supplier/supplier_bill_data.dart';
 import 'package:erad/data/model/customer_bill_details/bill_details_product_model.dart';
+// import 'package:erad/data/model/supplier_bill_details/bill_details_product_model.dart';
 import 'package:erad/data/model/supplier_bill_view/bill_model.dart';
 import 'package:erad/view/custom_widgets/custom_add_button.dart';
 import 'package:erad/view/custom_widgets/custom_snackBar.dart';
@@ -18,52 +19,45 @@ import 'package:erad/data/data_score/remote/brands/product_data.dart';
 import 'package:erad/view/custom_widgets/custom_text_field.dart';
 
 abstract class SuppliersBillDetailsController extends GetxController {
-  deleteBillFromDepts();
-  updateBillInDepts(double totalPrice);
-  getBillDetails();
-  getBillProducts();
-  initData();
-  editProductData(String productId);
-  getProductById(String productId);
-  // ignore: non_constant_identifier_names
-  show_edit_prodcut_dialog(
+  deleteBillFromSupplierDepts();
+  updateBillInSupplierDepts(double totalPrice);
+  getSupplierBillDetails();
+  getSupplierBillProducts();
+  initSupplierBillData();
+  editSupplierProductData(String productId);
+  getSupplierProductById(String productId);
+  showEditSupplierProductDialog(
     TextEditingController controller,
     Function() onConfirm,
   );
-  updateProductData(int productNumber, String productId);
-  // ignore: non_constant_identifier_names
-  show_delete_product_dialog(String productId);
-  // ignore: non_constant_identifier_names
-  delete_product(String productId);
-  totalPriceAccount();
-  totalProfits();
-  updateBillData();
-  // ignore: non_constant_identifier_names
-  show_discount_dialog(Function() onConfirm);
-  // ignore: non_constant_identifier_names
-  update_bill_total_brice(double discountAmount);
-  // ignore: non_constant_identifier_names
-  discount_on_bill();
-  deleteBill();
-  // ignore: non_constant_identifier_names
-  show_delete_bill_dialog();
-  goToPdfViewPage(Uint8List pdfBytes);
-  createPdf();
-  addDiscount(double discount);
-  updatePaymentType(String billStatus);
-  showEditPaymentTypeDailog();
-  addDept();
-  addBillToDepts();
+  updateSupplierProductData(int productNumber, String productId);
+  showDeleteSupplierProductDialog(String productId);
+  deleteSupplierProduct(String productId);
+  totalSupplierPriceAccount();
+  totalSupplierProfits();
+  updateSupplierBillData();
+  showSupplierDiscountDialog(Function() onConfirm);
+  updateSupplierBillTotalPrice(double discountAmount);
+  discountOnSupplierBill();
+  deleteSupplierBill();
+  showDeleteSupplierBillDialog();
+  goToSupplierPdfViewPage(Uint8List pdfBytes);
+  createSupplierBillPdf();
+  addSupplierDiscount(double discount);
+  updateSupplierPaymentType(String billStatus);
+  showEditSupplierPaymentTypeDialog();
+  addSupplierDept();
+  addSupplierBillToDepts();
 }
 
 class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   Statusreqest statusreqest = Statusreqest.loading;
   Services services = Get.find();
   SupplierBillData supplierBillData = SupplierBillData();
-  SupplierDeptsData customerDeptsData = SupplierDeptsData();
-  var productList = [].obs;
+  SupplierDeptsData supplierDeptsData = SupplierDeptsData();
+  var supplierProductList = [].obs;
   late Uint8List pdfBytes;
-  BillModel? billModel;
+  BillModel? supplierBillModel;
   String? userID;
   String? bill_id;
   double? total_price;
@@ -80,15 +74,15 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   TextEditingController discount_controller = TextEditingController();
 
   @override
-  Future getBillDetails() async {
+  Future getSupplierBillDetails() async {
     try {
       statusreqest = Statusreqest.loading;
       update();
       await supplierBillData.getBillById(userID!, bill_id!).then((value) {
-        billModel = BillModel.formatJson(value);
-        total_earn = billModel!.total_earn;
-        total_price = billModel!.total_price;
-        discount_amount = billModel!.discount_amount!;
+        supplierBillModel = BillModel.formatJson(value);
+        total_earn = supplierBillModel!.total_earn;
+        total_price = supplierBillModel!.total_price;
+        discount_amount = supplierBillModel!.discount_amount ?? 0.0;
       });
       statusreqest = Statusreqest.success;
     } catch (e) {
@@ -98,13 +92,13 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  getBillProducts() {
+  getSupplierBillProducts() {
     try {
       statusreqest = Statusreqest.loading;
       update();
       supplierBillData.getBillProdects(userID!, bill_id!).listen((event) {
-        productList.value = event.docs;
-        if (productList.isEmpty) {
+        supplierProductList.value = event.docs;
+        if (supplierProductList.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
@@ -118,16 +112,16 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  editProductData(String productId) async {
+  editSupplierProductData(String productId) async {
     try {
       statusreqest = Statusreqest.loading;
       update();
-      await getProductById(productId);
+      await getSupplierProductById(productId);
       product_number_text_controller.text = product_numper!.toString();
-      show_edit_prodcut_dialog(product_number_text_controller, () async {
+      showEditSupplierProductDialog(product_number_text_controller, () async {
         final int number = int.parse(product_number_text_controller.text);
-        await updateProductData(number, productId);
-        await updateBillData();
+        await updateSupplierProductData(number, productId);
+        await updateSupplierBillData();
         Get.back();
       });
       statusreqest = Statusreqest.success;
@@ -138,9 +132,9 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  totalPriceAccount() {
+  totalSupplierPriceAccount() {
     total_price = 0;
-    for (var responce in productList) {
+    for (var responce in supplierProductList) {
       int price = responce["total_product_price"];
       total_price = total_price! + price;
     }
@@ -148,9 +142,9 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  totalProfits() {
+  totalSupplierProfits() {
     total_earn = 0;
-    for (var responce in productList) {
+    for (var responce in supplierProductList) {
       int earn = responce["prodect_profits"];
       int numper = responce["product_number"];
       total_earn = total_earn! + earn * numper;
@@ -159,14 +153,14 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  Future getProductById(String productId) async {
+  Future getSupplierProductById(String productId) async {
     try {
       await supplierBillData
           .getBillProdectBayId(userID!, bill_id!, productId)
           .then((value) {
-            product_numper = value["product_number"];
-            product_price = value["product_price"];
-          });
+        product_numper = value["product_number"];
+        product_price = value["product_price"];
+      });
       statusreqest = Statusreqest.success;
     } catch (e) {
       statusreqest = Statusreqest.faliure;
@@ -175,8 +169,7 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  // ignore: non_constant_identifier_names
-  show_edit_prodcut_dialog(
+  showEditSupplierProductDialog(
     TextEditingController controller,
     Function() onConfirm,
   ) {
@@ -211,7 +204,7 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  Future updateProductData(int productNumber, String productId) async {
+  Future updateSupplierProductData(int productNumber, String productId) async {
     try {
       statusreqest = Statusreqest.loading;
       update();
@@ -231,13 +224,13 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  show_delete_product_dialog(String productId) {
+  showDeleteSupplierProductDialog(String productId) {
     Get.defaultDialog(
       backgroundColor: AppColors.backgroundColor,
       onCancel: () {},
       buttonColor: AppColors.primary,
       onConfirm: () {
-        delete_product(productId);
+        deleteSupplierProduct(productId);
         Get.back();
       },
       middleText: "",
@@ -248,12 +241,12 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  Future delete_product(String productId) async {
+  Future deleteSupplierProduct(String productId) async {
     try {
       statusreqest = Statusreqest.loading;
       update();
       await supplierBillData.deleteProduct(bill_id!, productId, userID!);
-      await updateBillData();
+      await updateSupplierBillData();
       statusreqest = Statusreqest.success;
     } catch (e) {
       statusreqest = Statusreqest.faliure;
@@ -262,16 +255,16 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  Future updateBillData() async {
+  Future updateSupplierBillData() async {
     try {
       statusreqest = Statusreqest.loading;
       update();
-      totalPriceAccount();
-      totalProfits();
+      totalSupplierPriceAccount();
+      totalSupplierProfits();
       await supplierBillData.updateSupplierBill(
         userID!,
         bill_id!,
-        billModel!.bill_no!,
+        supplierBillModel!.bill_no!,
         total_price!,
         total_earn!,
       );
@@ -284,13 +277,13 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  initData() async {
+  initSupplierBillData() async {
     userID = services.sharedPreferences.getString(AppShared.userID);
     bill_id = Get.arguments["bill_id"];
   }
 
   @override
-  show_discount_dialog(Function() onConfirm) {
+  showSupplierDiscountDialog(Function() onConfirm) {
     Get.defaultDialog(
       onCancel: () {},
       onConfirm: () {
@@ -326,11 +319,11 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  update_bill_total_brice(double discount) async {
+  updateSupplierBillTotalPrice(double discount) async {
     try {
       statusreqest = Statusreqest.loading;
       update();
-      await addDiscount(discount);
+      await addSupplierDiscount(discount);
       total_earn = total_earn! - discount;
       total_price = total_price! - discount;
       await supplierBillData.update_total_price(
@@ -339,7 +332,7 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
         total_price!,
         total_earn!,
       );
-      await updateBillInDepts(total_price!);
+      await updateBillInSupplierDepts(total_price!);
       statusreqest = Statusreqest.success;
       update();
     } catch (e) {
@@ -349,9 +342,9 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  discount_on_bill() {
+  discountOnSupplierBill() {
     try {
-      show_discount_dialog(() async {
+      showSupplierDiscountDialog(() async {
         if (discount_controller.text.isEmpty ||
             double.tryParse(discount_controller.text) == null) {
           discount_controller.clear();
@@ -369,7 +362,7 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
                 double.tryParse(discount_controller.text) ?? 0;
             statusreqest = Statusreqest.loading;
             update();
-            await update_bill_total_brice(discount);
+            await updateSupplierBillTotalPrice(discount);
             Get.back();
             discount_controller.clear();
             statusreqest = Statusreqest.success;
@@ -384,13 +377,13 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  Future deleteBill() async {
+  Future deleteSupplierBill() async {
     try {
       statusreqest = Statusreqest.loading;
       update();
       await supplierBillData.deleteSupplierBill(userID!, bill_id!);
 
-      await deleteBillFromDepts();
+      await deleteBillFromSupplierDepts();
       statusreqest = Statusreqest.success;
     } catch (e) {
       statusreqest = Statusreqest.faliure;
@@ -400,13 +393,13 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  show_delete_bill_dialog() {
+  showDeleteSupplierBillDialog() {
     Get.defaultDialog(
       backgroundColor: AppColors.backgroundColor,
       onCancel: () {},
       buttonColor: AppColors.primary,
       onConfirm: () {
-        deleteBill();
+        deleteSupplierBill();
         Get.close(0);
         Get.back();
       },
@@ -418,30 +411,30 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  goToPdfViewPage(Uint8List pdfBytes) {
+  goToSupplierPdfViewPage(Uint8List pdfBytes) {
     Get.toNamed(AppRoutes.pdf_view, arguments: {"pdfBytes": pdfBytes});
   }
 
   @override
-  createPdf() async {
+  createSupplierBillPdf() async {
     statusreqest = Statusreqest.loading;
     update();
 
     try {
       // pdfBytes = await createInvoice(
-      //   productList.toList(),
-      //   "${billModel!.bill_date!.day.toString().padLeft(2, '0')}/${billModel!.bill_date!.month.toString().padLeft(2, '0')}/${billModel!.bill_date!.year}",
+      //   supplierProductList.toList(),
+      //   "${supplierBillModel!.bill_date!.day.toString().padLeft(2, '0')}/${supplierBillModel!.bill_date!.month.toString().padLeft(2, '0')}/${supplierBillModel!.bill_date!.year}",
       //   "سويد للتجارة",
-      //   billModel!.bill_no!,
-      //   billModel!.total_price!,
-      //   "بيع",
-      //   billModel!.supplier_name!,
-      //   billModel!.supplier_id!,
+      //   supplierBillModel!.bill_no!,
+      //   supplierBillModel!.total_price!,
+      //   "شراء",
+      //   supplierBillModel!.supplier_name!,
+      //   supplierBillModel!.supplier_id!,
       //   05395443779,
       // );
       statusreqest = Statusreqest.success;
       update();
-      goToPdfViewPage(pdfBytes);
+      goToSupplierPdfViewPage(pdfBytes);
     } on Exception {
       statusreqest = Statusreqest.success;
       update();
@@ -450,15 +443,15 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  updateBillInDepts(double totalPrice) {
+  updateBillInSupplierDepts(double totalPrice) {
     try {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
-      final String customerId = billModel!.supplier_id!;
-      final String billId = billModel!.bill_id!;
-      customerDeptsData.updateTotalPriceInBill(
+      final String supplierId = supplierBillModel!.supplier_id!;
+      final String billId = supplierBillModel!.bill_id!;
+      supplierDeptsData.updateTotalPriceInBill(
         billId,
-        customerId,
+        supplierId,
         userID,
         totalPrice,
       );
@@ -469,13 +462,13 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  deleteBillFromDepts() {
+  deleteBillFromSupplierDepts() {
     try {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
-      final String customerId = billModel!.supplier_id!;
-      final String billId = billModel!.bill_id!;
-      customerDeptsData.delteBillFromDepts(billId, customerId, userID);
+      final String supplierId = supplierBillModel!.supplier_id!;
+      final String billId = supplierBillModel!.bill_id!;
+      supplierDeptsData.delteBillFromDepts(billId, supplierId, userID);
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();
@@ -483,7 +476,7 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  addDiscount(double discount) {
+  addSupplierDiscount(double discount) {
     try {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
@@ -496,18 +489,18 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  addBillToDepts() async {
+  addSupplierBillToDepts() async {
     String userID =
         services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      await customerDeptsData.addBillToDepts(
-        billModel!.bill_no!,
+      await supplierDeptsData.addBillToDepts(
+        supplierBillModel!.bill_no!,
         bill_id!,
-        billModel!.supplier_id!,
-        billModel!.payment_type!,
+        supplierBillModel!.supplier_id!,
+        supplierBillModel!.payment_type!,
         userID,
-        billModel!.total_price!,
-        billModel!.bill_date!,
+        supplierBillModel!.total_price!,
+        supplierBillModel!.bill_date!,
       );
 
       statusreqest = Statusreqest.success;
@@ -519,17 +512,17 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  addDept() async {
+  addSupplierDept() async {
     String userID =
         services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      await customerDeptsData.addDepts(
-        billModel!.supplier_id!,
-        billModel!.supplier_name!,
-        billModel!.supplier_city!,
+      await supplierDeptsData.addDepts(
+        supplierBillModel!.supplier_id!,
+        supplierBillModel!.supplier_name!,
+        supplierBillModel!.supplier_city!,
         userID,
-        billModel!.total_price!,
-        billModel!.bill_date!,
+        supplierBillModel!.total_price!,
+        supplierBillModel!.bill_date!,
       );
       statusreqest = Statusreqest.success;
       update();
@@ -540,7 +533,7 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  updatePaymentType(String paymentType) {
+  updateSupplierPaymentType(String paymentType) {
     statusreqest = Statusreqest.loading;
     update();
     try {
@@ -548,12 +541,12 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
           services.sharedPreferences.getString(AppShared.userID)!;
       supplierBillData.updatePaymentType(userID, bill_id!, paymentType);
       if (paymentType != "monetary") {
-        addDept();
-        addBillToDepts();
+        addSupplierDept();
+        addSupplierBillToDepts();
       } else {
-        deleteBillFromDepts();
+        deleteBillFromSupplierDepts();
       }
-      billModel!.payment_type = paymentType;
+      supplierBillModel!.payment_type = paymentType;
       statusreqest = Statusreqest.success;
     } catch (e) {
       statusreqest = Statusreqest.faliure;
@@ -562,32 +555,81 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   }
 
   @override
-  showEditPaymentTypeDailog() {
+  showEditSupplierPaymentTypeDialog() {
     Get.defaultDialog(
       title: "تغيير طريقة الدفع",
       backgroundColor: AppColors.backgroundColor,
-      content: Row(
-        spacing: 20,
-        children: [
-          Custom_button(
-            icon: Icons.attach_money_rounded,
-            title: "نقدي",
-            onPressed: () {
-              updatePaymentType("monetary");
-              Get.back();
-            },
-            color: AppColors.primary,
-          ),
-          Custom_button(
-            icon: Icons.money_off_csred_outlined,
-            title: "دَين",
-            onPressed: () {
-              updatePaymentType("Religion");
-              Get.back();
-            },
-            color: AppColors.red,
-          ),
-        ],
+      content: Container(
+        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+        decoration: BoxDecoration(
+          color: AppColors.backgroundColor,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "اختَر طريقة الدفع التي تريدها:",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: AppColors.primary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 20),
+            Column(
+              children: [
+                ListTile(
+                  leading: Icon(
+                    Icons.attach_money_rounded,
+                    color: AppColors.primary,
+                  ),
+                  title: Text(
+                    "نقدي",
+                    style: TextStyle(color: AppColors.primary),
+                  ),
+                  onTap:
+                      supplierBillModel?.payment_type == "monetary"
+                          ? null
+                          : () {
+                              updateSupplierPaymentType("monetary");
+                              Get.back();
+                            },
+                  tileColor:
+                      supplierBillModel?.payment_type == "monetary"
+                          ? AppColors.primary.withOpacity(0.12)
+                          : null,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                SizedBox(height: 12),
+                ListTile(
+                  leading: Icon(
+                    Icons.money_off_csred_outlined,
+                    color: AppColors.red,
+                  ),
+                  title: Text("دَين", style: TextStyle(color: AppColors.red)),
+                  onTap:
+                      supplierBillModel?.payment_type != "monetary"
+                          ? null
+                          : () {
+                              updateSupplierPaymentType("Religion");
+                              Get.back();
+                            },
+                  tileColor:
+                      supplierBillModel?.payment_type != "monetary"
+                          ? AppColors.red.withOpacity(0.12)
+                          : null,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
       textCancel: "إلغاء",
       onCancel: () {},
@@ -596,9 +638,9 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
 
   @override
   void onInit() async {
-    initData();
-    await getBillDetails();
-    getBillProducts();
+    initSupplierBillData();
+    await getSupplierBillDetails();
+    getSupplierBillProducts();
     super.onInit();
   }
 }

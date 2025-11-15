@@ -42,7 +42,8 @@ class HandlingDataViewWithSliverBox extends StatelessWidget {
               spacing: 20,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                LottieBuilder.asset(AppImages.faliure, height: 170),
+                Icon(Icons.error_outline, size: 60, color: AppColors.primary),
+                SizedBox(height: 20),
                 Text(
                   "هناك خط غير معروف من فضلك حاول مرة أخرى",
                   textAlign: TextAlign.center,

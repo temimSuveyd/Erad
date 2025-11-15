@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:erad/core/class/handling_data.dart';
 import 'package:erad/core/constans/colors.dart';
 import 'package:erad/core/constans/sharedPreferences.dart';
@@ -537,11 +536,6 @@ class ExpensesControllerImp extends ExpensesController {
           await services.sharedPreferences.setStringList(
             AppShared.expenses,
             localExpesesList.map((e) => json.encode(e)).toList(),
-          );
-          log(
-            services.sharedPreferences
-                .getStringList(AppShared.expenses)
-                .toString(),
           );
         }
       } on Exception {

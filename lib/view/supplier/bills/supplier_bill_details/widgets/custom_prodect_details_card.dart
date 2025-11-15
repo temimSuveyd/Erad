@@ -52,7 +52,7 @@ class Custom_product_details_card
                 icon: Icons.edit,
                 title: "تعديل",
                 onPressed:
-                    () => controller.editProductData(billProductsModel.id!),
+                    () => controller.editSupplierProductData(billProductsModel.id!),
               ),
 
               Custom_button(
@@ -60,7 +60,7 @@ class Custom_product_details_card
                 icon: Icons.delete,
                 title: "حذف",
                 onPressed:
-                    () => controller.show_delete_product_dialog(
+                    () => controller.showDeleteSupplierProductDialog(
                       billProductsModel.id!,
                     ),
               ),

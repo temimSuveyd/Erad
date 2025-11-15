@@ -18,9 +18,7 @@ import 'package:erad/view/custom_widgets/custom_snackbar.dart';
 import 'package:erad/view/customer/customer_bills_add/widgets/custom_willPop_dailog.dart';
 
 abstract class CustomeraddBiilController extends GetxController {
-  addCustomerBill();
-  addDept();
-  addBillToDepts();
+ Future addCustomerBill();
   getCustomerById();
   getAllCustomers();
   setCustomer(String id);
@@ -101,8 +99,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
     } else {
       statusreqest = Statusreqest.loading;
       update();
-      String userID =
-          services.sharedPreferences.getString(AppShared.userID)!;
+      String userID = services.sharedPreferences.getString(AppShared.userID)!;
       try {
         bill_id = await customerBillData.addCustomerBill(
           customer_name!,
@@ -137,8 +134,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
   getCustomerById() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
 
     try {
       customersData.getCustomerByID(userID, customer_id!).listen((event) {
@@ -181,8 +177,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
   getAllCustomers() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       customersData.getAllCustomers(userID).listen((event) {
         customersList.value = event.docs;
@@ -205,8 +200,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
 
   @override
   deleteBill() {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     if (bill_id == null) {
       Get.back();
     } else {
@@ -225,8 +219,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
   @override
   getAllProducts() {
     statusreqest = Statusreqest.loading;
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       _productData.getAllproduct(userID).listen((event) {
         all_product_list.value = event.docs;
@@ -301,8 +294,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
   @override
   getProductById(String productId) async {
     try {
-      String userID =
-          services.sharedPreferences.getString(AppShared.userID)!;
+      String userID = services.sharedPreferences.getString(AppShared.userID)!;
       final productData = await _productData.getBrandsTypeBayId(
         userID,
         productId,
@@ -322,8 +314,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
       statusreqest = Statusreqest.loading;
       update();
 
-      String userID =
-          services.sharedPreferences.getString(AppShared.userID)!;
+      String userID = services.sharedPreferences.getString(AppShared.userID)!;
       try {
         customerBillData.getBillProdects(userID, bill_id!).listen((event) {
           bill_prodects_list.value = event.docs;
@@ -393,13 +384,11 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
 
   @override
   saveBillData() async {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
 
     if (!is_saved) {
       statusreqest = Statusreqest.loading;
       update();
-
       try {
         await addCustomerBill();
         if (bill_id != null && bill_prodects_list.isNotEmpty) {
@@ -415,10 +404,6 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
             total_product_price,
             total_product_profits,
           );
-          if (bill_payment_type == "Religion") {
-            await addDept();
-            addBillToDepts();
-          }
           Get.back();
           custom_success_snackbar();
         } else {
@@ -445,10 +430,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
   }
 
   @override
-  Future<void> addProductListToFirebase(
-    String userID,
-    String billId,
-  ) async {
+  Future<void> addProductListToFirebase(String userID, String billId) async {
     for (var product in bill_prodects_list) {
       String productName = product["product_name"];
 
@@ -484,8 +466,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
   createPdf() async {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     await addCustomerBill();
     if (bill_id != null) {
       try {
@@ -567,59 +548,6 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
     }
 
     bill_no = generateRandomInvoiceId(username);
-  }
-
-  @override
-  addDept() async {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
-    try {
-      if (customer_name != null && customer_id != null) {
-        await customerDeptsData.addDepts(
-          customer_id!,
-          customer_name!,
-          customer_city!,
-          userID,
-          total_product_price,
-          bill_add_date,
-        );
-      } else {
-        statusreqest = Statusreqest.faliure;
-        update();
-      }
-      statusreqest = Statusreqest.success;
-      update();
-    } catch (e) {
-      statusreqest = Statusreqest.faliure;
-      update();
-    }
-  }
-
-  @override
-  addBillToDepts() async {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
-    try {
-      if (customer_name != null && customer_id != null) {
-        await customerDeptsData.addBillToDepts(
-          bill_no!,
-          bill_id!,
-          customer_id!,
-          bill_payment_type!,
-          userID,
-          total_product_price,
-          bill_add_date,
-        );
-      } else {
-        statusreqest = Statusreqest.faliure;
-        update();
-      }
-      statusreqest = Statusreqest.success;
-      update();
-    } catch (e) {
-      statusreqest = Statusreqest.faliure;
-      update();
-    }
   }
 
   @override

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:erad/controller/reports/reports_controller.dart';
 import 'package:erad/core/class/handling_data_view.dart';
 import 'package:erad/data/data_score/static/reports/reports_data.dart';
@@ -26,9 +24,42 @@ class ReportsViewPage extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(child: YearSelector()),
+            SliverToBoxAdapter(
+              child: GetBuilder<ReportsControllerImpl>(
+                builder:
+                    (controller) => YearSelector(
+                      year: controller.selectedDate.year,
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text("اختر السنة"),
+                              content: SizedBox(
+                                width: 100,
+                                height: 250,
+                                child: ListView.builder(
+                                  itemCount: 10,
+                                  itemBuilder: (context, index) {
+                                    int year = DateTime.now().year - index;
+                                    return ListTile(
+                                      title: Text(year.toString()),
+                                      onTap: () {
+                                        controller.setYear(year);
+                                        Get.back();
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+              ),
+            ),
             SliverToBoxAdapter(child: const SizedBox(height: 28)),
-
             SliverToBoxAdapter(
               child: GetBuilder<ReportsControllerImpl>(
                 builder:

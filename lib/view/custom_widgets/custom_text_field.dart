@@ -28,7 +28,7 @@ class Custom_textfield extends StatelessWidget {
           onChanged(value);
         },
         maxLines: maxLines??1,
-        style: TextStyle(color: AppColors.wihet, fontSize: 21),
+        style: TextStyle(color: AppColors.grey, fontSize: 21),
         controller: controller,
         validator: validator,
         decoration: InputDecoration(

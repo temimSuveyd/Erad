@@ -18,7 +18,7 @@ class Custom_debts_bills_card
       padding: EdgeInsets.symmetric(horizontal: 5),
       margin: EdgeInsets.only(bottom: 5),
       height: 50,
-      width: 740,
+      width: 760,
       decoration: BoxDecoration(
         color: AppColors.grey,
         borderRadius: BorderRadius.circular(10),

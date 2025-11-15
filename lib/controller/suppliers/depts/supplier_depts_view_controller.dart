@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:erad/core/class/handling_data.dart';
 import 'package:erad/core/constans/routes.dart';
 import 'package:erad/core/constans/sharedPreferences.dart';

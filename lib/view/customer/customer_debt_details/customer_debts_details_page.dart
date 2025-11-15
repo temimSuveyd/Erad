@@ -80,7 +80,7 @@ class CustomerDebtsDetailsPage
                               ),
                             ],
 
-                            width: 740,
+                            width: Get.width /2 * 1.080,
                           ),
                           Custom_debts_bills_listView(),
                         ],
@@ -90,28 +90,38 @@ class CustomerDebtsDetailsPage
                         spacing: 20,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Custom_debt_payment_type_heder(
-                            titles_list: [
-                              Custom_date_text_container(
-                                title: "تاريخ الدفعة",
-                                width: 130,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Custom_debt_payment_type_heder(
+                                titles_list: [
+                                  Custom_date_text_container(
+                                    title: "تاريخ الدفعة",
+                                    width: 130,
+                                  ),
+                                  Custom_date_text_container(
+                                    title: "إجمالي مبلغ",
+                                    width: 190,
+                                  ),
+                                ],
+
+                                width: Get.width / 2 - 350,
                               ),
-                              Custom_date_text_container(
-                                title: "إجمالي مبلغ",
-                                width: 190,
+                              SizedBox(width: 5),
+                              SizedBox(
+                                height: 40,
+                                child: Custom_button(
+                                  icon: Icons.add,
+                                  title: "أضف دفعة",
+                                  onPressed:
+                                      () => controller.showAddPaymentDialog(),
+                                  color: AppColors.primary,
+                                ),
                               ),
                             ],
-
-                            width: 470,
                           ),
                           Custom_debt_payments_listView(),
                         ],
-                      ),
-                      Custom_button(
-                        icon: Icons.add,
-                        title: "أضف دفعة",
-                        onPressed: () => controller.showAddPaymentDialog(),
-                        color: AppColors.primary,
                       ),
                     ],
                   ),

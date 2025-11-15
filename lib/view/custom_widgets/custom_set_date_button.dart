@@ -15,7 +15,7 @@ class Custom_set_date_button extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
       onPressed: () => onPressed!(),
-      height: 50,
+      height: 44,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(color: AppColors.grey, width: 2),

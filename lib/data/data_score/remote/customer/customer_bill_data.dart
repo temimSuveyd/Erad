@@ -72,12 +72,16 @@ class CustomerBillData {
   }
 
   Future deleteCustomerBill(String userID, String billId) async {
-    return await _firestore
+    final billDocRef = _firestore
         .collection("users")
         .doc(userID)
         .collection("customer_bills")
-        .doc(billId)
-        .delete();
+        .doc(billId);
+    final productsCollection = await billDocRef.collection("products").get();
+    for (final doc in productsCollection.docs) {
+      await doc.reference.delete();
+    }
+    return await billDocRef.delete();
   }
 
   Future updateCustomerBill(
