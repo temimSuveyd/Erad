@@ -6,18 +6,18 @@
     "configurations": [
     
         {
-            "name": "Erad",
+            "name": "erad",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "Erad (profile mode)",
+            "name": "erad (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "Erad (release mode)",
+            "name": "erad (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

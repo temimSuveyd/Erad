@@ -1,6 +1,7 @@
 import 'package:erad/core/class/handling_data_view.dart';
 import 'package:erad/core/constans/images.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:erad/controller/auth/login_controller.dart';
 import 'package:erad/core/constans/colors.dart';
@@ -15,7 +16,7 @@ class Account_Square extends StatelessWidget {
     return Center(
       child: Container(
         width: 340,
-
+        height: Get.height / 1.8,
         decoration: BoxDecoration(
           color: AppColors.primary,
           borderRadius: BorderRadius.circular(24),

@@ -28,7 +28,7 @@ AppBar Custom_home_appBar() {
       ),
       SizedBox(width: 10),
       Text(
-        "إراد",
+        "erad",
         style: TextStyle(
           fontSize: 24,
           color: AppColors.wihet,
