@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:html' as html;
 import 'package:erad/core/constans/routes.dart';
 import 'package:erad/core/function/pdf_maker.dart';
 import 'package:erad/data/data_score/remote/depts/supplier_depts_data.dart';
@@ -158,9 +159,9 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
       await supplierBillData
           .getBillProdectBayId(userID!, bill_id!, productId)
           .then((value) {
-        product_numper = value["product_number"];
-        product_price = value["product_price"];
-      });
+            product_numper = value["product_number"];
+            product_price = value["product_price"];
+          });
       statusreqest = Statusreqest.success;
     } catch (e) {
       statusreqest = Statusreqest.faliure;
@@ -419,27 +420,32 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   createSupplierBillPdf() async {
     statusreqest = Statusreqest.loading;
     update();
-
     try {
-      // pdfBytes = await createInvoice(
-      //   supplierProductList.toList(),
-      //   "${supplierBillModel!.bill_date!.day.toString().padLeft(2, '0')}/${supplierBillModel!.bill_date!.month.toString().padLeft(2, '0')}/${supplierBillModel!.bill_date!.year}",
-      //   "سويد للتجارة",
-      //   supplierBillModel!.bill_no!,
-      //   supplierBillModel!.total_price!,
-      //   "شراء",
-      //   supplierBillModel!.supplier_name!,
-      //   supplierBillModel!.supplier_id!,
-      //   05395443779,
-      // );
+             String company_name =
+        services.sharedPreferences.getString(AppShared.company_name)!;
+      pdfBytes = await createInvoice(
+        supplierProductList.toList(),
+        "${supplierBillModel!.bill_date!.day.toString().padLeft(2, '0')}/${supplierBillModel!.bill_date!.month.toString().padLeft(2, '0')}/${supplierBillModel!.bill_date!.year}",
+        company_name,
+        supplierBillModel!.bill_no!,
+        supplierBillModel!.total_price!,
+        "شراء",
+        supplierBillModel!.supplier_name!,
+        supplierBillModel!.supplier_city!,
+      );
+      String pdfFileName = "${supplierBillModel!.bill_no}.pdf";
+      final blob = html.Blob([pdfBytes], 'application/pdf');
+      final url = html.Url.createObjectUrlFromBlob(blob);
+      html.AnchorElement(href: url)
+        ..setAttribute("download", pdfFileName)
+        ..click();
+      html.Url.revokeObjectUrl(url);
       statusreqest = Statusreqest.success;
       update();
-      goToSupplierPdfViewPage(pdfBytes);
     } on Exception {
-      statusreqest = Statusreqest.success;
+      statusreqest = Statusreqest.faliure;
       update();
     }
-    update();
   }
 
   @override
@@ -490,8 +496,7 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
 
   @override
   addSupplierBillToDepts() async {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       await supplierDeptsData.addBillToDepts(
         supplierBillModel!.bill_no!,
@@ -513,8 +518,7 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
 
   @override
   addSupplierDept() async {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       await supplierDeptsData.addDepts(
         supplierBillModel!.supplier_id!,
@@ -593,9 +597,9 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
                       supplierBillModel?.payment_type == "monetary"
                           ? null
                           : () {
-                              updateSupplierPaymentType("monetary");
-                              Get.back();
-                            },
+                            updateSupplierPaymentType("monetary");
+                            Get.back();
+                          },
                   tileColor:
                       supplierBillModel?.payment_type == "monetary"
                           ? AppColors.primary.withOpacity(0.12)
@@ -615,9 +619,9 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
                       supplierBillModel?.payment_type != "monetary"
                           ? null
                           : () {
-                              updateSupplierPaymentType("Religion");
-                              Get.back();
-                            },
+                            updateSupplierPaymentType("Religion");
+                            Get.back();
+                          },
                   tileColor:
                       supplierBillModel?.payment_type != "monetary"
                           ? AppColors.red.withOpacity(0.12)

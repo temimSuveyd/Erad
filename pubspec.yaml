@@ -11,19 +11,17 @@ environment:
 dependencies:
   cloud_firestore: ^6.1.0
   cupertino_icons: ^1.0.8
-  dropdown_button2: ^2.3.9
   firebase_auth: ^6.0.1
+  flutter:
+    sdk: flutter
   get: ^4.7.2
   google_fonts: ^6.2.1
   intl: ^0.20.2
   lottie: ^3.3.1
-  open_file: ^3.3.2
   path_provider: ^2.1.2
+  pdf: ^3.11.3
   printing: ^5.14.2
   shared_preferences: ^2.5.3
-  flutter:
-    sdk: flutter
-  fl_chart: ^0.68.0
 dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_test:

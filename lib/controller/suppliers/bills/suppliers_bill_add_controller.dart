@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:typed_data';
-import 'package:erad/data/data_score/remote/depts/customer_depts_data.dart';
+import 'dart:html' as html;
+import 'package:erad/core/function/pdf_maker.dart';
 import 'package:erad/data/data_score/remote/depts/supplier_depts_data.dart';
 import 'package:erad/data/data_score/remote/supplier/supplier_bill_data.dart';
 import 'package:erad/view/customer/customer_bills_add/widgets/custom_willPop_dailog.dart';
@@ -41,6 +42,7 @@ abstract class SupplieraddBiilController extends GetxController {
   addProductListToFirebase(String userID, String billId);
   deleteProduct(int productIndex);
   generateRandomInvoiceId(String username);
+  void printPdf();
 }
 
 class SupplierBiilAddControllerImp extends SupplieraddBiilController {
@@ -350,7 +352,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   @override
   Future<bool> onWillPop() async {
     custom_willPop_dialog(is_saved, () {
-      if (bill_id != null) {
+      if (bill_id != null && !is_saved) {
         saveBillData();
       } else {
         custom_snackBar();
@@ -399,16 +401,13 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
             total_product_price,
             total_product_profits,
           );
-          Get.back();
           custom_success_snackbar();
         } else {
           custom_snackBar();
           statusreqest = Statusreqest.success;
-          update();
         }
       } catch (e) {
         statusreqest = Statusreqest.faliure;
-        update();
       }
     } else {
       totalPriceAccount();
@@ -420,8 +419,8 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
         total_product_price,
         total_product_profits,
       );
-      Get.back();
     }
+    update();
   }
 
   @override
@@ -461,43 +460,32 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   createPdf() async {
     statusreqest = Statusreqest.loading;
     update();
-    String userID = services.sharedPreferences.getString(AppShared.userID)!;
-    await addSupplierBill();
-    if (bill_id != null) {
-      try {
-        if (!is_saved) {
-          totalPriceAccount();
-          totalProfits();
-          await addProductListToFirebase(userID, bill_id!);
-          is_saved = true;
-          update();
-        } else {
-          total_product_price = 0;
-          total_product_profits = 0;
-          totalPriceAccount();
-          totalProfits();
-        }
-        generateRandomInvoiceId(supplier_name!);
-        // pdfBytes = await createInvoice(
-        //   bill_prodects_list,
-        //   "${bill_add_date.day.toString().padLeft(2, '0')}/${bill_add_date.month.toString().padLeft(2, '0')}/${bill_add_date.year}",
-        //   "سويد للتجارة",
-        //   bill_no!,
-        //   total_product_price,
-        //   "شراء",
-        //   supplier_name!,
-        //   supplier_city!,
-        //   05395443779,
-        // );
-        goToPdfViewPage(pdfBytes);
-        statusreqest = Statusreqest.success;
-        update();
-      } on Exception {
-        statusreqest = Statusreqest.faliure;
-        update();
-      }
-    } else {
-      custom_snackBar();
+    try {
+                String company_name =
+        services.sharedPreferences.getString(AppShared.company_name)!;
+      pdfBytes = await createInvoice(
+        bill_prodects_list,
+        "${bill_add_date.day.toString().padLeft(2, '0')}/${bill_add_date.month.toString().padLeft(2, '0')}/${bill_add_date.year}",
+        company_name,
+        bill_no!,
+        total_product_price,
+        "شراء",
+        supplier_name!,
+        supplier_city!,
+      );
+      // goToPdfViewPage(pdfBytes);
+      String pdfFileName = "${bill_no}.pdf";
+      final blob = html.Blob([pdfBytes], 'application/pdf');
+      final url = html.Url.createObjectUrlFromBlob(blob);
+      html.AnchorElement(href: url)
+        ..setAttribute("download", pdfFileName)
+        ..click();
+      html.Url.revokeObjectUrl(url);
+      statusreqest = Statusreqest.success;
+      update();
+    } on Exception {
+      statusreqest = Statusreqest.faliure;
+      update();
     }
   }
 
@@ -531,18 +519,12 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
 
   @override
   generateRandomInvoiceId(String username) {
-    generateRandomInvoiceId(String username) {
-      final now = DateTime.now();
-      final initials = username.substring(0, 2).toUpperCase();
-      final date =
-          '${now.month.toString().padLeft(2, '0')}${now.day.toString().padLeft(2, '0')}';
-      final random = Random();
-      final randomNumber = random.nextInt(100000); // 0 - 99999
-      final numberStr = randomNumber.toString().padLeft(5, '0');
-      return '$initials-$date-$numberStr';
-    }
-
-    bill_no = generateRandomInvoiceId(username);
+    final random = Random();
+    final letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    final firstLetter = letters[random.nextInt(letters.length)];
+    final secondLetter = letters[random.nextInt(letters.length)];
+    final number = random.nextInt(1000).toString().padLeft(3, '0');
+    bill_no = '$firstLetter$secondLetter$number';
   }
 
   @override
@@ -559,5 +541,13 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
       deleteBill();
     }
     super.onClose();
+  }
+
+  @override
+  void printPdf() {
+    if (!is_saved) {
+      saveBillData();
+      createPdf();
+    }
   }
 }

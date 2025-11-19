@@ -1,5 +1,3 @@
-
-
 import 'package:erad/controller/customers/bills/customer_add_bill_controller.dart';
 import 'package:erad/core/constans/colors.dart';
 import 'package:erad/view/custom_widgets/custom_appBar.dart';
@@ -33,27 +31,38 @@ class CustomerBillAddPage extends GetView<CustomerBiilAddControllerImp> {
 
               SliverToBoxAdapter(child: SizedBox(height: 30)),
 
-              SliverToBoxAdapter(
-                child: Row(
-                  spacing: 30,
-                  children: [
-                    Custom_button( color: AppColors.primary,
-                      icon: Icons.save,
-                      title: "حفظ الفاتورة",
-                      onPressed: () => controller.saveBillData(),
+              GetBuilder<CustomerBiilAddControllerImp>(
+                builder:
+                    (controller) => SliverToBoxAdapter(
+                      child: Row(
+                        spacing: 30,
+                        children: [
+                          !controller.is_saved
+                              ? Custom_button(
+                                color: AppColors.primary,
+                                icon: Icons.save,
+                                title: "حفظ الفاتورة",
+                                onPressed: () {
+                                  controller.saveBillData();
+                                  Get.back();
+                                },
+                              )
+                              : SizedBox(),
+                          Custom_button(
+                            color: AppColors.primary,
+                            icon: Icons.print,
+                            title: "طباعة",
+                            onPressed: () => controller.printPdf(),
+                          ),
+                          Custom_button(
+                            color: AppColors.primary,
+                            icon: Icons.delete_forever,
+                            title: "حذف",
+                            onPressed: () => controller.showDleteBillDialog(),
+                          ),
+                        ],
+                      ),
                     ),
-                    Custom_button( color: AppColors.primary,
-                      icon: Icons.print,
-                      title: "طباعة",
-                      onPressed:() => controller.createPdf(),
-                    ),
-                    Custom_button( color: AppColors.primary,
-                      icon: Icons.delete_forever,
-                      title: "حذف",
-                      onPressed: () => controller.showDleteBillDialog(),
-                    ),
-                  ],
-                ),
               ),
             ],
           ),

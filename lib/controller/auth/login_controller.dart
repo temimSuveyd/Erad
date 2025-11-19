@@ -21,6 +21,7 @@ class LoginControllerImp extends LoginController {
   UserData userData = UserData();
   TextEditingController user_email = TextEditingController();
   TextEditingController user_password = TextEditingController();
+  TextEditingController company_name = TextEditingController();
   GlobalKey<FormState> formState = GlobalKey<FormState>();
   Statusreqest statusreqest = Statusreqest.success;
   Services services = Get.find();
@@ -55,11 +56,13 @@ class LoginControllerImp extends LoginController {
 
   @override
   saveUserDataLocal() {
+    final shared = services.sharedPreferences;
     String email = user_email.text;
     String password = user_password.text;
-    final shared = services.sharedPreferences;
+    String company = company_name.text;
     shared.setString(AppShared.userID, email);
     shared.setString(AppShared.user_password, password);
+    shared.setString(AppShared.company_name, company);
   }
 
   @override

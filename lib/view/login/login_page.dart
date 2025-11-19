@@ -11,7 +11,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.lazyPut(() => LoginControllerImp());
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor ,
+      backgroundColor: AppColors.backgroundColor,
       body: Center(child: Account_Square()),
     );
   }

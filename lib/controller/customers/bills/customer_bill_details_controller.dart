@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-
+import 'dart:html' as html;
 import 'package:erad/core/constans/routes.dart';
 import 'package:erad/core/function/pdf_maker.dart';
 import 'package:erad/data/data_score/remote/depts/customer_depts_data.dart';
@@ -429,27 +429,32 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
   createPdf() async {
     statusreqest = Statusreqest.loading;
     update();
-
     try {
-      // pdfBytes = await createInvoice(
-      //   productList.toList(),
-      //   "${billModel!.bill_date!.day.toString().padLeft(2, '0')}/${billModel!.bill_date!.month.toString().padLeft(2, '0')}/${billModel!.bill_date!.year}",
-      //   "سويد للتجارة",
-      //   billModel!.bill_no!,
-      //   billModel!.total_price!,
-      //   "بيع",
-      //   billModel!.customer_name!,
-      //   billModel!.customer_city!,
-      //   05395443779,
-      // );
+          String company_name =
+        services.sharedPreferences.getString(AppShared.company_name)!;
+      pdfBytes = await createInvoice(
+        productList.toList(),
+        "${billModel!.bill_date!.day.toString().padLeft(2, '0')}/${billModel!.bill_date!.month.toString().padLeft(2, '0')}/${billModel!.bill_date!.year}",
+        company_name,
+        billModel!.bill_no!,
+        billModel!.total_price!,
+        "بيع",
+        billModel!.customer_name!,
+        billModel!.customer_city!,
+      );
+      String pdfFileName = "${billModel!.bill_no}.pdf";
+      final blob = html.Blob([pdfBytes], 'application/pdf');
+      final url = html.Url.createObjectUrlFromBlob(blob);
+      html.AnchorElement(href: url)
+        ..setAttribute("download", pdfFileName)
+        ..click();
+      html.Url.revokeObjectUrl(url);
       statusreqest = Statusreqest.success;
       update();
-      goToPdfViewPage(pdfBytes);
     } on Exception {
-      statusreqest = Statusreqest.success;
+      statusreqest = Statusreqest.faliure;
       update();
     }
-    update();
   }
 
   @override

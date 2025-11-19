@@ -3,16 +3,12 @@ import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
-    // START: FlutterFire Configuration
     id("com.google.gms.google-services")
-    // END: FlutterFire Configuration
-    id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id("org.jetbrains.kotlin.android")
     id("dev.flutter.flutter-gradle-plugin")
-    
 }
 
-// Key properties dosyasını yükle (varsa)
+// Key properties
 val keystorePropertiesFile = rootProject.file("key.properties")
 val keystoreProperties = Properties()
 if (keystorePropertiesFile.exists()) {
@@ -23,21 +19,18 @@ android {
     namespace = "com.example.erad"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
-     
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = "11"
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.erad"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -58,18 +51,14 @@ android {
 
     buildTypes {
         release {
-            // Signing config - önce release, yoksa debug
             signingConfig = if (keystorePropertiesFile.exists()) {
                 signingConfigs.getByName("release")
             } else {
                 signingConfigs.getByName("debug")
             }
-            
-            // Kod ve kaynak optimizasyonu
-            isMinifyEnabled = true
-            isShrinkResources = true
-            
-            // ProGuard kuralları
+            // Minify KAPALI - sorun çözülene kadar
+            isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -80,6 +69,19 @@ android {
         }
     }
 
+    packaging {
+        resources {
+            excludes += setOf(
+                "META-INF/DEPENDENCIES",
+                "META-INF/LICENSE",
+                "META-INF/LICENSE.txt",
+                "META-INF/NOTICE",
+                "META-INF/NOTICE.txt",
+                "META-INF/AL2.0", 
+                "META-INF/LGPL2.1"
+            )
+        }
+    }
 }
 
 flutter {
@@ -87,6 +89,10 @@ flutter {
 }
 
 dependencies {
-    // Local JAR files from libs directory
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    implementation("androidx.multidex:multidex:2.0.1")
+}
+
+// Duplicate class çözümü
+configurations.all {
+    resolutionStrategy.force("org.jetbrains:annotations:24.0.0")
 }

@@ -25,10 +25,10 @@ class Custom_login_textfield extends StatelessWidget {
           ),
 
           filled: true,
-          fillColor: const Color.fromARGB(92, 46, 46, 46),
+          fillColor: AppColors.grey.withOpacity(0.5),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColors.grey),
+            borderSide: BorderSide(color: AppColors.wihet),
           ),
           disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),

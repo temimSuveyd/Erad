@@ -63,7 +63,7 @@ class CustomerBillsViewPage extends GetView<CustomerBillViewControllerImp> {
                   GetBuilder<CustomerBillViewControllerImp>(
                     builder:
                         (controller) => Custom_dropDownButton(
-                          value: "value",
+                          value: controller.selectedCustomerCity??'',
                           onChanged:
                               (value) => controller.searchForBillBayCity(value),
                           hint:

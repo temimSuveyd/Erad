@@ -150,7 +150,7 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
       statusreqest = Statusreqest.loading;
       update();
       await customerBillData.updateBillStatus(userID, billId, billStatus);
-      if (billStatus == 'deliveryd' && billModel.payment_type != 'Religion') {
+      if (billStatus == 'deliveryd' && billModel.payment_type == 'Religion') {
         await addDept(billModel);
         await addBillToDepts(billModel);
       } else {
