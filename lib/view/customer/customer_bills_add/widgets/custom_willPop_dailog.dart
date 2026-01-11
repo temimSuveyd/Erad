@@ -7,7 +7,7 @@ Future<dynamic> custom_willPop_dialog(
 ) {
   return Get.defaultDialog(
     buttonColor: AppColors.primary,
-    backgroundColor: AppColors.backgroundColor,
+    backgroundColor: AppColors.background,
     textConfirm: "حفظ",
     textCancel: "حذف",
     title: "حفظ هذا الفاتورة",

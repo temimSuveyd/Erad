@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:erad/core/constans/colors.dart';
 
-class Custom_button extends StatelessWidget {
-  const Custom_button({
+class CustomButton extends StatelessWidget {
+  const CustomButton({
     super.key,
     required this.icon,
     required this.title,
@@ -14,36 +14,30 @@ class Custom_button extends StatelessWidget {
   final String title;
   final Function() onPressed;
   final Color color;
+  
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(
-      onPressed: () {
-        onPressed();
-      },
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      minWidth: 120,
+    return SizedBox(
       height: 40,
-      shape: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(5),
-        borderSide: BorderSide.none,
-      ),
-      color: color,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: AppColors.wihet,
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-            ),
+      child: ElevatedButton.icon(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          foregroundColor: AppColors.white,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
           ),
-
-          SizedBox(width: 5),
-
-          Icon(icon, color: AppColors.wihet),
-        ],
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+        ),
+        icon: Icon(icon, size: 18),
+        label: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
     );
   }

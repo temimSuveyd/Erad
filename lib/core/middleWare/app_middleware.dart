@@ -5,14 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AppMiddleware extends GetMiddleware {
-  Services appService = Get.find();  @override
+  @override
   RouteSettings? redirect(String? route) {
-    final bool isLogin =
-        appService.sharedPreferences.getBool(AppShared.isLoging)??false;
-    if (isLogin) {
-      return RouteSettings(name: AppRoutes.home_page);
-    } else {
-      return RouteSettings(name: AppRoutes.login_page);
+    try {
+      final Services appService = Get.find<Services>();
+      final bool isLogin =
+          appService.sharedPreferences.getBool(AppShared.isLoging) ?? false;
+
+      if (isLogin) {
+        return const RouteSettings(name: AppRoutes.home_page);
+      } else {
+        return const RouteSettings(name: AppRoutes.login_page);
+      }
+    } catch (e) {
+      // If service is not found, redirect to login
+      return const RouteSettings(name: AppRoutes.login_page);
     }
   }
 }

@@ -77,7 +77,7 @@ class Custom_add_product_card extends StatelessWidget {
 
               child: GetBuilder<SupplierBiilAddControllerImp>(
                 builder:
-                    (controller) => Custom_button( color: AppColors.primary,
+                    (controller) => CustomButton( color: AppColors.primary,
                       icon: Icons.add,
                       title: "أضف",
                       onPressed:

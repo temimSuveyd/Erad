@@ -1,4 +1,3 @@
-import 'package:erad/controller/expenses/expenses_controller.dart';
 import 'package:erad/controller/withdrawn_funds/withdrawn_funds_controller.dart';
 import 'package:erad/core/constans/colors.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,7 @@ class SetWithdrawnFundsDateRangeButton extends StatelessWidget {
                   horizontal: 24,
                   vertical: 14,
                 ),
-                backgroundColor: AppColors.wihet.withOpacity(0.13),
+                backgroundColor: AppColors.wihet.withValues(alpha: 0.13),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),

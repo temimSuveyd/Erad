@@ -23,7 +23,7 @@ class CustomerNameList extends StatelessWidget {
 
           SizedBox(width: 10),
 
-          Custom_button(
+          CustomButton(
             color: AppColors.primary,
             icon: Icons.add,
             onPressed: () {

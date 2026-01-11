@@ -10,13 +10,13 @@ Future<dynamic> custom_add_categorey_type_dialog(
     return Get.defaultDialog(
       title: "إضافة نوع الفئة",
       middleText: "",
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       actions: [
         SizedBox(
           width: double.infinity,
           child: Column(
             children: [
-              Custom_textfield(
+              CustomTextField(
                 hintText: "نوع الفئة",
                 suffixIcon: Icons.add,
                 validator: (p0) {

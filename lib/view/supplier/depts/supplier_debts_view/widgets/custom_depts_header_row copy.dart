@@ -42,7 +42,7 @@ class Custom_depts_view_card extends GetView<SupplierDeptsViewControllerImp> {
                 width: 160,
               ),
 
-              Custom_button(
+              CustomButton(
                 color: AppColors.primary,
                 icon: Icons.open_in_new,
                 title: "تفاصيل",

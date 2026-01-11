@@ -19,7 +19,7 @@ Future<dynamic> custom_add_brands_dialog(
         child: Column(
           spacing: 20,
           children: [
-            Custom_textfield(
+            CustomTextField(
               hintText: 'اسم العلامة التجارية',
               suffixIcon: Icons.add,
               validator: validator,
@@ -30,7 +30,7 @@ Future<dynamic> custom_add_brands_dialog(
         ),
       ),
     ],
-    backgroundColor: AppColors.backgroundColor,
+    backgroundColor: AppColors.background,
     buttonColor: AppColors.primary,
     onConfirm: () {
       onConfirm();

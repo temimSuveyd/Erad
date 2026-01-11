@@ -38,13 +38,13 @@ class ReportCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // Renk uyumu için daha soft arka plan, outline border ve tutarlı metin/ikon renkleri
     final Color cardBgColor = Colors.white; // daha nötr bir arkaplan
-    final Color iconBgColor = iconColor.withOpacity(0.13);
-    final Color labelTextColor = AppColors.primary.withOpacity(0.95); // bir tık daha koyu
+    final Color iconBgColor = iconColor.withValues(alpha: 0.13);
+    final Color labelTextColor = AppColors.primary.withValues(alpha: 0.95); // bir tık daha koyu
     final Color valueTextColor = iconColor;
     final Color dropDownIconColor = iconColor; // tema ana rengiyle daha uyumlu
     final Color dropDownTextColor = AppColors.primary; // dropdown value text
-    final Color dropDownBgColor = AppColors.primary.withOpacity(0.97);
-    final Color outlineColor = iconColor.withOpacity(0.23);
+    final Color dropDownBgColor = AppColors.primary.withValues(alpha: 0.97);
+    final Color outlineColor = iconColor.withValues(alpha: 0.23);
 
     return Card(
       elevation: 2,
@@ -162,7 +162,7 @@ class ReportCard extends StatelessWidget {
                               onChanged: onDebtCheckChanged,
                               activeColor: iconColor,
                               side: BorderSide(
-                                color: iconColor.withOpacity(0.3),
+                                color: iconColor.withValues(alpha: 0.3),
                                 width: 1,
                               ),
                               shape: RoundedRectangleBorder(
@@ -174,7 +174,7 @@ class ReportCard extends StatelessWidget {
                             child: Text(
                               "صافي الارباح",
                               style: TextStyle(
-                                color: iconColor.withOpacity(0.83),
+                                color: iconColor.withValues(alpha: 0.83),
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -194,7 +194,7 @@ class ReportCard extends StatelessWidget {
                       shadows: [
                         Shadow(
                           blurRadius: 6,
-                          color: valueTextColor.withOpacity(0.10),
+                          color: valueTextColor.withValues(alpha: 0.10),
                           offset: const Offset(0, 2),
                         )
                       ],

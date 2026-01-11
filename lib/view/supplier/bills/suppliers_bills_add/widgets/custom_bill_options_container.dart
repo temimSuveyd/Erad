@@ -32,7 +32,7 @@ class CustomerBillOptionsContainer extends StatelessWidget {
                     (controller) => Row(
                       spacing: 20,
                       children: [
-                        Custom_dropDownButton(
+                        CustomDropDownButton(
                           items: controller.suppliers_list_dropdownItrm,
                           onChanged: (value) {
                             controller.setSupplierId(value);
@@ -45,7 +45,7 @@ class CustomerBillOptionsContainer extends StatelessWidget {
 
                         GetBuilder<SupplierBiilAddControllerImp>(
                           builder:
-                              (controller) => Custom_dropDownButton(
+                              (controller) => CustomDropDownButton(
                                 items: [
                                   DropdownMenuItem(
                                     value: "Religion",

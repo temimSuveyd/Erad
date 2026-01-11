@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:typed_data';
-import 'dart:html' as html;
 import 'package:erad/core/function/pdf_maker.dart';
+import 'package:erad/core/function/file_saver.dart';
 import 'package:erad/data/data_score/remote/depts/supplier_depts_data.dart';
 import 'package:erad/data/data_score/remote/supplier/supplier_bill_data.dart';
 import 'package:erad/view/customer/customer_bills_add/widgets/custom_willPop_dailog.dart';
@@ -374,7 +374,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
       textConfirm: "حذف",
       textCancel: "عدم الحذف",
       buttonColor: AppColors.primary,
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       middleText: "هل أنت متأكد من أنك تريد حذف هذه الفاتورة",
       title: "حذف الفاتورة",
     );
@@ -461,12 +461,12 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
     statusreqest = Statusreqest.loading;
     update();
     try {
-                String company_name =
-        services.sharedPreferences.getString(AppShared.company_name)!;
+      String companyName =
+          services.sharedPreferences.getString(AppShared.company_name)!;
       pdfBytes = await createInvoice(
         bill_prodects_list,
         "${bill_add_date.day.toString().padLeft(2, '0')}/${bill_add_date.month.toString().padLeft(2, '0')}/${bill_add_date.year}",
-        company_name,
+        companyName,
         bill_no!,
         total_product_price,
         "شراء",
@@ -474,13 +474,12 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
         supplier_city!,
       );
       // goToPdfViewPage(pdfBytes);
-      String pdfFileName = "${bill_no}.pdf";
-      final blob = html.Blob([pdfBytes], 'application/pdf');
-      final url = html.Url.createObjectUrlFromBlob(blob);
-      html.AnchorElement(href: url)
-        ..setAttribute("download", pdfFileName)
-        ..click();
-      html.Url.revokeObjectUrl(url);
+      String pdfFileName = "$bill_no.pdf";
+      await FileSaver.saveFile(
+        bytes: pdfBytes,
+        fileName: pdfFileName,
+        mimeType: 'application/pdf',
+      );
       statusreqest = Statusreqest.success;
       update();
     } on Exception {
@@ -499,12 +498,12 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   }
 
   @override
-  setProductFromSearch(String _product_name) {
+  setProductFromSearch(String product_name) {
     if (all_product_list.isNotEmpty) {
       Future.delayed(Duration(milliseconds: 100), () {
         FocusScope.of(Get.context!).requestFocus(focusNode2);
       });
-      product_name = _product_name;
+      product_name = product_name;
       serach_for_product_controller.text = product_name!;
     }
     show_search_popupMenu = false;

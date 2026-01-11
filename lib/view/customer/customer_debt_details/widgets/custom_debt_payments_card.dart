@@ -35,7 +35,7 @@ class Custom_debt_payments_card
             price: "${deptPaymentsModel.paymentPrice}",
           ),
 
-          Custom_button(
+          CustomButton(
             icon: Icons.delete,
             title: "احذف",
             onPressed:

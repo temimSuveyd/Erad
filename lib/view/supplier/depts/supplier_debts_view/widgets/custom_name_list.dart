@@ -15,7 +15,7 @@ class CustomerNameList extends StatelessWidget {
           //   (index) => CustomerNameLabel(title: nameLableData[index].title, widgets: index==0?300:220,),
           // ),
           SizedBox(width: 10),
-               Custom_button( color: AppColors.primary,
+               CustomButton( color: AppColors.primary,
                 icon: Icons.add,
                 onPressed: () {
                   

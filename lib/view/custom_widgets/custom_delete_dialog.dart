@@ -11,6 +11,6 @@ Future<dynamic> custom_delete_dialog(void Function() onConfirm) {
     },
     onCancel: () {},
     buttonColor: AppColors.primary,
-    backgroundColor: AppColors.backgroundColor,
+    backgroundColor: AppColors.background,
   );
 }

@@ -99,14 +99,14 @@ class ExpensesCategoryControllerImp extends ExpensesDetailsController {
     Get.defaultDialog(
       title: "فئة جديدة",
       titleStyle: TextStyle(color: AppColors.primary, fontSize: 24),
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       middleText: "يرجى إدخال اسم الفئة",
       middleTextStyle: TextStyle(color: AppColors.primary, fontSize: 18),
 
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Custom_textfield(
+          CustomTextField(
             height: 120,
             maxLines: 3,
             hintText: "أدخل اسم الفئة",
@@ -136,14 +136,14 @@ class ExpensesCategoryControllerImp extends ExpensesDetailsController {
     Get.defaultDialog(
       title: "تعديل الفئة",
       titleStyle: TextStyle(color: AppColors.primary, fontSize: 24),
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       middleText: "يرجى إدخال اسم الفئة",
       middleTextStyle: TextStyle(color: AppColors.primary, fontSize: 18),
 
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Custom_textfield(
+          CustomTextField(
             height: 120,
             maxLines: 3,
             hintText: "أدخل اسم الفئة",
@@ -171,7 +171,7 @@ class ExpensesCategoryControllerImp extends ExpensesDetailsController {
     Get.defaultDialog(
       title: "حذف",
       titleStyle: TextStyle(color: AppColors.primary, fontSize: 24),
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       middleText:
           "إذا قمت بحذف هذه الفئة، سيتم حذف جميع المدفوعات المرتبطة بها \nولن تتمكن من استعادتها مرة أخرى. هل أنت متأكد أنك تريد المتابعة؟",
       middleTextStyle: TextStyle(color: AppColors.primary, fontSize: 18),

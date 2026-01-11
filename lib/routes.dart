@@ -29,16 +29,16 @@ import 'package:erad/view/pdf_view/pdf_view_page.dart';
 List<GetPage<dynamic>>? getPages = [
   GetPage(
     name: "/",
-    page: () => LoginPage(),
+    page: () => const LoginPage(),
     transition: Transition.leftToRight,
-    transitionDuration: Duration(milliseconds: 350),
+    transitionDuration: const Duration(milliseconds: 350),
     middlewares: [AppMiddleware()],
   ),
   GetPage(
     name: AppRoutes.home_page,
-    page: () => HomePage(),
+    page: () => const HomePage(),
     transition: Transition.leftToRight,
-    transitionDuration: Duration(milliseconds: 350),
+    transitionDuration: const Duration(milliseconds: 350),
   ),
   GetPage(
     name: AppRoutes.pdf_view,
@@ -178,12 +178,13 @@ List<GetPage<dynamic>>? getPages = [
     transition: Transition.leftToRight,
     transitionDuration: Duration(milliseconds: 350),
   ),
-    GetPage(
+  GetPage(
     name: AppRoutes.withdrawn_fund_category_page,
     page: () => WithdrawnFundsCategoryPage(),
     transition: Transition.leftToRight,
     transitionDuration: Duration(milliseconds: 350),
-  ),  GetPage(
+  ),
+  GetPage(
     name: AppRoutes.withdrawn_fund_page,
     page: () => WithdrawnFundsPage(),
     transition: Transition.leftToRight,

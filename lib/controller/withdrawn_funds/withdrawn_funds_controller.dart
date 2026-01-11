@@ -134,7 +134,7 @@ class WithdrawnFundsControllerImp extends WithdrawnFundsController {
   @override
   void showaddWithdrawnFundsDialog() {
     Get.defaultDialog(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       buttonColor: AppColors.primary,
       title: "أضف سحب الأموال",
       titleStyle: TextStyle(
@@ -280,7 +280,7 @@ class WithdrawnFundsControllerImp extends WithdrawnFundsController {
     // date type
     repeatDate = date;
     Get.defaultDialog(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       buttonColor: AppColors.primary,
       title: "تعديل المصروف",
       titleStyle: TextStyle(
@@ -327,7 +327,7 @@ class WithdrawnFundsControllerImp extends WithdrawnFundsController {
   @override
   void showDeleteDialog(String id) {
     Get.defaultDialog(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       title: "هل تريد حذف؟",
       titleStyle: TextStyle(
         color: AppColors.primary,

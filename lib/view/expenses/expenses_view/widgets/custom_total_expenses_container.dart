@@ -20,7 +20,7 @@ class TotalexpensesContainer extends StatelessWidget {
                 gradient: LinearGradient(
                   colors: [
                     AppColors.primary,
-                    AppColors.primary.withOpacity(0.7),
+                    AppColors.primary.withValues(alpha: 0.7),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -28,7 +28,7 @@ class TotalexpensesContainer extends StatelessWidget {
                 borderRadius: BorderRadius.circular(28),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.12),
+                    color: Colors.black.withValues(alpha: 0.12),
                     blurRadius: 18,
                     offset: const Offset(0, 8),
                   ),
@@ -70,10 +70,10 @@ class TotalexpensesContainer extends StatelessWidget {
                       vertical: 18,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.10),
+                      color: Colors.white.withValues(alpha: 0.10),
                       borderRadius: BorderRadius.circular(18),
                       border: Border.all(
-                        color: Colors.white.withOpacity(0.18),
+                        color: Colors.white.withValues(alpha: 0.18),
                         width: 1.2,
                       ),
                     ),
@@ -104,7 +104,7 @@ class TotalexpensesContainer extends StatelessWidget {
                         ),
 
                         Spacer(),
-                        Custom_button(
+                        CustomButton(
                           icon: Icons.add,
                           title: "إضافة نفقة",
                           onPressed: () => controller.showaddExpensesDialog(),

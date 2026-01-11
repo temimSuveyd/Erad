@@ -10,21 +10,59 @@ class CustomerDeptNameList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth >= 1024;
+
+    if (isDesktop) {
+      return SliverToBoxAdapter(
+        child: Row(
+          spacing: 3,
+          children: [
+            CustomerNameLabel(title: "اسم المورد", width: 220),
+            CustomerNameLabel(title: "تاريخ", width: 200),
+            CustomerNameLabel(title: "إجمالي الدَين", width: 160),
+            SizedBox(width: 10),
+            CustomButton(
+              color: AppColors.primary,
+              icon: Icons.add,
+              onPressed: () {
+                Get.toNamed(AppRoutes.supplier_bills_add_page);
+              },
+              title: "إضافة",
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Mobile layout
     return SliverToBoxAdapter(
-      child: Row(
-        spacing: 3,
+      child: Column(
         children: [
-          CustomerNameLabel(title: "اسم العميل", width: 220),
-          CustomerNameLabel(title: "تاريخ", width: 200),
-          CustomerNameLabel(title: "إجمالي الدَين", width: 160),
-
-          SizedBox(width: 10),
-
-          Custom_button(
+          Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: CustomerNameLabel(title: "اسم المورد", width: 0),
+              ),
+              SizedBox(width: 3),
+              Expanded(
+                flex: 2,
+                child: CustomerNameLabel(title: "تاريخ", width: 0),
+              ),
+              SizedBox(width: 3),
+              Expanded(
+                flex: 2,
+                child: CustomerNameLabel(title: "الدَين", width: 0),
+              ),
+            ],
+          ),
+          SizedBox(height: 8),
+          CustomButton(
             color: AppColors.primary,
             icon: Icons.add,
             onPressed: () {
-              Get.toNamed(AppRoutes.customer_bills_add_page);
+              Get.toNamed(AppRoutes.supplier_bills_add_page);
             },
             title: "إضافة",
           ),

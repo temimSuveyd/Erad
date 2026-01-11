@@ -124,7 +124,7 @@ class SuppliersControllerImp extends SuppliersController {
         editSuppliers(
           supplierModle.supplier_id!,
           supplierModle.supplier_city!,
-          supplierModle.supplier_city!,
+          supplierModle.supplier_name!,
         );
         Get.close(0);
       },
@@ -138,23 +138,23 @@ class SuppliersControllerImp extends SuppliersController {
 
   @override
   editSuppliers(
-    String suppliers_id,
-    String suppliers_city,
+    String suppliersId,
+    String suppliersCity,
     String suppliersName,
   ) {
     String userID = services.sharedPreferences.getString(AppShared.userID)!;
-    String suppliers_name0 =
+    String newSuppliersName =
         suppliers_name_controller.text.isEmpty
             ? suppliersName
             : suppliers_name_controller.text;
-    String suppliersCity =
-        suppliers_city.isEmpty ? suppliers_city : suppliers_city;
+    String newSuppliersCity =
+        suppliers_city.isEmpty ? suppliersCity : suppliers_city;
     try {
       suppliersData.editSupplier(
         userID,
-        suppliers_name0,
-        suppliersCity,
-        suppliers_id,
+        newSuppliersName,
+        newSuppliersCity,
+        suppliersId,
       );
     } catch (e) {
       statusreqest = Statusreqest.faliure;

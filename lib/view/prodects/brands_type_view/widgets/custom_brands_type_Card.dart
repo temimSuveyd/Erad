@@ -38,14 +38,14 @@ class Custom_brands_type_Card extends GetView<BrandsTypeControllerImp> {
                 width: 150,
               ),
               Custom_price_container(title: productModel.profits!, width: 150),
-              Custom_button(
+              CustomButton(
                 color: AppColors.primary,
                 icon: Icons.delete_forever,
                 onPressed:
                     () => controller.show_delete_dialog(productModel.title!),
                 title: "حذف",
               ),
-              Custom_button(
+              CustomButton(
                 color: AppColors.primary,
                 icon: Icons.edit,
                 onPressed:

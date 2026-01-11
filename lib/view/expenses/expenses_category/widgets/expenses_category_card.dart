@@ -30,7 +30,7 @@ class ExpensesCategoryCard extends GetView<ExpensesCategoryControllerImp> {
             mainAxisAlignment: MainAxisAlignment.end,
             spacing: 10,
             children: [
-              Custom_button(
+              CustomButton(
                 icon: Icons.edit,
                 title: "تعديل",
                 onPressed: () {
@@ -38,7 +38,7 @@ class ExpensesCategoryCard extends GetView<ExpensesCategoryControllerImp> {
                 },
                 color: AppColors.primary,
               ),
-              Custom_button(
+              CustomButton(
                 icon: Icons.delete,
                 title: "حذف",
                 onPressed: () {
@@ -46,7 +46,7 @@ class ExpensesCategoryCard extends GetView<ExpensesCategoryControllerImp> {
                 },
                 color: AppColors.primary,
               ),
-              Custom_button(
+              CustomButton(
                 icon: Icons.open_in_new,
                 title: "تفاصيل",
                 onPressed: () {

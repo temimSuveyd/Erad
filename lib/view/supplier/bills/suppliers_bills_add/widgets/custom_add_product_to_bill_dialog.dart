@@ -1,5 +1,4 @@
   import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:erad/core/constans/colors.dart';
 import 'package:erad/view/custom_widgets/custom_dropDownButton.dart';
@@ -10,7 +9,7 @@ Future<dynamic> custom_add_product_to_bill_dialog(TextEditingController controll
 String dropdownHint,String textfieldHint) {
     return Get.defaultDialog(
       buttonColor: AppColors.primary,
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       onCancel: () {
         controller.clear();
         
@@ -30,13 +29,13 @@ String dropdownHint,String textfieldHint) {
           spacing: 20,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Custom_dropDownButton(
+            CustomDropDownButton(
               items: items,
               onChanged: (value) => onProductChange(value),
               hint: dropdownHint,
               value: "",
             ),
-            Custom_textfield(
+            CustomTextField(
               hintText: textfieldHint,
               suffixIcon: Icons.add_box_rounded,
               validator: (p0) {

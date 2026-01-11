@@ -47,7 +47,7 @@ class Custom_product_details_card
                 isproductName: false,
               ),
 
-              Custom_button(
+              CustomButton(
                 color: AppColors.primary,
                 icon: Icons.edit,
                 title: "تعديل",
@@ -55,7 +55,7 @@ class Custom_product_details_card
                     () => controller.editSupplierProductData(billProductsModel.id!),
               ),
 
-              Custom_button(
+              CustomButton(
                 color: AppColors.primary,
                 icon: Icons.delete,
                 title: "حذف",

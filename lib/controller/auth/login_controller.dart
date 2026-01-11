@@ -19,9 +19,9 @@ abstract class LoginController extends GetxController {
 
 class LoginControllerImp extends LoginController {
   UserData userData = UserData();
-  TextEditingController user_email = TextEditingController();
-  TextEditingController user_password = TextEditingController();
-  TextEditingController company_name = TextEditingController();
+  TextEditingController userEmail = TextEditingController();
+  TextEditingController userPassword = TextEditingController();
+  TextEditingController companyName = TextEditingController();
   GlobalKey<FormState> formState = GlobalKey<FormState>();
   Statusreqest statusreqest = Statusreqest.success;
   Services services = Get.find();
@@ -34,8 +34,8 @@ class LoginControllerImp extends LoginController {
     if (validator!.validate()) {
       statusreqest = Statusreqest.loading;
       update();
-      String email = user_email.text.trim();
-      String password = user_password.text.trim();
+      String email = userEmail.text.trim();
+      String password = userPassword.text.trim();
       try {
         await auth.signInWithEmailAndPassword(email: email, password: password);
         userData.add_user(email);
@@ -57,9 +57,9 @@ class LoginControllerImp extends LoginController {
   @override
   saveUserDataLocal() {
     final shared = services.sharedPreferences;
-    String email = user_email.text;
-    String password = user_password.text;
-    String company = company_name.text;
+    String email = userEmail.text;
+    String password = userPassword.text;
+    String company = companyName.text;
     shared.setString(AppShared.userID, email);
     shared.setString(AppShared.user_password, password);
     shared.setString(AppShared.company_name, company);

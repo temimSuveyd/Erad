@@ -1,83 +1,99 @@
 import 'package:erad/core/constans/colors.dart';
+import 'package:erad/core/constans/design_tokens.dart';
 import 'package:erad/core/constans/images.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-AppBar Custom_home_appBar() {
-  final now = DateTime.now();
-  final formattedDateTime = DateFormat('yyyy-MM-dd HH:mm').format(now);
-
+AppBar customHomeAppBar(BuildContext context) {
+  final isMobile = DesignTokens.isMobile(context);
+  
   return AppBar(
-    automaticallyImplyLeading: false,
+    elevation: DesignTokens.elevationLow,
     backgroundColor: AppColors.primary,
-    centerTitle: true,
-    // title: Text(
-    //   formattedDateTime,
-    //   style: TextStyle(
-    //     fontSize: 22,
-    //     color: AppColors.wihet,
-    //     fontWeight: FontWeight.bold,
-    //   ),
-    // ),
-    actions: [
-      SizedBox(width: 15),
-      SizedBox(
-        height: 45,
-        width: 45,
-        child: Image.asset(AppImages.logo, fit: BoxFit.cover),
-      ),
-      SizedBox(width: 10),
-      Text(
-        "erad",
-        style: TextStyle(
-          fontSize: 24,
-          color: AppColors.wihet,
-          fontWeight: FontWeight.bold,
+    surfaceTintColor: Colors.transparent,
+    toolbarHeight: isMobile ? 60 : 70,
+    title: Row(
+      children: [
+        // Logo and app name with animation
+        TweenAnimationBuilder<double>(
+          tween: Tween(begin: 0.0, end: 1.0),
+          duration: DesignTokens.durationNormal,
+          builder: (context, value, child) {
+            return Opacity(
+              opacity: value,
+              child: Transform.translate(
+                offset: Offset(0, 20 * (1 - value)),
+                child: child,
+              ),
+            );
+          },
+          child: Container(
+            padding: EdgeInsets.all(isMobile ? 6 : 8),
+            decoration: BoxDecoration(
+              borderRadius: DesignTokens.borderRadiusSmall,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: isMobile ? 28 : 32,
+                  height: isMobile ? 28 : 32,
+                  child: Image.asset(AppImages.logo, fit: BoxFit.cover),
+                ),
+                SizedBox(width: isMobile ? 6 : 8),
+                Text(
+                  "اراد",
+                  style: TextStyle(
+                    fontSize: isMobile ? 16 : 18,
+                    color: AppColors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-      ),
-      Spacer(flex: 2),
 
-      // Güzel animasyonlu ve sürekli güncellenen saat-bilgi gösterimi
-      TweenAnimationBuilder<double>(
-        tween: Tween<double>(begin: 1, end: 0),
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.easeInOut,
-        builder: (context, value, child) {
-          return Opacity(opacity: 1 - value, child: child);
-        },
-        child: StreamBuilder<DateTime>(
+        const Spacer(),
+
+        // Time display with modern styling
+        StreamBuilder<DateTime>(
           stream: Stream.periodic(
             const Duration(seconds: 1),
             (_) => DateTime.now(),
           ),
           builder: (context, snapshot) {
             final now = snapshot.data ?? DateTime.now();
-            final formatted = DateFormat(
-              'EEEE, d MMMM yyyy - HH:mm:ss',
-              'ar',
-            ).format(now);
+            final formatted = DateFormat('HH:mm', 'ar').format(now);
             return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+              padding: EdgeInsets.symmetric(
+                horizontal: isMobile ? 10 : 12,
+                vertical: isMobile ? 5 : 6,
+              ),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: AppColors.wihet.withOpacity(0.12),
+                color: AppColors.withOpacity(AppColors.white, 0.15),
+                borderRadius: DesignTokens.borderRadiusSmall,
+                border: Border.all(
+                  color: AppColors.withOpacity(AppColors.white, 0.2),
+                  width: 1,
+                ),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(
-                    Icons.access_time_rounded,
-                    color: Colors.white,
-                    size: 22,
+                  Icon(
+                    Icons.access_time,
+                    size: isMobile ? 14 : 16,
+                    color: AppColors.white,
                   ),
-                  const SizedBox(width: 7),
+                  SizedBox(width: isMobile ? 4 : 6),
                   Text(
                     formatted,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
+                    style: TextStyle(
+                      fontSize: isMobile ? 14 : 16,
+                      color: AppColors.white,
                       fontWeight: FontWeight.w600,
-                      letterSpacing: 0.3,
+                      letterSpacing: 0.5,
                     ),
                   ),
                 ],
@@ -85,8 +101,7 @@ AppBar Custom_home_appBar() {
             );
           },
         ),
-      ),
-      Spacer(flex: 3),
-    ],
+      ],
+    ),
   );
 }

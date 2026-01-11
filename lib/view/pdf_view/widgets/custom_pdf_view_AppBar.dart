@@ -7,7 +7,7 @@ AppBar Custom_pdf_view_page_appBar(void Function() onPressed) {
       actions: [IconButton(onPressed: () {
        onPressed();
       }, icon: Icon(Icons.share, size: 30, color: AppColors.black))],
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       automaticallyImplyLeading: true,
     );
   }

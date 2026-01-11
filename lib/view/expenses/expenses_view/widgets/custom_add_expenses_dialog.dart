@@ -19,11 +19,11 @@ class CustomAddExpensesDialog extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
       decoration: BoxDecoration(
-        color: AppColors.backgroundColor,
+        color: AppColors.background,
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.10),
+            color: Colors.black.withValues(alpha: 0.10),
             blurRadius: 18,
             offset: Offset(0, 8),
           ),
@@ -34,15 +34,15 @@ class CustomAddExpensesDialog extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.08),
+              color: Colors.white.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
-                color: AppColors.primary.withOpacity(0.18),
+                color: AppColors.primary.withValues(alpha: 0.18),
                 width: 1.2,
               ),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            child: Custom_textfield(
+            child: CustomTextField(
               height: 100,
               maxLines: 3,
               hintText: "عنوان",
@@ -57,15 +57,15 @@ class CustomAddExpensesDialog extends StatelessWidget {
           const SizedBox(height: 10),
           Container(
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.08),
+              color: Colors.white.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
-                color: AppColors.primary.withOpacity(0.18),
+                color: AppColors.primary.withValues(alpha: 0.18),
                 width: 1.2,
               ),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            child: Custom_textfield(
+            child: CustomTextField(
               hintText: "مبلغ",
               suffixIcon: Icons.attach_money_rounded,
               validator: (q) {
@@ -80,17 +80,17 @@ class CustomAddExpensesDialog extends StatelessWidget {
           // Tarih seçici
           Container(
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.08),
+              color: Colors.white.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
-                color: AppColors.primary.withOpacity(0.18),
+                color: AppColors.primary.withValues(alpha: 0.18),
                 width: 1.2,
               ),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             child: GetBuilder<ExpensesControllerImp>(
               builder:
-                  (controller) => Custom_set_date_button(
+                  (controller) => CustomSetDateButton(
                     hintText:
                         "${controller.addedDate.year}/${controller.addedDate.month.toString().padLeft(2, '0')}/${controller.addedDate.day.toString().padLeft(2, '0')}",
                     onPressed: () {
@@ -134,10 +134,10 @@ class CustomAddExpensesDialog extends StatelessWidget {
           // Tekrarlama checkbox ve dropdown
           Container(
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.07),
+              color: Colors.white.withValues(alpha: 0.07),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
-                color: AppColors.primary.withOpacity(0.12),
+                color: AppColors.primary.withValues(alpha: 0.12),
                 width: 1.0,
               ),
             ),
@@ -173,10 +173,10 @@ class CustomAddExpensesDialog extends StatelessWidget {
 
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.04),
+                    color: Colors.white.withValues(alpha: 0.04),
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
-                      color: AppColors.primary.withOpacity(0.18),
+                      color: AppColors.primary.withValues(alpha: 0.18),
                       width: 1.2,
                     ),
                   ),
@@ -186,7 +186,7 @@ class CustomAddExpensesDialog extends StatelessWidget {
                   ),
                   child: GetBuilder<ExpensesControllerImp>(
                     builder:
-                        (controller) => Custom_set_date_button(
+                        (controller) => CustomSetDateButton(
                           hintText:
                               "${controller.addedDate.year}/${controller.addedDate.month.toString().padLeft(2, '0')}/${controller.addedDate.day.toString().padLeft(2, '0')}",
                           onPressed: () {

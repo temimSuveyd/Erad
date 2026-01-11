@@ -27,7 +27,7 @@ class Csutom_lable_details extends StatelessWidget {
                   customerLabelData[index].title,
                   style: TextStyle(
                     fontSize: 20,
-                    color: AppColors.backgroundColor,
+                    color: AppColors.background,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

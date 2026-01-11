@@ -166,11 +166,11 @@ class SupplierDeptsDetailsControllerImpl
         title: "دفعة جديدة",
         titleStyle: TextStyle(color: AppColors.primary),
         buttonColor: AppColors.primary,
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: AppColors.background,
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Custom_textfield(
+            CustomTextField(
               height: 43,
               hintText: "أضف سعر الدفع",
               suffixIcon: Icons.attach_money_rounded,
@@ -186,7 +186,7 @@ class SupplierDeptsDetailsControllerImpl
               child: GetBuilder<SupplierDeptsDetailsControllerImpl>(
                 id: "paymentDatePicker", // You may want to specify an ID for finer-grained updates.
                 builder:
-                    (controller) => Custom_set_date_button(
+                    (controller) => CustomSetDateButton(
                       hintText:
                           "${controller.paymentDate.year}/${controller.paymentDate.month.toString().padLeft(2, '0')}/${controller.paymentDate.day.toString().padLeft(2, '0')}",
                       onPressed: () {
@@ -337,7 +337,7 @@ class SupplierDeptsDetailsControllerImpl
       textCancel: "يلغي",
       confirmTextColor: Colors.white,
       buttonColor: AppColors.primary,
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       onConfirm: () {
         deleteDept();
         Get.back();
@@ -373,7 +373,7 @@ class SupplierDeptsDetailsControllerImpl
       textCancel: "يلغي",
       confirmTextColor: Colors.white,
       buttonColor: AppColors.primary,
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       onConfirm: () {
         deletePayment(id);
         Get.back();

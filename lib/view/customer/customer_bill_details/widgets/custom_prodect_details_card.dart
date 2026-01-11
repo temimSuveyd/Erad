@@ -47,14 +47,14 @@ class Custom_product_details_card
                 isproductName: false,
               ),
 
-              Custom_button( color: AppColors.primary,
+              CustomButton( color: AppColors.primary,
                 icon: Icons.edit,
                 title: "تعديل",
                 onPressed:
                     () => controller.editProductData(billProductsModel.id!),
               ),
 
-              Custom_button( color: AppColors.primary,icon: Icons.edit, title: "حذف", onPressed: () => controller.show_delete_product_dialog(billProductsModel.id!),),
+              CustomButton( color: AppColors.primary,icon: Icons.edit, title: "حذف", onPressed: () => controller.show_delete_product_dialog(billProductsModel.id!),),
             ],
           ),
         ),

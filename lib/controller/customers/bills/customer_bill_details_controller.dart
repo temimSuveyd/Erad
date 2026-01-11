@@ -1,7 +1,7 @@
 import 'dart:typed_data';
-import 'dart:html' as html;
 import 'package:erad/core/constans/routes.dart';
 import 'package:erad/core/function/pdf_maker.dart';
+import 'package:erad/core/function/file_saver.dart';
 import 'package:erad/data/data_score/remote/depts/customer_depts_data.dart';
 import 'package:erad/data/model/customer_bill_details/bill_details_product_model.dart';
 import 'package:erad/view/custom_widgets/custom_add_button.dart';
@@ -85,16 +85,23 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
   @override
   Future getBillDetails() async {
     try {
+      if (userID == null || bill_id == null) {
+        statusreqest = Statusreqest.faliure;
+        update();
+        return;
+      }
+
       statusreqest = Statusreqest.loading;
       update();
       await customerBillData.getBillById(userID!, bill_id!).then((value) {
         billModel = BillModel.formatJson(value);
-        total_earn = billModel!.total_earn;
-        total_price = billModel!.total_price;
-        discount_amount = billModel!.discount_amount!;
-      });
+        total_earn = billModel?.total_earn ?? 0.0;
+        total_price = billModel?.total_price ?? 0.0;
+        discount_amount = billModel?.discount_amount ?? 0.0;
+            });
       statusreqest = Statusreqest.success;
     } catch (e) {
+      print('Error in getBillDetails: $e');
       statusreqest = Statusreqest.faliure;
     }
     update();
@@ -103,21 +110,37 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
   @override
   getBillProducts() {
     try {
+      if (userID == null || bill_id == null) {
+        statusreqest = Statusreqest.faliure;
+        update();
+        return;
+      }
+
       statusreqest = Statusreqest.loading;
       update();
-      customerBillData.getBillProdects(userID!, bill_id!).listen((event) {
-        productList.value = event.docs;
-        if (productList.isEmpty) {
-          statusreqest = Statusreqest.empty;
-        } else {
-          statusreqest = Statusreqest.success;
-        }
-        update();
-      });
+      customerBillData
+          .getBillProdects(userID!, bill_id!)
+          .listen(
+            (event) {
+              productList.value = event.docs;
+              if (productList.isEmpty) {
+                statusreqest = Statusreqest.empty;
+              } else {
+                statusreqest = Statusreqest.success;
+              }
+              update();
+            },
+            onError: (error) {
+              print('Error in getBillProducts: $error');
+              statusreqest = Statusreqest.faliure;
+              update();
+            },
+          );
     } catch (e) {
+      print('Exception in getBillProducts: $e');
       statusreqest = Statusreqest.faliure;
+      update();
     }
-    update();
   }
 
   @override
@@ -184,7 +207,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
     Function() onConfirm,
   ) {
     Get.defaultDialog(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       onCancel: () {},
       buttonColor: AppColors.primary,
       onConfirm: () => onConfirm(),
@@ -197,7 +220,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
           width: double.infinity,
           child: Column(
             children: [
-              Custom_textfield(
+              CustomTextField(
                 hintText: "",
                 suffixIcon: Icons.edit,
                 validator: (p0) {
@@ -236,7 +259,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
   @override
   show_delete_product_dialog(String productId) {
     Get.defaultDialog(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       onCancel: () {},
       buttonColor: AppColors.primary,
       onConfirm: () {
@@ -288,8 +311,23 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
 
   @override
   initData() async {
-    userID = services.sharedPreferences.getString(AppShared.userID);
-    bill_id = Get.arguments["bill_id"];
+    try {
+      userID = services.sharedPreferences.getString(AppShared.userID);
+      final arguments = Get.arguments;
+      if (arguments != null && arguments is Map) {
+        bill_id = arguments["bill_id"];
+      }
+
+      if (userID == null || bill_id == null) {
+        print('Error: userID or bill_id is null');
+        statusreqest = Statusreqest.faliure;
+        update();
+      }
+    } catch (e) {
+      print('Error in initData: $e');
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
   }
 
   @override
@@ -299,8 +337,8 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
       onConfirm: () {
         onConfirm();
       },
-      backgroundColor: AppColors.backgroundColor,
-      confirmTextColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
+      confirmTextColor: AppColors.background,
       cancelTextColor: AppColors.primary,
       buttonColor: AppColors.primary,
       textCancel: "يلغي",
@@ -312,7 +350,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
           width: double.infinity,
           child: Column(
             children: [
-              Custom_textfield(
+              CustomTextField(
                 hintText: "تخفيض",
                 suffixIcon: Icons.discount,
                 validator: (p0) {
@@ -405,7 +443,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
   @override
   show_delete_bill_dialog() {
     Get.defaultDialog(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       onCancel: () {},
       buttonColor: AppColors.primary,
       onConfirm: () {
@@ -430,12 +468,12 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
     statusreqest = Statusreqest.loading;
     update();
     try {
-          String company_name =
-        services.sharedPreferences.getString(AppShared.company_name)!;
+      String companyName =
+          services.sharedPreferences.getString(AppShared.company_name)!;
       pdfBytes = await createInvoice(
         productList.toList(),
         "${billModel!.bill_date!.day.toString().padLeft(2, '0')}/${billModel!.bill_date!.month.toString().padLeft(2, '0')}/${billModel!.bill_date!.year}",
-        company_name,
+        companyName,
         billModel!.bill_no!,
         billModel!.total_price!,
         "بيع",
@@ -443,12 +481,11 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
         billModel!.customer_city!,
       );
       String pdfFileName = "${billModel!.bill_no}.pdf";
-      final blob = html.Blob([pdfBytes], 'application/pdf');
-      final url = html.Url.createObjectUrlFromBlob(blob);
-      html.AnchorElement(href: url)
-        ..setAttribute("download", pdfFileName)
-        ..click();
-      html.Url.revokeObjectUrl(url);
+      await FileSaver.saveFile(
+        bytes: pdfBytes,
+        fileName: pdfFileName,
+        mimeType: 'application/pdf',
+      );
       statusreqest = Statusreqest.success;
       update();
     } on Exception {
@@ -572,11 +609,11 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
   showEditPaymentTypeDailog() {
     Get.defaultDialog(
       title: "تغيير طريقة الدفع",
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       content: Container(
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
         decoration: BoxDecoration(
-          color: AppColors.backgroundColor,
+          color: AppColors.background,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
@@ -612,7 +649,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
                           },
                   tileColor:
                       billModel?.payment_type == "monetary"
-                          ? AppColors.primary.withOpacity(0.12)
+                          ? AppColors.primary.withValues(alpha: 0.12)
                           : null,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -634,7 +671,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
                           },
                   tileColor:
                       billModel?.payment_type != "monetary"
-                          ? AppColors.red.withOpacity(0.12)
+                          ? AppColors.red.withValues(alpha: 0.12)
                           : null,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -652,9 +689,17 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
 
   @override
   void onInit() async {
-    initData();
-    await getBillDetails();
-    getBillProducts();
+    try {
+      await initData();
+      if (userID != null && bill_id != null) {
+        await getBillDetails();
+        getBillProducts();
+      }
+    } catch (e) {
+      print('Error in onInit: $e');
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
     super.onInit();
   }
 }

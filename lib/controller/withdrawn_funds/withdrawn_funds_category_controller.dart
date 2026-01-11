@@ -104,14 +104,14 @@ class WithdrawnFundsCategoryControllerImp
     Get.defaultDialog(
       title: "مستخدم جديد",
       titleStyle: TextStyle(color: AppColors.primary, fontSize: 24),
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       middleText: "يرجى إدخال اسم مستخدم",
       middleTextStyle: TextStyle(color: AppColors.primary, fontSize: 18),
 
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Custom_textfield(
+          CustomTextField(
             height: 43,
             maxLines: 1,
             hintText: "أدخل اسم المستخدم",
@@ -141,14 +141,14 @@ class WithdrawnFundsCategoryControllerImp
     Get.defaultDialog(
       title: "تعديل الفئة",
       titleStyle: TextStyle(color: AppColors.primary, fontSize: 24),
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       middleText: "يرجى إدخال اسم الفئة",
       middleTextStyle: TextStyle(color: AppColors.primary, fontSize: 18),
 
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Custom_textfield(
+          CustomTextField(
             height: 120,
             maxLines: 3,
             hintText: "أدخل اسم الفئة",
@@ -176,7 +176,7 @@ class WithdrawnFundsCategoryControllerImp
     Get.defaultDialog(
       title: "حذف",
       titleStyle: TextStyle(color: AppColors.primary, fontSize: 24),
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       middleText:
           "سيتم حذف جميع الأموال المسحوبة المرتبطة بهذه الفئة. هل أنت متأكد أنك تريد المتابعة؟",
       middleTextStyle: TextStyle(color: AppColors.primary, fontSize: 18),

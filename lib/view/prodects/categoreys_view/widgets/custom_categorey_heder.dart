@@ -26,7 +26,7 @@ class Custom_categorey_heder extends GetView<CategoreyControllerImp> {
             ),
           ),
         ),
-        Custom_button( color: AppColors.primary,
+        CustomButton( color: AppColors.primary,
           icon: Icons.add,
           title: "يضيف",
           onPressed: () => controller.show_dialog(),

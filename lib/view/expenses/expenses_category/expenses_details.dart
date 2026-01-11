@@ -12,8 +12,8 @@
 
 //     Get.lazyPut(() => ExpensesCategoryControllerImp());
 //     return Scaffold(
-//       backgroundColor: AppColors.backgroundColor,
-//       appBar: Custom_appBar(title: "فئة الإنفاق"),
+//       backgroundColor: AppColors.background,
+//       appBar: customAppBar(title: "فئة الإنفاق", context: context),
 //       floatingActionButton: FloatingActionButton.extended(
 //         onPressed: () {controller.showaddExpensesCategoryDailog();},
 //         tooltip: "Ekle",
@@ -37,9 +37,9 @@
 //             shape: RoundedRectangleBorder(
 //               borderRadius: BorderRadius.circular(16),
 //             ),
-//             tileColor: AppColors.primary.withOpacity(0.08),
+//             tileColor: AppColors.primary.withValues(alpha: 0.08),
 //             leading: CircleAvatar(
-//               backgroundColor: AppColors.primary.withOpacity(0.18),
+//               backgroundColor: AppColors.primary.withValues(alpha: 0.18),
 //               child: const Icon(Icons.attach_money, color: Colors.white),
 //             ),
 //             title: Text(

@@ -1,6 +1,5 @@
 import 'package:erad/core/constans/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class ChartArea extends StatelessWidget {
@@ -43,7 +42,7 @@ class ChartArea extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 18),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.09),
+        color: AppColors.primary.withValues(alpha: 0.09),
         borderRadius: BorderRadius.circular(18),
       ),
       child: Column(
@@ -62,7 +61,7 @@ class ChartArea extends StatelessWidget {
             height: 200,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: primaryColor.withOpacity(0.2),
+              color: primaryColor.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(16),
             ),
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),

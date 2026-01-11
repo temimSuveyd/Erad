@@ -31,7 +31,7 @@ class Custom_suppliers_Card extends GetView<SuppliersControllerImp> {
                 title: suppliersModel.supplier_city!,
                 width: 190,
               ),
-              Custom_button(
+              CustomButton(
                 color: AppColors.primary,
                 icon: Icons.delete,
                 onPressed:
@@ -39,7 +39,7 @@ class Custom_suppliers_Card extends GetView<SuppliersControllerImp> {
                         controller.show_delete_dialog(suppliersModel.supplier_id!),
                 title: 'حذف',
               ),
-              Custom_button(
+              CustomButton(
                 color: AppColors.primary,
                 icon: Icons.edit,
                 onPressed: () => controller.show_edit_dialog(suppliersModel),

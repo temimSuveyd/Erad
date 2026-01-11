@@ -52,7 +52,7 @@ class Custom_add_product_container extends StatelessWidget {
                   width: 180,
                 ),
 
-                Custom_button( color: AppColors.primary,icon: Icons.delete, title: "حذف", onPressed: () {
+                CustomButton( color: AppColors.primary,icon: Icons.delete, title: "حذف", onPressed: () {
                   onPressed();
                 },)
               ],

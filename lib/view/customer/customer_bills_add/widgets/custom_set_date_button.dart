@@ -13,7 +13,7 @@ class Csutom_set_date_reng_button extends StatelessWidget {
       minWidth: 250,
       height: 43,
 
-      color: AppColors.backgroundColor,
+      color: AppColors.background,
       shape: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
         borderSide: BorderSide(color: AppColors.grey),

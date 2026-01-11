@@ -1,7 +1,6 @@
 import 'package:erad/controller/customers/depts/customer_dept_details_controller.dart';
 import 'package:erad/data/model/customer_depts/customer_dept_bills_model.dart';
 import 'package:erad/view/custom_widgets/custom_add_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:erad/core/constans/colors.dart';
 import 'package:erad/view/custom_widgets/custom_date_text_container.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +38,7 @@ class Custom_debts_bills_card
             title: deptsBillsModel.totalPrice.toString(),
           ),
 // Spacer(),
-          Custom_button(
+          CustomButton(
             icon: Icons.open_in_browser_rounded,
             title: "عرض الفاتورة",
             onPressed:

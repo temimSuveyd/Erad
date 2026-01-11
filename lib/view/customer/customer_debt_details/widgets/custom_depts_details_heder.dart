@@ -49,7 +49,7 @@ class Custom_depts_details_heder extends StatelessWidget {
                           ),
                     ),
 
-                    Custom_button(
+                    CustomButton(
                       icon: Icons.delete,
                       title: "حذف",
                       onPressed:() =>  controller.showDeleteDeptDialog(),

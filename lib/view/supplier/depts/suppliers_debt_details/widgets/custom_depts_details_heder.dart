@@ -46,7 +46,7 @@ class Custom_depts_details_heder extends StatelessWidget {
                       color: AppColors.red,
                     ),
 
-                    Custom_button(
+                    CustomButton(
                       icon: Icons.delete,
                       title: "حذف",
                       onPressed: () => controller.showDeleteDeptDialog(),

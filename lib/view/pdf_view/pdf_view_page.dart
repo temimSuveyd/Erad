@@ -11,7 +11,7 @@ class PdfViewPage extends GetView<PdfViewControllerImp> {
   Widget build(BuildContext context) {
     Get.lazyPut(() => PdfViewControllerImp());
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       appBar: Custom_pdf_view_page_appBar(() {
         controller.sharePdfFile();
       },),

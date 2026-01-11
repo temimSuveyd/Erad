@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:erad/core/constans/colors.dart';
+import 'package:get/get.dart';
 
-class Custom_textfield extends StatelessWidget {
-  const Custom_textfield({
+class CustomTextField extends StatelessWidget {
+  const CustomTextField({
     super.key,
     required this.hintText,
     required this.suffixIcon,
     required this.validator,
     required this.controller,
     required this.onChanged,
-    this.maxLines, this.height,
+    this.maxLines,
+    this.height,
   });
+
   final String hintText;
   final IconData suffixIcon;
   final String? Function(String?)? validator;
@@ -18,34 +21,57 @@ class Custom_textfield extends StatelessWidget {
   final void Function(String) onChanged;
   final int? maxLines;
   final double? height;
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 250,
-      height: height??42,
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktop = screenWidth >= 1024;
+
+    return Container(
+      height: height ?? 48,
+      width: isDesktop ? Get.width * 0.15 : double.infinity,
+      constraints: BoxConstraints(
+        minWidth: isDesktop ? 150 : 0,
+        maxWidth: isDesktop ? Get.width * 0.25 : double.infinity,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: TextFormField(
-        onChanged: (value) {
-          onChanged(value);
-        },
-        maxLines: maxLines??1,
-        style: TextStyle(color: AppColors.grey, fontSize: 21),
+        onChanged: onChanged,
+        maxLines: maxLines ?? 1,
+        style: const TextStyle(color: AppColors.textPrimary, fontSize: 16),
         controller: controller,
         validator: validator,
+        textDirection: TextDirection.rtl,
         decoration: InputDecoration(
-          prefixIcon: Icon(suffixIcon, color: AppColors.grey),
-          hintText: hintText,
-          hintStyle: TextStyle(fontSize: 18, color: AppColors.grey),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColors.primary, width: 2),
+          prefixIcon: Icon(
+            suffixIcon,
+            color: AppColors.textSecondary,
+            size: 20,
           ),
-          disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColors.primary, width: 2),
+          hintText: hintText,
+          hintStyle: const TextStyle(fontSize: 16, color: AppColors.textLight),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: AppColors.textLight),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColors.grey, width: 2),
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: AppColors.textLight),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: AppColors.primary, width: 2),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: AppColors.error),
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
           ),
         ),
       ),

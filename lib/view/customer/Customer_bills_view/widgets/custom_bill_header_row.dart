@@ -54,7 +54,7 @@ class Custom_bill_view_card extends GetView<CustomerBillViewControllerImp> {
 
               // Spacer(),
               // Custom_details_button(),
-              Custom_button(
+              CustomButton(
                 color: AppColors.primary,
                 icon: Icons.open_in_new,
                 title: "تفاصيل",

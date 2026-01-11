@@ -1,42 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:erad/core/constans/colors.dart';
 
-// ignore: camel_case_types
-class Custom_login_textfield extends StatelessWidget {
-  const Custom_login_textfield({super.key, required this.hintText, required this.controller, required this.validator});
+class CustomLoginTextField extends StatelessWidget {
+  const CustomLoginTextField({
+    super.key,
+    required this.hintText,
+    required this.controller,
+    required this.validator,
+  });
+
   final String hintText;
   final TextEditingController controller;
-  final String? Function(String?) validator;
+  final String? Function(String?)? validator;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40,
+      height: 48,
       child: TextFormField(
-
-        style: TextStyle(color: AppColors.wihet),
+        style: const TextStyle(color: AppColors.textPrimary),
         controller: controller,
         validator: validator,
+        textDirection: TextDirection.rtl,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: TextStyle(
-            fontSize: 16,
-            color: AppColors.wihet,
-            fontWeight: FontWeight.w400,
-          ),
-
+          hintStyle: const TextStyle(fontSize: 16, color: AppColors.textLight),
           filled: true,
-          fillColor: AppColors.grey.withOpacity(0.5),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColors.wihet),
+          fillColor: AppColors.background,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: AppColors.textLight),
           ),
-          disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColors.grey),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: AppColors.textLight),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColors.primary),
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: AppColors.primary, width: 2),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: AppColors.error),
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
           ),
         ),
       ),

@@ -30,7 +30,9 @@ class NetworkCheckControllerImp extends NetworkCheckController {
   void _startChecking() async {
     Future.doWhile(() async {
       await _checkConnection();
-      await Future.delayed(const Duration(seconds: 5));
+      await Future.delayed(
+        const Duration(seconds: 30),
+      ); // Reduced from 5 to 30 seconds for battery optimization
       return true;
     });
   }
@@ -41,13 +43,6 @@ class NetworkCheckControllerImp extends NetworkCheckController {
       final result = await firebase.collection('connectivity_test').get();
 
       if (result.docs.isNotEmpty || result.metadata.isFromCache == false) {
-        if (!isConnected.value) {
-          _showSnackBar(
-            title: "معلومات الاتصال",
-            message: "تم استعادة الاتصال بالإنترنت.",
-            color: Colors.green,
-          );
-        }
         isConnected.value = true;
       } else {
         if (isConnected.value) {
@@ -79,7 +74,7 @@ class NetworkCheckControllerImp extends NetworkCheckController {
     Get.snackbar(
       title,
       message,
-      backgroundColor: color.withOpacity(0.8),
+      backgroundColor: color.withValues(alpha: 0.8),
       colorText: Colors.white,
       snackPosition: SnackPosition.BOTTOM,
       isDismissible: false,

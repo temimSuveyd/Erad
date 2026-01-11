@@ -1,29 +1,37 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:erad/controller/customers/customers_view/customers_controller.dart';
-import 'package:erad/core/class/handling_data_view_with_sliverBox.dart';
+import 'package:erad/core/class/handling_data_view.dart';
+import 'package:erad/core/constans/design_tokens.dart';
 import 'package:erad/data/model/customers/customers_model.dart';
 import 'package:erad/view/customer/customers_view/widgets/custom_brands_Card.dart';
+import 'package:erad/view/customer/customers_view/widgets/mobile_customer_card.dart';
 
-class Custom_customers_listView extends StatelessWidget {
-  const Custom_customers_listView({super.key});
+class CustomCustomersListView extends StatelessWidget {
+  const CustomCustomersListView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = DesignTokens.isMobile(context);
+
     return GetBuilder<CustomersControllerImp>(
       builder:
-          (controller) => HandlingDataViewWithSliverBox(
+          (controller) => HandlingDataView(
             statusreqest: controller.statusreqest,
-            widget: SliverList.builder(
-              itemCount: controller.customersList.length,
-              itemBuilder:
-                  (context, index) => Custom_customers_Card(
-                    customersModel: CustomersModel.formatJson(
-                      controller.customersList[index],
-                    ),
-                  ),
-            ),
             onPressed: () => controller.getCustomers(),
+            widget: ListView.builder(
+              itemCount: controller.customersList.length,
+              itemBuilder: (context, index) {
+                final customerModel = CustomersModel.formatJson(
+                  controller.customersList[index],
+                );
+
+                // Use mobile card for mobile screens, desktop card for larger screens
+                return isMobile
+                    ? MobileCustomerCard(customerModel: customerModel)
+                    : CustomCustomersCard(customersModel: customerModel);
+              },
+            ),
           ),
     );
   }

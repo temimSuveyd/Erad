@@ -27,7 +27,7 @@ class Custom_categoreyType_heder extends GetView<CategoreyTypeControllerImp>  {
           ),
         ),
         SizedBox(width: 20),
-        Custom_button( color: AppColors.primary,icon: Icons.add, onPressed: () => controller.show_dialog(), title: "إضافة"),
+        CustomButton( color: AppColors.primary,icon: Icons.add, onPressed: () => controller.show_dialog(), title: "إضافة"),
       ],
     );
   }

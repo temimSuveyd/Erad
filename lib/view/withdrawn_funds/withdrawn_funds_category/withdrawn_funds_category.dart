@@ -1,9 +1,10 @@
 import 'package:erad/controller/withdrawn_funds/withdrawn_funds_category_controller.dart';
+import 'package:erad/core/constans/colors.dart';
+import 'package:erad/core/constans/design_tokens.dart';
 import 'package:erad/view/custom_widgets/custom_appBar.dart';
-import 'package:erad/view/withdrawn_funds/withdrawn_funds_category/widgets/custom_FloatingActionButton.dart';
+import 'package:erad/view/withdrawn_funds/withdrawn_funds_category/widgets/mobile_users_header.dart';
 import 'package:erad/view/withdrawn_funds/withdrawn_funds_category/widgets/withdrawn_funds_category_listView.dart';
 import 'package:flutter/material.dart';
-import 'package:erad/core/constans/colors.dart';
 import 'package:get/get.dart';
 
 class WithdrawnFundsCategoryPage extends StatelessWidget {
@@ -12,12 +13,47 @@ class WithdrawnFundsCategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => WithdrawnFundsCategoryControllerImp());
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: Custom_appBar(title: "المستخدمون"),
-      floatingActionButton: CustomFloatingActionButton(),
 
-      body: ExpensesCategoryListView(),
+    final isMobile = DesignTokens.isMobile(context);
+    final padding = DesignTokens.getResponsiveSpacing(context);
+
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar:
+          isMobile
+              ? null
+              : customAppBar(title: "إدارة المستخدمين", context: context),
+      floatingActionButton:
+          isMobile
+              ? null
+              : FloatingActionButton(
+                onPressed:
+                    () =>
+                        Get.find<WithdrawnFundsCategoryControllerImp>()
+                            .showaddWithdrawnFundsCategoryDailog(),
+                backgroundColor: AppColors.primary,
+                child: Icon(Icons.person_add, color: AppColors.white),
+              ),
+      body: CustomScrollView(
+        slivers: [
+          // Mobile header (replaces app bar on mobile)
+          if (isMobile) const SliverToBoxAdapter(child: MobileUsersHeader()),
+
+          // Content
+          SliverToBoxAdapter(
+            child: Container(
+              padding: EdgeInsets.all(padding),
+              child: ExpensesCategoryListView(),
+            ),
+          ),
+
+          // Bottom padding for mobile
+          if (isMobile)
+            const SliverToBoxAdapter(
+              child: SizedBox(height: DesignTokens.spacing24),
+            ),
+        ],
+      ),
     );
   }
 }

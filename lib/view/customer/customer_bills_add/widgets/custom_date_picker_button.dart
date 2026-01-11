@@ -13,7 +13,7 @@ class Custom_date_picker_button extends StatelessWidget {
           (controller) => MaterialButton(
             minWidth: 260,
             height: 60,
-            color: AppColors.backgroundColor,
+            color: AppColors.background,
             shape: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: AppColors.grey, width: 2),
@@ -36,22 +36,19 @@ class Custom_date_picker_button extends StatelessWidget {
                           primary:
                               AppColors.primary, // header, selected date, etc.
                           onPrimary:
-                              AppColors.backgroundColor, // text on primary
+                              AppColors.background, // text on primary
                           surface:
-                              AppColors.backgroundColor, // dialog background
-                          onSurface: AppColors.grey, // text color
-                          background: AppColors.backgroundColor,
-                          onBackground: AppColors.grey,
+                              AppColors.background, // dialog background
+                          onSurface: AppColors.grey,
                           secondary: AppColors.primary,
-                          onSecondary: AppColors.backgroundColor,
+                          onSecondary: AppColors.background,
                         ),
-                        dialogBackgroundColor: AppColors.backgroundColor,
                         textButtonTheme: TextButtonThemeData(
                           style: TextButton.styleFrom(
                             foregroundColor:
                                 AppColors.primary, // button text color
                           ),
-                        ),
+                        ), dialogTheme: DialogThemeData(backgroundColor: AppColors.background),
                       ),
                       child: child!,
                     ),

@@ -34,7 +34,7 @@ class WithdrawnFundsCard extends GetView<WithdrawnFundsControllerImp> {
       child: Material(
         elevation: 4,
         borderRadius: BorderRadius.circular(20),
-        color: AppColors.backgroundColor,
+        color: AppColors.background,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
@@ -52,14 +52,14 @@ class WithdrawnFundsCard extends GetView<WithdrawnFundsControllerImp> {
                     gradient: LinearGradient(
                       colors: [
                         AppColors.primary,
-                        AppColors.grey.withOpacity(0.7),
+                        AppColors.grey.withValues(alpha: 0.7),
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.primary.withOpacity(0.18),
+                        color: AppColors.primary.withValues(alpha: 0.18),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
@@ -83,7 +83,7 @@ class WithdrawnFundsCard extends GetView<WithdrawnFundsControllerImp> {
                     children: [
                       // Amount
                       Text(
-                        "${withdrawnFundCardModel.amount?.toStringAsFixed(2) ?? "0.00"}",
+                        withdrawnFundCardModel.amount?.toStringAsFixed(2) ?? "0.00",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 22,
@@ -162,7 +162,7 @@ class WithdrawnFundsCard extends GetView<WithdrawnFundsControllerImp> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Custom_button(
+                    CustomButton(
                       icon: Icons.edit,
                       title: "",
                       onPressed:
@@ -177,7 +177,7 @@ class WithdrawnFundsCard extends GetView<WithdrawnFundsControllerImp> {
                       color: AppColors.primary,
                     ),
                     const SizedBox(height: 8),
-                    Custom_button(
+                    CustomButton(
                       icon: Icons.delete,
                       title: "",
                       onPressed:

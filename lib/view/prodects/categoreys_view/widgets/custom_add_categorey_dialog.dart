@@ -19,7 +19,7 @@ Future<dynamic> custom_add_categorey_dialog(
         child: Column(
           spacing: 20,
           children: [
-            Custom_textfield(
+            CustomTextField(
               hintText: 'اسم الفئة',
               suffixIcon: Icons.add,
               validator: validator,
@@ -30,7 +30,7 @@ Future<dynamic> custom_add_categorey_dialog(
         ),
       ),
     ],
-    backgroundColor: AppColors.backgroundColor,
+    backgroundColor: AppColors.background,
     buttonColor: AppColors.primary,
     onConfirm: () {
       onConfirm();

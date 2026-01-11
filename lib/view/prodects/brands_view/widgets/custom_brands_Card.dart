@@ -28,13 +28,13 @@ class Custom_Brands_Card extends GetView<BrandsControllerImp> {
 
             children: [
               Custom_title_text_container(title: title),
-              Custom_button( color: AppColors.primary,icon: Icons.edit, onPressed: () {}, title: "يحرر"),
-                    Custom_button( color: AppColors.primary,
+              CustomButton( color: AppColors.primary,icon: Icons.edit, onPressed: () {}, title: "يحرر"),
+                    CustomButton( color: AppColors.primary,
                 icon: Icons.delete_forever,
                 onPressed: () => controller.show_delete_dialog(title),
                 title: "حذف",
               ),
-              Custom_button( color: AppColors.primary,
+              CustomButton( color: AppColors.primary,
                 icon: Icons.open_in_browser_outlined,
                 onPressed: () => controller.go_to_brands_type_page(title),
                 title: "تفاصيل",

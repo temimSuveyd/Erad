@@ -55,7 +55,7 @@ class HandlingDataViewWithSliverBox extends StatelessWidget {
                   ),
                 ),
 
-                Custom_button(
+                CustomButton(
                   icon: Icons.refresh_rounded,
                   title: "حاول ثانية",
                   onPressed: () => onPressed(),
@@ -122,7 +122,7 @@ class HandlingDataViewWithSliverBox extends StatelessWidget {
                     color: AppColors.primary,
                   ),
                 ),
-                Custom_button(
+                CustomButton(
                   color: AppColors.primary,
                   icon: Icons.refresh,
                   title: "حاول ثانية",

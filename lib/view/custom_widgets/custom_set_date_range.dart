@@ -18,7 +18,7 @@ Future<DateTimeRange?> selectDateRange(BuildContext context) async {
             primary: AppColors.primary,
             onPrimary: Colors.white,
             onSurface: AppColors.primary,
-            surface: AppColors.backgroundColor,
+            surface: AppColors.background,
           ),
           textButtonTheme: TextButtonThemeData(
             style: TextButton.styleFrom(foregroundColor: AppColors.primary),

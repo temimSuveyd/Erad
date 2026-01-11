@@ -1,9 +1,6 @@
-import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
-import 'dart:html' as html;
 import 'package:erad/data/data_score/remote/depts/customer_depts_data.dart';
-import 'package:erad/view/customer/customer_bills_add/widgets/custom_show_popupMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:erad/core/class/handling_data.dart';
@@ -12,13 +9,13 @@ import 'package:erad/core/constans/routes.dart';
 import 'package:erad/core/constans/sharedPreferences.dart';
 import 'package:erad/core/function/convertToDropdownItems.dart';
 import 'package:erad/core/function/pdf_maker.dart';
+import 'package:erad/core/function/file_saver.dart';
 import 'package:erad/core/services/app_services.dart';
 import 'package:erad/data/data_score/remote/customer/customers_data.dart';
 import 'package:erad/data/data_score/remote/customer/customer_bill_data.dart';
 import 'package:erad/data/data_score/remote/brands/product_data.dart';
 import 'package:erad/view/custom_widgets/custom_snackbar.dart';
 import 'package:erad/view/customer/customer_bills_add/widgets/custom_willPop_dailog.dart';
-import 'package:path_provider/path_provider.dart';
 
 abstract class CustomeraddBiilController extends GetxController {
   Future addCustomerBill();
@@ -160,6 +157,11 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
 
   @override
   setDate(DateTime billDate) {
+    bill_add_date = billDate;
+    update();
+  }
+
+  void setBillDate(DateTime billDate) {
     bill_add_date = billDate;
     update();
   }
@@ -380,7 +382,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
       textConfirm: "حذف",
       textCancel: "عدم الحذف",
       buttonColor: AppColors.primary,
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       middleText: "هل أنت متأكد من أنك تريد حذف هذه الفاتورة",
       title: "حذف الفاتورة",
     );
@@ -467,26 +469,25 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
   createPdf() async {
     statusreqest = Statusreqest.loading;
     update();
-    String company_name =
+    String companyName =
         services.sharedPreferences.getString(AppShared.company_name)!;
     try {
       pdfBytes = await createInvoice(
         bill_prodects_list,
         "${bill_add_date.day.toString().padLeft(2, '0')}/${bill_add_date.month.toString().padLeft(2, '0')}/${bill_add_date.year}",
-        company_name,
+        companyName,
         bill_no!,
         total_product_price,
         "بيع",
         customer_name!,
         customer_city!,
       );
-      String pdfFileName = "${bill_no}.pdf";
-      final blob = html.Blob([pdfBytes], 'application/pdf');
-      final url = html.Url.createObjectUrlFromBlob(blob);
-      html.AnchorElement(href: url)
-        ..setAttribute("download", pdfFileName)
-        ..click();
-      html.Url.revokeObjectUrl(url);
+      String pdfFileName = "$bill_no.pdf";
+      await FileSaver.saveFile(
+        bytes: pdfBytes,
+        fileName: pdfFileName,
+        mimeType: 'application/pdf',
+      );
       statusreqest = Statusreqest.success;
       update();
     } on Exception {
@@ -505,12 +506,12 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
   }
 
   @override
-  setProductFromSearch(String _product_name) {
+  setProductFromSearch(String product_name) {
     if (all_product_list.isNotEmpty) {
       Future.delayed(Duration(milliseconds: 100), () {
         FocusScope.of(Get.context!).requestFocus(focusNode2);
       });
-      product_name = _product_name;
+      product_name = product_name;
       serach_for_product_controller.text = product_name!;
     }
     show_search_popupMenu = false;

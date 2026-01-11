@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:erad/core/constans/colors.dart';
-import 'package:erad/core/function/validatorInpot.dart';
 
 import '../../../supplier/bills/suppliers_bills_add/widgets/custom_amout_dropDown_button.dart';
 
@@ -57,7 +56,7 @@ Future<dynamic> custom_add_brands_type_dialog(
         ),
       ),
     ],
-    backgroundColor: AppColors.backgroundColor,
+    backgroundColor: AppColors.background,
     buttonColor: AppColors.primary,
     onConfirm: () {
       onConfirm();

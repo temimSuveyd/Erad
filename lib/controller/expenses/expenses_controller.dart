@@ -135,7 +135,7 @@ class ExpensesControllerImp extends ExpensesController {
   @override
   void showaddExpensesDialog() {
     Get.defaultDialog(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       buttonColor: AppColors.primary,
       title: "إضافة نفقة",
       titleStyle: TextStyle(
@@ -291,7 +291,7 @@ class ExpensesControllerImp extends ExpensesController {
     // date type
     repeatDate = date;
     Get.defaultDialog(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       buttonColor: AppColors.primary,
       title: "تعديل المصروف",
       titleStyle: TextStyle(
@@ -341,7 +341,7 @@ class ExpensesControllerImp extends ExpensesController {
   @override
   void showDeleteDialog(String id) {
     Get.defaultDialog(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       title: "هل تريد حذف؟",
       titleStyle: TextStyle(
         color: AppColors.primary,

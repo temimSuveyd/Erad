@@ -1,13 +1,14 @@
-import 'package:erad/view/custom_widgets/custom_add_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:erad/controller/customers/bills/customer_bill_details_controller.dart';
 import 'package:erad/core/constans/colors.dart';
+import 'package:erad/core/constans/design_tokens.dart';
 import 'package:erad/view/custom_widgets/custom_appBar.dart';
-import 'package:erad/view/customer/customer_bill_details/widgets/csutom_lable_details.dart';
-import 'package:erad/view/customer/customer_bill_details/widgets/custom_bill_details_heder.dart';
-import 'package:erad/view/customer/customer_bill_details/widgets/custom_prodects_details_sliverListBuilder.dart';
-import 'package:erad/view/customer/customer_bill_details/widgets/custom_text_body.dart';
+import 'package:erad/view/customer/customer_bill_details/widgets/mobile_bill_details_header.dart';
+import 'package:erad/view/customer/customer_bill_details/widgets/mobile_bill_info_card.dart';
+import 'package:erad/view/customer/customer_bill_details/widgets/mobile_bill_products_section.dart';
+import 'package:erad/view/customer/customer_bill_details/widgets/mobile_bill_summary_section.dart';
+import 'package:erad/view/customer/customer_bill_details/widgets/mobile_bill_actions_section.dart';
 
 class CustomerBillDetailsPage
     extends GetView<CustomerBillDetailsControllerImp> {
@@ -16,53 +17,60 @@ class CustomerBillDetailsPage
   @override
   Widget build(BuildContext context) {
     Get.put(CustomerBillDetailsControllerImp());
+
+    final isMobile = DesignTokens.isMobile(context);
+    final padding = DesignTokens.getResponsiveSpacing(context);
+
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: Custom_appBar(title: "تفاصيل الفاتورة"),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: CustomScrollView(
-          slivers: [
-            Custom_text_body(title: "معلومات الفواتير"),
-            Custom_bill_details_heder(),
-            Custom_text_body(title: "البضائع"),
-            Csutom_lable_details(),
-            SliverToBoxAdapter(child: SizedBox(height: 10)),
-            Custom_products_details_sliverListBuilder(),
-            SliverToBoxAdapter(child: SizedBox(height: 40)),
-            SliverToBoxAdapter(
-              child: Row(
-                spacing: 20,
-                children: [
-                  Custom_button(
-                    color: AppColors.primary,
-                    icon: Icons.discount,
-                    title: 'خصم على الفاتورة',
-                    onPressed: () => controller.discount_on_bill(),
-                  ),
-                  Custom_button(
-                    color: AppColors.primary,
-                    icon: Icons.print,
-                    title: 'طباعة (PDF)',
-                    onPressed: () => controller.createPdf(),
-                  ),
-                  Custom_button(
-                    color: AppColors.primary,
-                    icon: Icons.delete,
-                    title: "حذف",
-                    onPressed: () => controller.show_delete_bill_dialog(),
-                  ),
-                  Custom_button(
-                    color: AppColors.primary,
-                    icon: Icons.payments_outlined,
-                    title: "تغيير طريقة الدفع",
-                    onPressed: () => controller.showEditPaymentTypeDailog(),
-                  ),
-                ],
-              ),
+      backgroundColor: AppColors.background,
+      appBar:
+          isMobile
+              ? null
+              : customAppBar(title: "تفاصيل الفاتورة", context: context),
+      body: CustomScrollView(
+        slivers: [
+          // Mobile header (replaces app bar on mobile)
+          if (isMobile)
+            const SliverToBoxAdapter(child: MobileBillDetailsHeader()),
+
+          // Bill info card
+          SliverToBoxAdapter(
+            child: Container(
+              padding: EdgeInsets.all(padding),
+              child: const MobileBillInfoCard(),
             ),
-          ],
-        ),
+          ),
+
+          // Products section
+          SliverToBoxAdapter(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: padding),
+              child: const MobileBillProductsSection(),
+            ),
+          ),
+
+          // Bill summary
+          SliverToBoxAdapter(
+            child: Container(
+              padding: EdgeInsets.all(padding),
+              child: const MobileBillSummarySection(),
+            ),
+          ),
+
+          // Action buttons
+          SliverToBoxAdapter(
+            child: Container(
+              padding: EdgeInsets.all(padding),
+              child: const MobileBillActionsSection(),
+            ),
+          ),
+
+          // Bottom padding for mobile
+          if (isMobile)
+            const SliverToBoxAdapter(
+              child: SizedBox(height: DesignTokens.spacing24),
+            ),
+        ],
       ),
     );
   }

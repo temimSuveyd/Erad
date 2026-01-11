@@ -7,14 +7,14 @@ import 'package:erad/core/constans/colors.dart'; // AppColor import
 Future<Uint8List> createInvoice(
   // bill data
   List products,
-  String bill_date,
-  String company_name,
-  String bill_id,
-  double total_price,
-  String bill_type,
+  String billDate,
+  String companyName,
+  String billId,
+  double totalPrice,
+  String billType,
   // customer data
-  String customer_name,
-  String customer_city,
+  String customerName,
+  String customerCity,
 ) async {
   final pdf = pw.Document();
 
@@ -58,7 +58,7 @@ Future<Uint8List> createInvoice(
                     pw.Container(
                       padding: const pw.EdgeInsets.only(bottom: 6),
                       child: pw.Text(
-                        company_name,
+                        companyName,
                         style: pw.TextStyle(
                           font: ttf,
                           fontSize: 26,
@@ -117,7 +117,7 @@ Future<Uint8List> createInvoice(
                             ),
                             pw.SizedBox(height: 3),
                             pw.Text(
-                              'الاسم: $customer_name',
+                              'الاسم: $customerName',
                               style: pw.TextStyle(
                                 font: ttf,
                                 fontSize: 12,
@@ -126,7 +126,7 @@ Future<Uint8List> createInvoice(
                               textAlign: pw.TextAlign.right,
                             ),
                             pw.Text(
-                              'المدينة: $customer_city',
+                              'المدينة: $customerCity',
                               style: pw.TextStyle(
                                 font: ttf,
                                 fontSize: 12,
@@ -145,7 +145,7 @@ Future<Uint8List> createInvoice(
                           crossAxisAlignment: pw.CrossAxisAlignment.end,
                           children: [
                             pw.Text(
-                              'نوع الفاتورة: $bill_type',
+                              'نوع الفاتورة: $billType',
                               style: pw.TextStyle(
                                 font: ttf,
                                 fontSize: 13,
@@ -155,7 +155,7 @@ Future<Uint8List> createInvoice(
                               textAlign: pw.TextAlign.right,
                             ),
                             pw.Text(
-                              'رقم الفاتورة: $bill_id',
+                              'رقم الفاتورة: $billId',
                               style: pw.TextStyle(
                                 font: ttf,
                                 fontSize: 12,
@@ -164,7 +164,7 @@ Future<Uint8List> createInvoice(
                               textAlign: pw.TextAlign.right,
                             ),
                             pw.Text(
-                              'تاريخ الفاتورة: $bill_date',
+                              'تاريخ الفاتورة: $billDate',
                               style: pw.TextStyle(
                                 font: ttf,
                                 fontSize: 12,
@@ -350,7 +350,7 @@ Future<Uint8List> createInvoice(
                           textAlign: pw.TextAlign.right,
                         ),
                         pw.Text(
-                          total_price.toStringAsFixed(2),
+                          totalPrice.toStringAsFixed(2),
                           style: pw.TextStyle(
                             font: ttf,
                             fontSize: 15.2,

@@ -41,7 +41,7 @@ class Custom_customers_heder extends GetView<CustomersControllerImp> {
           ),
         ),
         SizedBox(width: 20),
-        Custom_button( color: AppColors.primary,
+        CustomButton( color: AppColors.primary,
           icon: Icons.add,
           onPressed: () => controller.show_add_customer_dialog(),
           title: "إضافة",

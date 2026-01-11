@@ -29,7 +29,7 @@ class ExpensesCard extends GetView<ExpensesControllerImp> {
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.backgroundColor,
+          color: AppColors.background,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(color: AppColors.primary, width: 1.2),
           // Remove shadow for a cleaner look
@@ -95,7 +95,7 @@ class ExpensesCard extends GetView<ExpensesControllerImp> {
                         horizontal: 10,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.10),
+                        color: AppColors.primary.withValues(alpha: 0.10),
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(color: AppColors.primary, width: 1),
                       ),
@@ -151,7 +151,7 @@ class ExpensesCard extends GetView<ExpensesControllerImp> {
             Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Custom_button(
+                    CustomButton(
                       icon: Icons.delete,
                       title: "حذف",
                       onPressed:
@@ -159,7 +159,7 @@ class ExpensesCard extends GetView<ExpensesControllerImp> {
                       color: AppColors.primary,
                     ),
                     const SizedBox(width: 8),
-                    Custom_button(
+                    CustomButton(
                       icon: Icons.edit,
                       title: "تعديل",
                       onPressed:

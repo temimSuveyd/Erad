@@ -53,7 +53,7 @@ class Custom_products_heder extends StatelessWidget {
           ),
         ),
         SizedBox(width: 20),
-        Custom_button( color: AppColors.primary,icon: Icons.add, onPressed: () {}, title: "إضافة"),
+        CustomButton( color: AppColors.primary,icon: Icons.add, onPressed: () {}, title: "إضافة"),
       ],
     );
   }

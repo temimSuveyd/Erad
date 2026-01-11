@@ -1,5 +1,3 @@
-import 'package:erad/core/class/handling_data.dart';
-import 'package:erad/core/class/handling_data_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:erad/controller/customers/bills/customer_bill_details_controller.dart';

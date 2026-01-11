@@ -12,7 +12,7 @@ void handling_sigin_errors(FirebaseAuthException e) {
       Get.defaultDialog(
         title: "خطأ",
         middleText: errorMessage,
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: AppColors.background,
         onCancel: () {
           Get.back();
         },
@@ -29,7 +29,7 @@ void handling_sigin_errors(FirebaseAuthException e) {
       Get.defaultDialog(
         title: "خطأ",
         middleText: errorMessage,
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: AppColors.background,
         onCancel: () {
           Get.back();
         },
@@ -45,7 +45,7 @@ void handling_sigin_errors(FirebaseAuthException e) {
       Get.defaultDialog(
         title: "خطأ",
         middleText: errorMessage,
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: AppColors.background,
         onCancel: () {
           Get.back();
         },
@@ -60,7 +60,7 @@ void handling_sigin_errors(FirebaseAuthException e) {
       Get.defaultDialog(
         title: "خطأ",
         middleText: errorMessage,
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: AppColors.background,
         onCancel: () {
           Get.back();
         },
@@ -75,7 +75,7 @@ void handling_sigin_errors(FirebaseAuthException e) {
       Get.defaultDialog(
         title: "خطأ",
         middleText: errorMessage,
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: AppColors.background,
         onCancel: () {
           Get.back();
         },
@@ -90,7 +90,7 @@ void handling_sigin_errors(FirebaseAuthException e) {
       Get.defaultDialog(
         title: "خطأ",
         middleText: errorMessage,
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: AppColors.background,
         onCancel: () {
           Get.back();
         },
@@ -106,7 +106,7 @@ void handling_sigin_errors(FirebaseAuthException e) {
       Get.defaultDialog(
         title: "خطأ",
         middleText: errorMessage,
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: AppColors.background,
         onCancel: () {
           Get.back();
         },

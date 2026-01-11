@@ -1,7 +1,7 @@
 import 'dart:typed_data';
-import 'dart:html' as html;
 import 'package:erad/core/constans/routes.dart';
 import 'package:erad/core/function/pdf_maker.dart';
+import 'package:erad/core/function/file_saver.dart';
 import 'package:erad/data/data_score/remote/depts/supplier_depts_data.dart';
 import 'package:erad/data/data_score/remote/supplier/supplier_bill_data.dart';
 import 'package:erad/data/model/customer_bill_details/bill_details_product_model.dart';
@@ -175,7 +175,7 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
     Function() onConfirm,
   ) {
     Get.defaultDialog(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       onCancel: () {},
       buttonColor: AppColors.primary,
       onConfirm: () => onConfirm(),
@@ -188,7 +188,7 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
           width: double.infinity,
           child: Column(
             children: [
-              Custom_textfield(
+              CustomTextField(
                 hintText: "",
                 suffixIcon: Icons.edit,
                 validator: (p0) {
@@ -227,7 +227,7 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   @override
   showDeleteSupplierProductDialog(String productId) {
     Get.defaultDialog(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       onCancel: () {},
       buttonColor: AppColors.primary,
       onConfirm: () {
@@ -290,8 +290,8 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
       onConfirm: () {
         onConfirm();
       },
-      backgroundColor: AppColors.backgroundColor,
-      confirmTextColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
+      confirmTextColor: AppColors.background,
       cancelTextColor: AppColors.primary,
       buttonColor: AppColors.primary,
       textCancel: "يلغي",
@@ -303,7 +303,7 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
           width: double.infinity,
           child: Column(
             children: [
-              Custom_textfield(
+              CustomTextField(
                 hintText: "تخفيض",
                 suffixIcon: Icons.discount,
                 validator: (p0) {
@@ -396,7 +396,7 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   @override
   showDeleteSupplierBillDialog() {
     Get.defaultDialog(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       onCancel: () {},
       buttonColor: AppColors.primary,
       onConfirm: () {
@@ -421,12 +421,12 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
     statusreqest = Statusreqest.loading;
     update();
     try {
-             String company_name =
-        services.sharedPreferences.getString(AppShared.company_name)!;
+      String companyName =
+          services.sharedPreferences.getString(AppShared.company_name)!;
       pdfBytes = await createInvoice(
         supplierProductList.toList(),
         "${supplierBillModel!.bill_date!.day.toString().padLeft(2, '0')}/${supplierBillModel!.bill_date!.month.toString().padLeft(2, '0')}/${supplierBillModel!.bill_date!.year}",
-        company_name,
+        companyName,
         supplierBillModel!.bill_no!,
         supplierBillModel!.total_price!,
         "شراء",
@@ -434,12 +434,11 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
         supplierBillModel!.supplier_city!,
       );
       String pdfFileName = "${supplierBillModel!.bill_no}.pdf";
-      final blob = html.Blob([pdfBytes], 'application/pdf');
-      final url = html.Url.createObjectUrlFromBlob(blob);
-      html.AnchorElement(href: url)
-        ..setAttribute("download", pdfFileName)
-        ..click();
-      html.Url.revokeObjectUrl(url);
+      await FileSaver.saveFile(
+        bytes: pdfBytes,
+        fileName: pdfFileName,
+        mimeType: 'application/pdf',
+      );
       statusreqest = Statusreqest.success;
       update();
     } on Exception {
@@ -562,11 +561,11 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   showEditSupplierPaymentTypeDialog() {
     Get.defaultDialog(
       title: "تغيير طريقة الدفع",
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.background,
       content: Container(
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
         decoration: BoxDecoration(
-          color: AppColors.backgroundColor,
+          color: AppColors.background,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
@@ -602,7 +601,7 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
                           },
                   tileColor:
                       supplierBillModel?.payment_type == "monetary"
-                          ? AppColors.primary.withOpacity(0.12)
+                          ? AppColors.primary.withValues(alpha: 0.12)
                           : null,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -624,7 +623,7 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
                           },
                   tileColor:
                       supplierBillModel?.payment_type != "monetary"
-                          ? AppColors.red.withOpacity(0.12)
+                          ? AppColors.red.withValues(alpha: 0.12)
                           : null,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),

@@ -16,21 +16,21 @@ class Bill_status_button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (billStatus == BillStatus.deliveryd) {
-      return Custom_button(
+      return CustomButton(
         icon: Icons.verified_outlined,
         title: "تم التسليم",
         onPressed: () => onPressed(),
         color: AppColors.green,
       );
     } else if (billStatus == BillStatus.eliminate) {
-      return Custom_button(
+      return CustomButton(
         icon: Icons.cancel_outlined,
         title: "تم الإلغاء",
         onPressed: () => onPressed(),
         color: AppColors.red,
       );
     } else if (billStatus == BillStatus.itwasFormed) {
-      return Custom_button(
+      return CustomButton(
         icon: Icons.assignment_turned_in_outlined,
         title: "تم التشكيل",
         onPressed: () => onPressed(),

@@ -27,7 +27,7 @@ class Custom_Brands_heder extends GetView<BrandsControllerImp> {
           ),
         ),
         SizedBox(width: 20),
-        Custom_button( color: AppColors.primary,
+        CustomButton( color: AppColors.primary,
           icon: Icons.add,
           onPressed: () => controller.show_dialog(),
           title: "إضافة",

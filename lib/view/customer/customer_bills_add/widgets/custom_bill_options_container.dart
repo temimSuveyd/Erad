@@ -3,7 +3,6 @@ import 'package:erad/view/customer/customer_bills_add/widgets/custom_date_picker
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
-import 'package:erad/core/constans/colors.dart';
 import 'package:erad/view/custom_widgets/custom_dropDownButton.dart';
 
 class CustomerBillOptionsContainer extends StatelessWidget {
@@ -30,7 +29,7 @@ class CustomerBillOptionsContainer extends StatelessWidget {
                     (controller) => Row(
                       spacing: 10,
                       children: [
-                        Custom_dropDownButton(
+                        CustomDropDownButton(
                           items: controller.customers_list_dropdownItrm,
                           onChanged: (value) {
                             controller.setCustomer(value);
@@ -43,7 +42,7 @@ class CustomerBillOptionsContainer extends StatelessWidget {
 
                         GetBuilder<CustomerBiilAddControllerImp>(
                           builder:
-                              (controller) => Custom_dropDownButton(
+                              (controller) => CustomDropDownButton(
                                 items: [
                                   DropdownMenuItem(
                                     value: "Religion",

@@ -1,86 +1,122 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
 import 'package:erad/controller/home/home_controller.dart';
 import 'package:erad/core/constans/colors.dart';
+import 'package:erad/core/constans/design_tokens.dart';
 import 'package:erad/data/model/home/home_modle.dart';
 
-class Custom_home_card extends GetView<HomeControllerImp> {
-  const Custom_home_card({super.key, required this.homeModle});
+class CustomHomeCard extends GetView<HomeControllerImp> {
+  const CustomHomeCard({super.key, required this.homeModle});
 
   final HomeModle homeModle;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(28),
-      onTap: () {
-        controller.goToPage(homeModle.pageName!);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.primary,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: AppColors.black.withOpacity(0.7),
-            width: 1.5,
-          ),
-        ),
-        padding: EdgeInsets.all(10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.grey.withOpacity(0.30),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: AppColors.primary.withOpacity(0.18),
-                  width: 2,
+    return _AnimatedHomeCard(
+      onTap: () => controller.goToPage(homeModle.pageName!),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Icon container with gradient
+          Image.asset(
+            width: 70,
+            height: 70,
+            homeModle.imagePath ?? '',
+            fit: BoxFit.contain,
+            errorBuilder:
+                (context, error, stackTrace) => const Icon(
+                  Icons.dashboard_rounded,
+                  size: 36,
+                  color: AppColors.white,
                 ),
+          ),
+
+          const SizedBox(height: DesignTokens.spacing16),
+
+          // Title with responsive font size
+          Text(
+            homeModle.title ?? '',
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: DesignTokens.getFontSize(
+                context,
+                DesignTokens.fontScaleBase,
               ),
-              padding: EdgeInsets.all(10),
-              child: Image.asset(
-                homeModle.imagePath ?? '',
-                width: 150,
-                height: 150,
-                fit: BoxFit.cover,
-                errorBuilder:
-                    (context, error, stackTrace) => Icon(
-                      Icons.image_not_supported,
-                      size: 54,
-                      color: AppColors.primary.withOpacity(0.3),
-                    ),
-              ),
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
+              height: 1.3,
             ),
-            SizedBox(height: 18),
-            Text(
-              homeModle.title ?? '',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 24,
-                color: AppColors.wihet,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.7,
-                shadows: [
-                  Shadow(
-                    color: AppColors.primary.withOpacity(0.20),
-                    blurRadius: 4,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-            ),
-            // SizedBox(height: 6),
-            // Container(
-            //   width: 36,
-            //   height: 4,
-            //   decoration: BoxDecoration(
-            //     color: AppColors.primary.withOpacity(0.12),
-            //     borderRadius: BorderRadius.circular(2),
-            //   ),
-            // ),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Animated card widget for home cards
+class _AnimatedHomeCard extends StatefulWidget {
+  final Widget child;
+  final VoidCallback onTap;
+
+  const _AnimatedHomeCard({required this.child, required this.onTap});
+
+  @override
+  State<_AnimatedHomeCard> createState() => _AnimatedHomeCardState();
+}
+
+class _AnimatedHomeCardState extends State<_AnimatedHomeCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+  bool _isHovered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: DesignTokens.durationFast,
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.97,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) {
+        setState(() => _isHovered = true);
+        _controller.forward();
+      },
+      onTapUp: (_) {
+        setState(() => _isHovered = false);
+        _controller.reverse();
+        widget.onTap();
+      },
+      onTapCancel: () {
+        setState(() => _isHovered = false);
+        _controller.reverse();
+      },
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: AnimatedContainer(
+          duration: DesignTokens.durationFast,
+          decoration: BoxDecoration(
+            color: AppColors.border,
+            borderRadius: DesignTokens.borderRadiusMedium,
+          ),
+          padding: const EdgeInsets.all(DesignTokens.spacing20),
+          child: widget.child,
         ),
       ),
     );

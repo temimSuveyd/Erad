@@ -17,7 +17,7 @@ class SetExpensesDateRangeButton extends StatelessWidget {
                   horizontal: 24,
                   vertical: 14,
                 ),
-                backgroundColor: AppColors.wihet.withOpacity(0.13),
+                backgroundColor: AppColors.wihet.withValues(alpha: 0.13),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
