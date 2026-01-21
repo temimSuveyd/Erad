@@ -82,7 +82,7 @@ class CustomersControllerImp extends CustomersController {
     String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       customersData.getAllCustomers(userID).listen((event) {
-        customersList.value = event.docs;
+        customersList.value = event;
         if (customersList.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {

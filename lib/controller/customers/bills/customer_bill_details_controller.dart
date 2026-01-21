@@ -98,7 +98,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
         total_earn = billModel?.total_earn ?? 0.0;
         total_price = billModel?.total_price ?? 0.0;
         discount_amount = billModel?.discount_amount ?? 0.0;
-            });
+      });
       statusreqest = Statusreqest.success;
     } catch (e) {
       print('Error in getBillDetails: $e');
@@ -119,10 +119,10 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
       statusreqest = Statusreqest.loading;
       update();
       customerBillData
-          .getBillProdects(userID!, bill_id!)
+          .getBillProducts(userID!, bill_id!)
           .listen(
             (event) {
-              productList.value = event.docs;
+              productList.value = event;
               if (productList.isEmpty) {
                 statusreqest = Statusreqest.empty;
               } else {
@@ -188,9 +188,9 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
   Future getProductById(String productId) async {
     try {
       await customerBillData
-          .getBillProdectBayId(userID!, bill_id!, productId)
+          .getBillProductById(userID!, bill_id!, productId)
           .then((value) {
-            product_numper = value["product_number"];
+            product_numper = value!["product_number"];
             product_price = value["product_price"];
           });
       statusreqest = Statusreqest.success;
@@ -206,33 +206,105 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
     TextEditingController controller,
     Function() onConfirm,
   ) {
-    Get.defaultDialog(
-      backgroundColor: AppColors.background,
-      onCancel: () {},
-      buttonColor: AppColors.primary,
-      onConfirm: () => onConfirm(),
-      middleText: "",
-      title: "غير عدد المنتجات",
-      textConfirm: "تغير",
-      textCancel: "اخرج",
-      actions: [
-        SizedBox(
-          width: double.infinity,
+    Get.dialog(
+      Dialog(
+        backgroundColor: AppColors.background,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Container(
+          padding: const EdgeInsets.all(24),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
+              // Title
+              Text(
+                "تعديل عدد المنتجات",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+
+              // Input field
               CustomTextField(
-                hintText: "",
+                hintText: "أدخل العدد الجديد",
                 suffixIcon: Icons.edit,
-                validator: (p0) {
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "يرجى إدخال العدد";
+                  }
+                  if (int.tryParse(value) == null || int.parse(value) <= 0) {
+                    return "يرجى إدخال عدد صحيح أكبر من صفر";
+                  }
                   return null;
                 },
                 controller: controller,
-                onChanged: (p0) {},
+                onChanged: (value) {},
+              ),
+
+              const SizedBox(height: 24),
+
+              // Action buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () => Get.back(),
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          side: BorderSide(color: AppColors.textSecondary),
+                        ),
+                      ),
+                      child: Text(
+                        "إلغاء",
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (controller.text.isNotEmpty &&
+                            int.tryParse(controller.text) != null &&
+                            int.parse(controller.text) > 0) {
+                          onConfirm();
+                        } else {
+                          custom_snackBar(
+                            AppColors.error,
+                            "خطأ",
+                            "يرجى إدخال عدد صحيح أكبر من صفر",
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: AppColors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text(
+                        "تأكيد",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
         ),
-      ],
+      ),
+      barrierDismissible: true,
     );
   }
 
@@ -258,18 +330,108 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
 
   @override
   show_delete_product_dialog(String productId) {
-    Get.defaultDialog(
-      backgroundColor: AppColors.background,
-      onCancel: () {},
-      buttonColor: AppColors.primary,
-      onConfirm: () {
-        delete_product(productId);
-        Get.back();
-      },
-      middleText: "",
-      title: "حذف المنتج",
-      textConfirm: "حذف",
-      textCancel: "ألغى",
+    Get.dialog(
+      Dialog(
+        backgroundColor: AppColors.background,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Warning icon
+              Container(
+                width: 64,
+                height: 64,
+                decoration: BoxDecoration(
+                  color: AppColors.error.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.warning_amber_rounded,
+                  color: AppColors.error,
+                  size: 32,
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Title
+              Text(
+                "حذف المنتج",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 12),
+
+              // Message
+              Text(
+                "هل أنت متأكد من أنك تريد حذف هذا المنتج من الفاتورة؟\nلا يمكن التراجع عن هذا الإجراء.",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: AppColors.textSecondary,
+                  height: 1.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 24),
+
+              // Action buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () => Get.back(),
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          side: BorderSide(color: AppColors.textSecondary),
+                        ),
+                      ),
+                      child: Text(
+                        "إلغاء",
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        delete_product(productId);
+                        Get.back();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.error,
+                        foregroundColor: AppColors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text(
+                        "حذف",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      barrierDismissible: true,
     );
   }
 
@@ -332,37 +494,176 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
 
   @override
   show_discount_dialog(Function() onConfirm) {
-    Get.defaultDialog(
-      onCancel: () {},
-      onConfirm: () {
-        onConfirm();
-      },
-      backgroundColor: AppColors.background,
-      confirmTextColor: AppColors.background,
-      cancelTextColor: AppColors.primary,
-      buttonColor: AppColors.primary,
-      textCancel: "يلغي",
-      textConfirm: "خصم",
-      middleText: "مبلغ الخصم $discount_amount",
-      title: "خصم على الفاتورة",
-      actions: [
-        SizedBox(
-          width: double.infinity,
+    Get.dialog(
+      Dialog(
+        backgroundColor: AppColors.background,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Container(
+          padding: const EdgeInsets.all(24),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
+              // Icon
+              Container(
+                width: 64,
+                height: 64,
+                decoration: BoxDecoration(
+                  color: AppColors.warning.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.discount_outlined,
+                  color: AppColors.warning,
+                  size: 32,
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Title
+              Text(
+                "خصم على الفاتورة",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 12),
+
+              // Current discount info
+              if (discount_amount > 0)
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.info.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: AppColors.info.withValues(alpha: 0.3),
+                    ),
+                  ),
+                  child: Text(
+                    "الخصم الحالي: ${discount_amount.toStringAsFixed(0)} د.ع",
+                    style: TextStyle(
+                      color: AppColors.info,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+
+              if (discount_amount > 0) const SizedBox(height: 16),
+
+              // Input field
               CustomTextField(
-                hintText: "تخفيض",
+                hintText: "أدخل مبلغ الخصم (د.ع)",
                 suffixIcon: Icons.discount,
-                validator: (p0) {
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "يرجى إدخال مبلغ الخصم";
+                  }
+                  final discount = double.tryParse(value);
+                  if (discount == null || discount <= 0) {
+                    return "يرجى إدخال مبلغ صحيح أكبر من صفر";
+                  }
+                  if (total_price != null && total_price! - discount < 0) {
+                    return "مبلغ الخصم أكبر من إجمالي الفاتورة";
+                  }
                   return null;
                 },
                 controller: discount_controller,
-                onChanged: (p0) {},
+                onChanged: (value) {},
+              ),
+
+              const SizedBox(height: 16),
+
+              // Info message
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.warning.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: AppColors.warning.withValues(alpha: 0.3),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      color: AppColors.warning,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        "سيتم إضافة هذا الخصم إلى الخصم الحالي",
+                        style: TextStyle(
+                          color: AppColors.warning,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Action buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () {
+                        discount_controller.clear();
+                        Get.back();
+                      },
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          side: BorderSide(color: AppColors.textSecondary),
+                        ),
+                      ),
+                      child: Text(
+                        "إلغاء",
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => onConfirm(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.warning,
+                        foregroundColor: AppColors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text(
+                        "تطبيق الخصم",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
         ),
-      ],
+      ),
+      barrierDismissible: true,
     );
   }
 
@@ -374,7 +675,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
       await addDiscount(discount);
       total_earn = total_earn! - discount;
       total_price = total_price! - discount;
-      await customerBillData.update_total_price(
+      await customerBillData.updateTotalPrice(
         userID!,
         bill_id!,
         total_price!,
@@ -442,19 +743,162 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
 
   @override
   show_delete_bill_dialog() {
-    Get.defaultDialog(
-      backgroundColor: AppColors.background,
-      onCancel: () {},
-      buttonColor: AppColors.primary,
-      onConfirm: () {
-        deleteBill();
-        Get.close(0);
-        Get.back();
-      },
-      middleText: "هل أنت متأكد أنك تريد حذف هذا الفاتورة",
-      title: "حذف الفاتورة",
-      textConfirm: "حذف",
-      textCancel: "ألغى",
+    Get.dialog(
+      Dialog(
+        backgroundColor: AppColors.background,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Warning icon
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: AppColors.error.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.delete_forever_outlined,
+                  color: AppColors.error,
+                  size: 40,
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Title
+              Text(
+                "حذف الفاتورة",
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 16),
+
+              // Message
+              Text(
+                "هل أنت متأكد من أنك تريد حذف هذه الفاتورة نهائياً؟",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: AppColors.textSecondary,
+                  height: 1.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 12),
+
+              // Warning message
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.error.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: AppColors.error.withValues(alpha: 0.3),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.warning_amber_rounded,
+                      color: AppColors.error,
+                      size: 24,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "تحذير مهم:",
+                            style: TextStyle(
+                              color: AppColors.error,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            "• سيتم حذف جميع المنتجات المرتبطة بالفاتورة\n• سيتم حذف الفاتورة من سجل الديون\n• لا يمكن التراجع عن هذا الإجراء",
+                            style: TextStyle(
+                              color: AppColors.error,
+                              fontSize: 13,
+                              height: 1.4,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Action buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () => Get.back(),
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          side: BorderSide(color: AppColors.textSecondary),
+                        ),
+                      ),
+                      child: Text(
+                        "إلغاء",
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        deleteBill();
+                        Get.close(0);
+                        Get.back();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.error,
+                        foregroundColor: AppColors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text(
+                        "حذف نهائي",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      barrierDismissible: false, // Prevent accidental dismissal
     );
   }
 
@@ -521,7 +965,7 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
           services.sharedPreferences.getString(AppShared.userID)!;
       final String customerId = billModel!.customer_id!;
       final String billId = billModel!.bill_id!;
-      customerDeptsData.delteBillFromDepts(billId, customerId, userID);
+      customerDeptsData.deleteBillFromDepts(billId, customerId, userID);
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();
@@ -607,83 +1051,241 @@ class CustomerBillDetailsControllerImp extends CustomerBillDetailsController {
 
   @override
   showEditPaymentTypeDailog() {
-    Get.defaultDialog(
-      title: "تغيير طريقة الدفع",
-      backgroundColor: AppColors.background,
-      content: Container(
-        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-        decoration: BoxDecoration(
-          color: AppColors.background,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              "اختَر طريقة الدفع التي تريدها:",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: AppColors.primary,
+    Get.dialog(
+      Dialog(
+        backgroundColor: AppColors.background,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Icon
+              Container(
+                width: 64,
+                height: 64,
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.payments_outlined,
+                  color: AppColors.primary,
+                  size: 32,
+                ),
               ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 20),
-            Column(
-              children: [
-                ListTile(
-                  leading: Icon(
-                    Icons.attach_money_rounded,
-                    color: AppColors.primary,
+
+              const SizedBox(height: 16),
+
+              // Title
+              Text(
+                "تغيير طريقة الدفع",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 12),
+
+              // Subtitle
+              Text(
+                "اختر طريقة الدفع المناسبة للفاتورة",
+                style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 24),
+
+              // Payment options
+              Column(
+                children: [
+                  // Cash payment option
+                  GestureDetector(
+                    onTap:
+                        billModel?.payment_type == "monetary"
+                            ? null
+                            : () {
+                              updatePaymentType("monetary");
+                              Get.back();
+                            },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color:
+                            billModel?.payment_type == "monetary"
+                                ? AppColors.primary.withValues(alpha: 0.1)
+                                : AppColors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color:
+                              billModel?.payment_type == "monetary"
+                                  ? AppColors.primary
+                                  : AppColors.border,
+                          width: billModel?.payment_type == "monetary" ? 2 : 1,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              color: AppColors.primary.withValues(alpha: 0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.attach_money_rounded,
+                              color: AppColors.primary,
+                              size: 24,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "دفع نقدي",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  "تم دفع المبلغ كاملاً نقداً",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: AppColors.textSecondary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (billModel?.payment_type == "monetary")
+                            Icon(
+                              Icons.check_circle,
+                              color: AppColors.primary,
+                              size: 24,
+                            ),
+                        ],
+                      ),
+                    ),
                   ),
-                  title: Text(
-                    "نقدي",
-                    style: TextStyle(color: AppColors.primary),
+
+                  const SizedBox(height: 12),
+
+                  // Credit payment option
+                  GestureDetector(
+                    onTap:
+                        billModel?.payment_type != "monetary"
+                            ? null
+                            : () {
+                              updatePaymentType("Religion");
+                              Get.back();
+                            },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color:
+                            billModel?.payment_type != "monetary"
+                                ? AppColors.warning.withValues(alpha: 0.1)
+                                : AppColors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color:
+                              billModel?.payment_type != "monetary"
+                                  ? AppColors.warning
+                                  : AppColors.border,
+                          width: billModel?.payment_type != "monetary" ? 2 : 1,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              color: AppColors.warning.withValues(alpha: 0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.schedule_outlined,
+                              color: AppColors.warning,
+                              size: 24,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "دفع آجل (دين)",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  "سيتم إضافة المبلغ إلى ديون العميل",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: AppColors.textSecondary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (billModel?.payment_type != "monetary")
+                            Icon(
+                              Icons.check_circle,
+                              color: AppColors.warning,
+                              size: 24,
+                            ),
+                        ],
+                      ),
+                    ),
                   ),
-                  onTap:
-                      billModel?.payment_type == "monetary"
-                          ? null
-                          : () {
-                            updatePaymentType("monetary");
-                            Get.back();
-                          },
-                  tileColor:
-                      billModel?.payment_type == "monetary"
-                          ? AppColors.primary.withValues(alpha: 0.12)
-                          : null,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                ],
+              ),
+
+              const SizedBox(height: 24),
+
+              // Cancel button
+              SizedBox(
+                width: double.infinity,
+                child: TextButton(
+                  onPressed: () => Get.back(),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(color: AppColors.textSecondary),
+                    ),
+                  ),
+                  child: Text(
+                    "إلغاء",
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-                SizedBox(height: 12),
-                ListTile(
-                  leading: Icon(
-                    Icons.money_off_csred_outlined,
-                    color: AppColors.red,
-                  ),
-                  title: Text("دَين", style: TextStyle(color: AppColors.red)),
-                  onTap:
-                      billModel?.payment_type != "monetary"
-                          ? null
-                          : () {
-                            updatePaymentType("Religion");
-                            Get.back();
-                          },
-                  tileColor:
-                      billModel?.payment_type != "monetary"
-                          ? AppColors.red.withValues(alpha: 0.12)
-                          : null,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
-      textCancel: "إلغاء",
-      onCancel: () {},
+      barrierDismissible: true,
     );
   }
 

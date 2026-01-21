@@ -1,14 +1,14 @@
+import 'package:erad/data/model/customer_depts/customer_depts_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:erad/controller/customers/depts/customer_depts_view_controller.dart';
 import 'package:erad/core/constans/colors.dart';
 import 'package:erad/core/constans/design_tokens.dart';
-import 'package:erad/data/model/customer_debts_view/customer_debts_model.dart';
 
 class MobileCustomerDebtCard extends GetView<CustomerDeptsViewControllerImp> {
   const MobileCustomerDebtCard({super.key, required this.debtModel});
 
-  final CustomerDebtsModel debtModel;
+  final DeptsModel debtModel;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class MobileCustomerDebtCard extends GetView<CustomerDeptsViewControllerImp> {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: DesignTokens.borderRadiusMedium,
-          onTap: () => controller.goTODetailsPage(debtModel.bill_id!),
+          onTap: () => controller.goTODetailsPage(debtModel.id!),
           child: Padding(
             padding: const EdgeInsets.all(DesignTokens.spacing16),
             child: Column(
@@ -62,13 +62,6 @@ class MobileCustomerDebtCard extends GetView<CustomerDeptsViewControllerImp> {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          const SizedBox(height: DesignTokens.spacing4),
-                          Text(
-                            'فاتورة رقم: ${debtModel.bill_id ?? 'غير محدد'}',
-                            style: DesignTokens.getBodyMedium(
-                              context,
-                            ).copyWith(color: AppColors.textSecondary),
-                          ),
                         ],
                       ),
                     ),
@@ -83,7 +76,7 @@ class MobileCustomerDebtCard extends GetView<CustomerDeptsViewControllerImp> {
                         borderRadius: DesignTokens.borderRadiusSmall,
                       ),
                       child: Text(
-                        '${debtModel.dept_amount ?? 0}',
+                        '${debtModel.total_price ?? 0}',
                         style: DesignTokens.getHeadlineMedium(context).copyWith(
                           color: AppColors.primary,
                           fontWeight: FontWeight.w600,
@@ -171,8 +164,7 @@ class MobileCustomerDebtCard extends GetView<CustomerDeptsViewControllerImp> {
                   width: double.infinity,
                   height: DesignTokens.minTouchTarget,
                   child: ElevatedButton.icon(
-                    onPressed:
-                        () => controller.goTODetailsPage(debtModel.bill_id!),
+                    onPressed: () => controller.goTODetailsPage(debtModel.id!),
                     icon: const Icon(Icons.visibility_outlined, size: 18),
                     label: Text(
                       'عرض التفاصيل والدفعات',

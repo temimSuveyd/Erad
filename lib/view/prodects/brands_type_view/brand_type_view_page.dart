@@ -21,15 +21,13 @@ class BrandsTypeViewPage extends GetView<BrandsTypeControllerImp> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar:
-          isMobile
-              ? null
-              : customAppBar(title: "أنواع المنتجات", context: context),
+          isMobile ? null : customAppBar(title: "المنتجات", context: context),
       floatingActionButton:
           isMobile
               ? null
               : FloatingActionButton(
                 onPressed: () {
-                  // Add brand type functionality
+                  controller.show_dialog();
                 },
                 backgroundColor: AppColors.primary,
                 child: Icon(Icons.add, color: AppColors.white),

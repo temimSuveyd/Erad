@@ -111,7 +111,7 @@ class MobileBrandsTypeHeader extends GetView<BrandsTypeControllerImp> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'أنواع المنتجات',
+                                'المنتجات',
                                 style: DesignTokens.getDisplayMedium(
                                   context,
                                 ).copyWith(
@@ -121,7 +121,7 @@ class MobileBrandsTypeHeader extends GetView<BrandsTypeControllerImp> {
                               ),
                               const SizedBox(height: DesignTokens.spacing4),
                               Text(
-                                'إدارة وتصنيف أنواع المنتجات',
+                                'إدارة وتصنيف المنتجات',
                                 style: DesignTokens.getBodyLarge(
                                   context,
                                 ).copyWith(

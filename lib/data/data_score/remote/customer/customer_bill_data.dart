@@ -1,9 +1,7 @@
 import 'package:erad/core/constans/bill_status.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:erad/core/config/supabase_config.dart';
 
 class CustomerBillData {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   Future<String> addCustomerBill(
     String customerName,
     String customerCity,
@@ -12,217 +10,299 @@ class CustomerBillData {
     String userID,
     DateTime billAddTime,
   ) async {
-    DocumentReference docRef = await _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("customer_bills")
-        .add({
-          "customer_name": customerName,
-          "customer_city": customerCity,
-          "customer_id": customerId,
-          "total_product_price": 0,
-          "total_profits": 0,
-          "bill_date": billAddTime,
-          "paymet_type": paymentType,
-          "bill_no": "",
-          "bill_status": BillStatus.itwasFormed,
-          "discount_amount": 0,
-        });
-    return docRef.id;
+    try {
+      final response =
+          await SupabaseConfig.client
+              .from('customer_bills')
+              .insert({
+                'user_id': userID,
+                'customer_id': customerId,
+                'customer_name': customerName,
+                'customer_city': customerCity,
+                'total_product_price': 0,
+                'total_profits': 0,
+                'bill_date': billAddTime.toIso8601String(),
+                'payment_type': paymentType,
+                'bill_no': '',
+                'bill_status': BillStatus.itwasFormed,
+                'discount_amount': 0,
+              })
+              .select('id')
+              .single();
+      return response['id'];
+    } catch (e) {
+      print('Error adding customer bill: $e');
+      rethrow;
+    }
   }
 
-  void addDiscount(String billId, String userID, double discountAmount) {
-    _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("customer_bills")
-        .doc(billId)
-        .update({"discount_amount": FieldValue.increment(discountAmount)});
+  Future<void> addDiscount(
+    String billId,
+    String userID,
+    double discountAmount,
+  ) async {
+    try {
+      // Get current discount amount
+      final currentBill =
+          await SupabaseConfig.client
+              .from('customer_bills')
+              .select('discount_amount')
+              .eq('id', billId)
+              .eq('user_id', userID)
+              .single();
+
+      final currentDiscount =
+          (currentBill['discount_amount'] as num).toDouble();
+      final newDiscount = currentDiscount + discountAmount;
+
+      await SupabaseConfig.client
+          .from('customer_bills')
+          .update({'discount_amount': newDiscount})
+          .eq('id', billId)
+          .eq('user_id', userID);
+    } catch (e) {
+      print('Error adding discount: $e');
+      rethrow;
+    }
   }
 
-  void addProductToBill(
+  Future<void> addProductToBill(
     String productName,
     int productPrice,
     String productId,
     int productNumber,
     int totalProductPrice,
     int totalProductProfits,
-    int prodectProfits,
+    int productProfits,
     String userID,
     String billId,
-  ) {
-    _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("customer_bills")
-        .doc(billId)
-        .collection("products")
-        .add({
-          "product_name": productName,
-
-          "product_id": productId,
-          "product_number": productNumber,
-
-          "total_product_price": totalProductPrice,
-          "total_product_profits": totalProductProfits,
-
-          "prodect_profits": prodectProfits,
-          "product_price": productPrice,
-        });
-  }
-
-  Future deleteCustomerBill(String userID, String billId) async {
-    final billDocRef = _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("customer_bills")
-        .doc(billId);
-    final productsCollection = await billDocRef.collection("products").get();
-    for (final doc in productsCollection.docs) {
-      await doc.reference.delete();
+  ) async {
+    try {
+      await SupabaseConfig.client.from('bill_products').insert({
+        'user_id': userID,
+        'bill_id': billId,
+        'bill_type': 'customer',
+        'product_id': productId,
+        'product_name': productName,
+        'product_price': productPrice,
+        'product_number': productNumber,
+        'total_product_price': totalProductPrice,
+        'total_product_profits': totalProductProfits,
+        'product_profits': productProfits,
+      });
+    } catch (e) {
+      print('Error adding product to bill: $e');
+      rethrow;
     }
-    return await billDocRef.delete();
   }
 
-  Future updateCustomerBill(
+  Future<void> deleteCustomerBill(String userID, String billId) async {
+    try {
+      // Delete all products first
+      await SupabaseConfig.client
+          .from('bill_products')
+          .delete()
+          .eq('bill_id', billId)
+          .eq('user_id', userID)
+          .eq('bill_type', 'customer');
+
+      // Delete the bill
+      await SupabaseConfig.client
+          .from('customer_bills')
+          .delete()
+          .eq('id', billId)
+          .eq('user_id', userID);
+    } catch (e) {
+      print('Error deleting customer bill: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> updateCustomerBill(
     String userID,
     String billId,
     String billNo,
     double totalPrice,
-    double totlProfits,
+    double totalProfits,
   ) async {
-    await _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("customer_bills")
-        .doc(billId)
-        .update({
-          "total_product_price": totalPrice,
-          "total_profits": totlProfits,
-          "bill_no": billNo,
-        });
+    try {
+      await SupabaseConfig.client
+          .from('customer_bills')
+          .update({
+            'total_product_price': totalPrice,
+            'total_profits': totalProfits,
+            'bill_no': billNo,
+          })
+          .eq('id', billId)
+          .eq('user_id', userID);
+    } catch (e) {
+      print('Error updating customer bill: $e');
+      rethrow;
+    }
   }
 
-  Future updatePaymentType(
+  Future<void> updatePaymentType(
     String userID,
     String billId,
     String paymentType,
   ) async {
-    return await _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("customer_bills")
-        .doc(billId)
-        .update({"paymet_type": paymentType});
+    try {
+      await SupabaseConfig.client
+          .from('customer_bills')
+          .update({'payment_type': paymentType})
+          .eq('id', billId)
+          .eq('user_id', userID);
+    } catch (e) {
+      print('Error updating payment type: $e');
+      rethrow;
+    }
   }
 
-  Future update_total_price(
+  Future<void> updateTotalPrice(
     String userID,
     String billId,
     double totalPrice,
-    double totlProfits,
+    double totalProfits,
   ) async {
-    await _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("customer_bills")
-        .doc(billId)
-        .update({
-          "total_product_price": totalPrice,
-          "total_profits": totlProfits,
-        });
+    try {
+      await SupabaseConfig.client
+          .from('customer_bills')
+          .update({
+            'total_product_price': totalPrice,
+            'total_profits': totalProfits,
+          })
+          .eq('id', billId)
+          .eq('user_id', userID);
+    } catch (e) {
+      print('Error updating total price: $e');
+      rethrow;
+    }
   }
 
-  Future updateProductData(
+  Future<void> updateProductData(
     String productId,
     int productNumber,
     int totalProductPrice,
     String userID,
     String billId,
   ) async {
-    await _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("customer_bills")
-        .doc(billId)
-        .collection("products")
-        .doc(productId)
-        .update({
-          "product_number": productNumber,
-          "total_product_price": totalProductPrice,
-        });
+    try {
+      await SupabaseConfig.client
+          .from('bill_products')
+          .update({
+            'product_number': productNumber,
+            'total_product_price': totalProductPrice,
+          })
+          .eq('id', productId)
+          .eq('bill_id', billId)
+          .eq('user_id', userID);
+    } catch (e) {
+      print('Error updating product data: $e');
+      rethrow;
+    }
   }
 
-  Future updateBillStatus(
+  Future<void> updateBillStatus(
     String userID,
     String billId,
     String billStatus,
   ) async {
-    return await _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("customer_bills")
-        .doc(billId)
-        .update({"bill_status": billStatus});
+    try {
+      await SupabaseConfig.client
+          .from('customer_bills')
+          .update({'bill_status': billStatus})
+          .eq('id', billId)
+          .eq('user_id', userID);
+    } catch (e) {
+      print('Error updating bill status: $e');
+      rethrow;
+    }
   }
 
-  Future deleteProduct(String billId, String productId, String userID) async {
-    return await _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("customer_bills")
-        .doc(billId)
-        .collection("products")
-        .doc(productId)
-        .delete();
+  Future<void> deleteProduct(
+    String billId,
+    String productId,
+    String userID,
+  ) async {
+    try {
+      await SupabaseConfig.client
+          .from('bill_products')
+          .delete()
+          .eq('id', productId)
+          .eq('bill_id', billId)
+          .eq('user_id', userID);
+    } catch (e) {
+      print('Error deleting product: $e');
+      rethrow;
+    }
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getBillProdects(
+  Stream<List<Map<String, dynamic>>> getBillProducts(
     String userID,
     String billId,
   ) {
-    return _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("customer_bills")
-        .doc(billId)
-        .collection("products")
-        .snapshots();
+    return SupabaseConfig.client
+        .from('bill_products')
+        .stream(primaryKey: ['id'])
+        .map(
+          (data) =>
+              data
+                  .where(
+                    (item) =>
+                        item['user_id'] == userID &&
+                        item['bill_id'] == billId &&
+                        item['bill_type'] == 'customer',
+                  )
+                  .toList(),
+        );
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getBillProdectBayId(
+  Future<Map<String, dynamic>?> getBillProductById(
     String userID,
     String billId,
-    String prodcutId,
-  ) {
-    return _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("customer_bills")
-        .doc(billId)
-        .collection("products")
-        .doc(prodcutId)
-        .get();
+    String productId,
+  ) async {
+    try {
+      final response =
+          await SupabaseConfig.client
+              .from('bill_products')
+              .select()
+              .eq('id', productId)
+              .eq('bill_id', billId)
+              .eq('user_id', userID)
+              .single();
+      return response;
+    } catch (e) {
+      print('Error getting bill product by ID: $e');
+      return null;
+    }
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getAllBils(String userID) {
-    return _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("customer_bills")
-        .orderBy("bill_date", descending: false)
-        .snapshots();
+  Stream<List<Map<String, dynamic>>> getAllBills(String userID) {
+    return SupabaseConfig.client
+        .from('customer_bills')
+        .stream(primaryKey: ['id'])
+        .map(
+          (data) => data.where((item) => item['user_id'] == userID).toList(),
+        );
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getBillById(
+  Future<Map<String, dynamic>?> getBillById(
     String userID,
     String billId,
-  ) {
-    return _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("customer_bills")
-        .doc(billId)
-        .get();
+  ) async {
+    try {
+      final response =
+          await SupabaseConfig.client
+              .from('customer_bills')
+              .select()
+              .eq('id', billId)
+              .eq('user_id', userID)
+              .single();
+      return response;
+    } catch (e) {
+      print('Error getting bill by ID: $e');
+      return null;
+    }
   }
 }

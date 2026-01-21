@@ -1,4 +1,3 @@
-
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:erad/core/class/handling_data.dart';
@@ -27,7 +26,8 @@ abstract class CategoreyController extends GetxController {
 class CategoreyControllerImp extends CategoreyController {
   Statusreqest statusreqest = Statusreqest.success;
   // ignore: non_constant_identifier_names
-  final TextEditingController _categorey_name_controller = TextEditingController();
+  final TextEditingController _categorey_name_controller =
+      TextEditingController();
   // ignore: non_constant_identifier_names
   TextEditingController serach_for_categorey_controller =
       TextEditingController();
@@ -58,8 +58,7 @@ class CategoreyControllerImp extends CategoreyController {
   add_categorey() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     String categoreyName = _categorey_name_controller.text;
     try {
       categoreysData.addCategoreys(categoreyName, userID);
@@ -85,11 +84,10 @@ class CategoreyControllerImp extends CategoreyController {
   getCategoreys() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       categoreysData.getCategoreys(userID).listen((event) {
-        categoreys_list.value = event.docs;
+        categoreys_list.value = event;
         update();
 
         if (categoreys_list.isEmpty) {
@@ -113,8 +111,7 @@ class CategoreyControllerImp extends CategoreyController {
       getCategoreys();
     } else {
       categoreys_list.value =
-          categoreys_list.where((doc) {
-            final data = doc.data();
+          categoreys_list.where((data) {
             final fileView = data["categorey_name"].toString().toLowerCase();
             return fileView.contains(search.toLowerCase());
           }).toList();
@@ -125,11 +122,11 @@ class CategoreyControllerImp extends CategoreyController {
     }
     update();
   }
-   @override
+
+  @override
   // ignore: non_constant_identifier_names
   delete_categorey(String id) {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       categoreysData.deleteCategorey(id, userID);
     } catch (e) {
@@ -137,6 +134,7 @@ class CategoreyControllerImp extends CategoreyController {
       update();
     }
   }
+
   @override
   // ignore: non_constant_identifier_names
   show_delete_dialog(String id) {
@@ -150,6 +148,4 @@ class CategoreyControllerImp extends CategoreyController {
     getCategoreys();
     super.onInit();
   }
-
- 
 }

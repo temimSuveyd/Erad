@@ -1,6 +1,7 @@
 import 'package:erad/core/constans/routes.dart';
 import 'package:erad/core/constans/sharedPreferences.dart';
 import 'package:erad/core/services/app_services.dart';
+import 'package:erad/core/config/supabase_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +13,10 @@ class AppMiddleware extends GetMiddleware {
       final bool isLogin =
           appService.sharedPreferences.getBool(AppShared.isLoging) ?? false;
 
-      if (isLogin) {
+      // Also check if user is authenticated with Supabase
+      final isSupabaseAuthenticated = SupabaseConfig.auth.currentUser != null;
+
+      if (isLogin && isSupabaseAuthenticated) {
         return const RouteSettings(name: AppRoutes.home_page);
       } else {
         return const RouteSettings(name: AppRoutes.login_page);

@@ -16,7 +16,7 @@ class CustomerBillDetailsPage
 
   @override
   Widget build(BuildContext context) {
-    Get.put(CustomerBillDetailsControllerImp());
+    Get.lazyPut(() =>  CustomerBillDetailsControllerImp());
 
     final isMobile = DesignTokens.isMobile(context);
     final padding = DesignTokens.getResponsiveSpacing(context);

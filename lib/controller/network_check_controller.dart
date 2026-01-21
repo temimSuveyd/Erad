@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class NetworkCheckController extends GetxController {
   void initData();
@@ -39,10 +39,13 @@ class NetworkCheckControllerImp extends NetworkCheckController {
 
   Future<void> _checkConnection() async {
     try {
-      final firebase = FirebaseFirestore.instance;
-      final result = await firebase.collection('connectivity_test').get();
+      final supabase = Supabase.instance.client;
+      final response = await supabase
+          .from('connectivity_test')
+          .select('*')
+          .limit(1);
 
-      if (result.docs.isNotEmpty || result.metadata.isFromCache == false) {
+      if (response.isNotEmpty) {
         isConnected.value = true;
       } else {
         if (isConnected.value) {

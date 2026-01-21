@@ -80,7 +80,7 @@ class BrandsControllerImp extends BrandsController {
     try {
       brandsData.getBrands(userID, categorey_type!, categorey_name!).listen(
         (event) {
-          brandsList.value = event.docs;
+          brandsList.value = event;
           if (brandsList.isEmpty) {
             statusreqest = Statusreqest.empty;
             update();
@@ -143,7 +143,7 @@ class BrandsControllerImp extends BrandsController {
     String userID =
         services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      brandsData.deleteBramd(userID, id);
+      brandsData.deleteBrand(userID, id);
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();

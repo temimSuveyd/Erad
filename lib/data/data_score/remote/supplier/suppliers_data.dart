@@ -1,55 +1,87 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:erad/core/config/supabase_config.dart';
 
 class SuppliersData {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  void addSupplier(String userID, String suppliersName, String suppliersCity) {
-    _firestore.collection("users").doc(userID).collection("suppliers").add({
-      "supplier_name": suppliersName,
-      "supplier_city": suppliersCity,
-    });
+  Future<void> addSupplier(
+    String userID,
+    String suppliersName,
+    String suppliersCity,
+  ) async {
+    try {
+      await SupabaseConfig.client.from('suppliers').insert({
+        'user_id': userID,
+        'supplier_name': suppliersName,
+        'supplier_city': suppliersCity,
+      });
+    } catch (e) {
+      print('Error adding supplier: $e');
+      rethrow;
+    }
   }
 
-  void deleteSupplier(String userID, String suppliersId) {
-    _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("suppliers")
-        .doc(suppliersId)
-        .delete();
+  Future<void> deleteSupplier(String userID, String suppliersId) async {
+    try {
+      await SupabaseConfig.client
+          .from('suppliers')
+          .delete()
+          .eq('id', suppliersId)
+          .eq('user_id', userID);
+    } catch (e) {
+      print('Error deleting supplier: $e');
+      rethrow;
+    }
   }
 
-  void editSupplier(
+  Future<void> editSupplier(
     String userID,
     String supplierName,
     String supplierCity,
     String suppliersId,
+  ) async {
+    try {
+      await SupabaseConfig.client
+          .from('suppliers')
+          .update({
+            'supplier_name': supplierName,
+            'supplier_city': supplierCity,
+          })
+          .eq('id', suppliersId)
+          .eq('user_id', userID);
+    } catch (e) {
+      print('Error editing supplier: $e');
+      rethrow;
+    }
+  }
+
+  Stream<List<Map<String, dynamic>>> getAllSuppliers(String userID) {
+    return SupabaseConfig.client
+        .from('suppliers')
+        .stream(primaryKey: ['id'])
+        .map(
+          (data) => data.where((item) => item['user_id'] == userID).toList(),
+        );
+  }
+
+  Stream<Map<String, dynamic>?> getSupplierByID(
+    String userID,
+    String supplierId,
   ) {
-    _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("suppliers")
-        .doc(suppliersId)
-        .update({
-          "supplier_name": supplierName,
-          "supplier_city": supplierCity,
-        });
-  }
-
-  Stream<QuerySnapshot<Map<String, dynamic>>> getAllSuppliers(String userID) {
-    return _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("suppliers")
-        .snapshots();
-  }
-
-
-Stream<DocumentSnapshot<Map<String, dynamic>>> getSupplierByID(String userID,String supplierId) {
-    return _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("suppliers").doc(supplierId)
-        .snapshots();
+    return SupabaseConfig.client
+        .from('suppliers')
+        .stream(primaryKey: ['id'])
+        .map(
+          (data) =>
+              data
+                      .where(
+                        (item) =>
+                            item['user_id'] == userID &&
+                            item['id'] == supplierId,
+                      )
+                      .isNotEmpty
+                  ? data.firstWhere(
+                    (item) =>
+                        item['user_id'] == userID && item['id'] == supplierId,
+                  )
+                  : null,
+        );
   }
 }

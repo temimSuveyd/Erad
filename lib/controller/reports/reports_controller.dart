@@ -78,8 +78,8 @@ class ReportsControllerImpl extends ReportsController {
     final String userID =
         services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      customerBillData.getAllBils(userID).listen((event) {
-        customerBillList.value = event.docs;
+      customerBillData.getAllBills(userID).listen((event) {
+        customerBillList.value = event;
         customerBillList.value =
             customerBillList.where((data) {
               return data['paymet_type'] == 'monetary' &&
@@ -107,16 +107,19 @@ class ReportsControllerImpl extends ReportsController {
       expensesList.clear();
       expensesData.getExpensesCategory(userID).listen((event) async {
         List allExpenses = [];
-        for (var data in event.docs) {
-          final String categoryID = data.id;
-          final docs =
-              (await expensesData.getExpenses(userID, categoryID).first).docs;
-          final filteredDocs =
-              docs.where((exp) {
-                final expDate = exp['date'].toDate();
+        for (var data in event) {
+          final String categoryID =
+              data['id']; // Access map key instead of property
+          final expenses =
+              await expensesData.getExpenses(userID, categoryID).first;
+          final filteredExpenses =
+              expenses.where((exp) {
+                final expDate = DateTime.parse(
+                  exp['date'],
+                ); // Parse ISO string to DateTime
                 return expDate.year == selectedDate.year;
               }).toList();
-          allExpenses.addAll(filteredDocs);
+          allExpenses.addAll(filteredExpenses);
         }
         expensesList.value = allExpenses;
         calculationTotalMonthlyExpenses();
@@ -139,8 +142,9 @@ class ReportsControllerImpl extends ReportsController {
         services.sharedPreferences.getString(AppShared.userID)!;
     try {
       withdrawnFundData.getWithdrawnFundCategory(userID).listen((event) {
-        for (var data in event.docs) {
-          final String categoryID = data.id;
+        for (var data in event) {
+          final String categoryID =
+              data['id']; // Access map key instead of property
           final userName = data["userId"];
           allUsersList.add(categoryID);
           allUsersNameList.add(userName);
@@ -166,7 +170,7 @@ class ReportsControllerImpl extends ReportsController {
               : [selectedUserId!];
       for (var user in users) {
         final docs =
-            (await withdrawnFundData.getWithdrawnFund(userID, user).first).docs;
+            (await withdrawnFundData.getWithdrawnFund(userID, user).first);
         final filteredDocs =
             docs.where((doc) {
               final docDate = doc['date'].toDate();
@@ -192,7 +196,7 @@ class ReportsControllerImpl extends ReportsController {
     try {
       customerDeptsData.getAllDepts(userID).listen((event) {
         final filteredDocs =
-            event.docs.where((doc) {
+            event.where((doc) {
               final docDate = doc['bill_date']?.toDate();
               return docDate != null && docDate.year == selectedDate.year;
             }).toList();
@@ -216,7 +220,7 @@ class ReportsControllerImpl extends ReportsController {
     try {
       supplierDeptsData.getAllDepts(userID).listen((event) {
         final filteredDocs =
-            event.docs.where((doc) {
+            event.where((doc) {
               final docDate = doc['bill_date']?.toDate();
               return docDate != null && docDate.year == selectedDate.year;
             }).toList();

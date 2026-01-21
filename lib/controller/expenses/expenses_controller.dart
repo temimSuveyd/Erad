@@ -106,8 +106,8 @@ class ExpensesControllerImp extends ExpensesController {
           services.sharedPreferences.getString(AppShared.userID)!;
       _expensesData.getExpenses(userID, categoryID!).listen((event) {
         expensesList.value =
-            event.docs.where((element) {
-              final expenseData = element.data();
+            event.where((element) {
+              final expenseData = element;
               if (expenseData.containsKey("date") &&
                   expenseData["date"] != null) {
                 final DateTime expenseDate = expenseData["date"].toDate();

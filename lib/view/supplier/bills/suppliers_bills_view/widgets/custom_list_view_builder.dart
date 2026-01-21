@@ -20,10 +20,10 @@ class CustomSupplierListViewBuilder extends StatelessWidget {
             onPressed: () => controller.getSuppliersBills(),
             statusreqest: controller.statusreqest,
             widget: SliverList.builder(
-              itemCount: controller.supplier_bills_list.length,
+              itemCount: controller.supplierBillsList.length,
               itemBuilder: (context, index) {
                 final billModel = BillModel.formatJson(
-                  controller.supplier_bills_list[index],
+                  controller.supplierBillsList[index],
                 );
 
                 // Use mobile card for mobile screens, desktop card for larger screens

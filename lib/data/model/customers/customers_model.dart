@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CustomersModel {
   String? customer_name;
@@ -7,9 +6,9 @@ class CustomersModel {
 
   CustomersModel(this.customer_city, this.customer_name, this.customer_id);
 
-  CustomersModel.formatJson(QueryDocumentSnapshot mapToJson) {
+  CustomersModel.formatJson(dynamic mapToJson) {
     customer_city = mapToJson["customer_city"];
     customer_name = mapToJson["customer_name"];
-    customer_id = mapToJson.id;
+    customer_id = mapToJson['id'];
   }
 }

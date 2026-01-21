@@ -84,7 +84,7 @@ class WithdrawnFundsCategoryControllerImp
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
       _withdrawnFundDataData.getWithdrawnFundCategory(userID).listen((event) {
-        withdrawnFundDataList.value = event.docs;
+        withdrawnFundDataList.value = event;
         if (withdrawnFundDataList.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {

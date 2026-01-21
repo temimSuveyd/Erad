@@ -18,8 +18,6 @@ class CustomerBillsViewPage extends GetView<CustomerBillViewControllerImp> {
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => CustomerBillViewControllerImp());
-
     final isMobile = DesignTokens.isMobile(context);
     final isTablet = DesignTokens.isTablet(context);
     final padding = DesignTokens.getResponsiveSpacing(context);

@@ -30,7 +30,10 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
       _customerDeptsData.getAllDepts(userID).listen((event) {
-        customersDeptsList.value = event.docs;
+        customersDeptsList.value = event;
+
+        // Her borç için toplam tutarı hesapla ve güncelle
+        _updateDebtTotals();
 
         if (customersDeptsList.isEmpty) {
           statusreqest = Statusreqest.empty;
@@ -45,6 +48,53 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
     }
   }
 
+  // Borç toplamlarını hesapla ve güncelle
+  void _updateDebtTotals() async {
+    final String userID =
+        services.sharedPreferences.getString(AppShared.userID)!;
+
+    for (var debt in customersDeptsList) {
+      try {
+        // Bu borç için tüm faturaları al
+        final billsStream = _customerDeptsData.getBillById(
+          userID,
+          debt['customer_id'],
+        );
+        final paymentsStream = _customerDeptsData.getAllPayments(
+          userID,
+          debt['customer_id'],
+        );
+
+        // Stream'leri dinle ve toplam hesapla
+        billsStream.listen((bills) {
+          paymentsStream.listen((payments) {
+            double totalBills = 0.0;
+            double totalPayments = 0.0;
+
+            for (var bill in bills) {
+              totalBills += (bill['total_price'] as num).toDouble();
+            }
+
+            for (var payment in payments) {
+              totalPayments += (payment['total_price'] as num).toDouble();
+            }
+
+            double remainingDebt = totalBills - totalPayments;
+
+            // Borç tablosunu güncelle
+            _customerDeptsData.updateTotalDept(
+              debt['customer_id'],
+              userID,
+              remainingDebt,
+            );
+          });
+        });
+      } catch (e) {
+        print('Error updating debt total for ${debt['customer_id']}: $e');
+      }
+    }
+  }
+
   @override
   searchForBillsBayCustomerName() {
     String search = searchDeptsTextController.text;
@@ -52,10 +102,9 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
       getDepts();
     } else {
       customersDeptsList.value =
-          customersDeptsList.where((doc) {
-            final data = doc.data();
+          customersDeptsList.where((data) {
             final customerName = data["customer_name"].toString().toLowerCase();
-            final billId = data["bill_no"].toString().toLowerCase();
+            final billId = data["id"].toString().toLowerCase();
             if (customerName.contains(search.toLowerCase()) ||
                 billId.contains(search.toLowerCase())) {
               return true;
@@ -78,10 +127,9 @@ class CustomerDeptsViewControllerImp extends CustomerDeptsViewController {
       getDepts();
     } else {
       _customerDeptsData.getAllDepts(userID).listen((event) {
-        customersDeptsList.value = event.docs;
+        customersDeptsList.value = event;
         customersDeptsList.value =
-            customersDeptsList.where((doc) {
-              final data = doc.data();
+            customersDeptsList.where((data) {
               final fileView = data["customer_city"].toLowerCase();
               return fileView.contains(cityName.toLowerCase());
             }).toList();

@@ -1,4 +1,3 @@
-
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:erad/core/class/handling_data.dart';
@@ -40,7 +39,7 @@ class BrandsTypeControllerImp extends BrandsTypeController {
   TextEditingController serach_for_brands_type_controller =
       TextEditingController();
   BrandsData brandData = BrandsData();
-  var brandsTypeList = [].obs;
+  var brandsTypeList = <Map<String, dynamic>>[].obs;
   Services services = Get.find();
   String? categorey_type;
   String? categorey_name;
@@ -68,8 +67,7 @@ class BrandsTypeControllerImp extends BrandsTypeController {
   add_brands_type() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
 
     if (product_size_controller.text.isNotEmpty ||
         product_buying_controller.text.isNotEmpty ||
@@ -105,18 +103,12 @@ class BrandsTypeControllerImp extends BrandsTypeController {
   get_brands_type() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       brandData
-          .getBrandsType(
-            userID,
-            categorey_type!,
-            categorey_name!,
-            brand_name!,
-          )
+          .getBrandsType(userID, categorey_type!, categorey_name!, brand_name!)
           .listen((event) {
-            brandsTypeList.value = event.docs;
+            brandsTypeList.value = event;
             if (brandsTypeList.isEmpty) {
               statusreqest = Statusreqest.empty;
               update();
@@ -139,8 +131,7 @@ class BrandsTypeControllerImp extends BrandsTypeController {
       get_brands_type();
     } else {
       brandsTypeList.value =
-          brandsTypeList.where((doc) {
-            final data = doc.data();
+          brandsTypeList.where((data) {
             final fileView = data["product_name"].toString().toLowerCase();
             return fileView.contains(search.toLowerCase());
           }).toList();
@@ -182,8 +173,7 @@ class BrandsTypeControllerImp extends BrandsTypeController {
   ) {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     String productBuingPrice =
         product_buying_controller.text.isEmpty
             ? buiyngPrice
@@ -216,8 +206,7 @@ class BrandsTypeControllerImp extends BrandsTypeController {
 
   @override
   deleteBrandsType(String productName) {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       brandData.deleteBrandsType(userID, productName);
     } catch (e) {

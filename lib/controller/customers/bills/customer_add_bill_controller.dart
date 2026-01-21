@@ -43,6 +43,8 @@ abstract class CustomeraddBiilController extends GetxController {
   deleteProduct(int productIndex);
   generateRandomInvoiceId(String username);
   void printPdf();
+  addDept();
+  addBillToDepts();
 }
 
 class CustomerBiilAddControllerImp extends CustomeraddBiilController {
@@ -90,10 +92,10 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
   // --------------------------------------------------------bill data
   @override
   addCustomerBill() async {
-    if (customer_name == null ||
-        customer_city == null ||
-        customer_id == null ||
-        bill_payment_type == null) {
+    if (_isNullOrEmpty(customer_name) ||
+        _isNullOrEmpty(customer_city) ||
+        _isNullOrEmpty(customer_id) ||
+        _isNullOrEmpty(bill_payment_type)) {
       custom_snackBar();
       statusreqest = Statusreqest.success;
       update();
@@ -110,7 +112,6 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
           userID,
           bill_add_date,
         );
-
         statusreqest = Statusreqest.success;
         update();
       } catch (e) {
@@ -119,7 +120,9 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
       }
     }
   }
+  
 
+  // ignore: non_constant_identifier_names
   SnackbarController custom_success_snackbar() {
     return Get.showSnackbar(
       GetSnackBar(
@@ -139,13 +142,13 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
 
     try {
       customersData.getCustomerByID(userID, customer_id!).listen((event) {
-        customerData = event.data();
-        customer_city = customerData!["customer_city"];
-        customer_name = customerData!["customer_name"];
-        if (customerData!.isEmpty) {
-          statusreqest = Statusreqest.empty;
-        } else {
+        if (event != null) {
+          customerData = event;
+          customer_city = customerData!["customer_city"];
+          customer_name = customerData!["customer_name"];
           statusreqest = Statusreqest.success;
+        } else {
+          statusreqest = Statusreqest.empty;
         }
         update();
       });
@@ -186,9 +189,9 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
     String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       customersData.getAllCustomers(userID).listen((event) {
-        customersList.value = event.docs;
+        customersList.value = event;
         customers_list_dropdownItrm = convertToDropdownItems(
-          event.docs,
+          event,
           'customer_name',
         );
         if (customersList.isEmpty) {
@@ -228,7 +231,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
     String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       _productData.getAllproduct(userID).listen((event) {
-        all_product_list.value = event.docs;
+        all_product_list.value = event;
         if (all_product_list.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {
@@ -256,8 +259,7 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
       getAllProducts();
     } else {
       all_product_list.value =
-          all_product_list.where((doc) {
-            final data = doc.data();
+          all_product_list.where((data) {
             final fileView = data["product_name"].toString().toLowerCase();
             return fileView.contains(search.toLowerCase());
           }).toList();
@@ -305,8 +307,10 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
         userID,
         productId,
       );
-      product_price = productData["product_sales_price"];
-      prodect_profits = productData["product_profits"];
+      if (productData != null) {
+        product_price = productData["product_sales_price"];
+        prodect_profits = productData["product_profits"];
+      }
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();
@@ -322,8 +326,8 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
 
       String userID = services.sharedPreferences.getString(AppShared.userID)!;
       try {
-        customerBillData.getBillProdects(userID, bill_id!).listen((event) {
-          bill_prodects_list.value = event.docs;
+        customerBillData.getBillProducts(userID, bill_id!).listen((event) {
+          bill_prodects_list.value = event;
           if (bill_prodects_list.isEmpty) {
             statusreqest = Statusreqest.notAdded;
           } else {
@@ -390,6 +394,11 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
 
   @override
   saveBillData() async {
+    print('DEBUG: saveBillData called');
+    print('DEBUG: customer_name: $customer_name');
+    print('DEBUG: bill_payment_type: $bill_payment_type');
+    print('DEBUG: bill_prodects_list.length: ${bill_prodects_list.length}');
+
     String userID = services.sharedPreferences.getString(AppShared.userID)!;
     if (!is_saved) {
       statusreqest = Statusreqest.loading;
@@ -409,7 +418,18 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
             total_product_price,
             total_product_profits,
           );
+
+          // Add debt operations if payment type is "Religion" (borçlu)
+          if (bill_payment_type == "Religion") {
+            await addDept();
+            await addBillToDepts();
+          }
+
           custom_success_snackbar();
+          Get.toNamed(
+            AppRoutes.customer_bills_details_page,
+            arguments: {'bill_id': bill_id},
+          );
         } else {
           custom_snackBar();
           statusreqest = Statusreqest.success;
@@ -557,5 +577,51 @@ class CustomerBiilAddControllerImp extends CustomeraddBiilController {
       createPdf();
       goToPdfViewPage(pdfBytes);
     }
+  }
+
+  @override
+  Future<void> addDept() async {
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
+    try {
+      await customerDeptsData.addDepts(
+        customer_id!,
+        customer_name!,
+        customer_city!,
+        userID,
+        total_product_price,
+        bill_add_date,
+      );
+      statusreqest = Statusreqest.success;
+      update();
+    } catch (e) {
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
+  }
+
+  @override
+  Future<void> addBillToDepts() async {
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
+    try {
+      await customerDeptsData.addBillToDepts(
+        bill_no!,
+        bill_id!,
+        customer_id!,
+        bill_payment_type!,
+        userID,
+        total_product_price,
+        bill_add_date,
+      );
+      statusreqest = Statusreqest.success;
+      update();
+    } catch (e) {
+      statusreqest = Statusreqest.faliure;
+      update();
+    }
+  }
+
+  // Helper method to check if a string is null or empty
+  bool _isNullOrEmpty(String? value) {
+    return value == null || value.isEmpty;
   }
 }

@@ -104,8 +104,8 @@ class WithdrawnFundsControllerImp extends WithdrawnFundsController {
           services.sharedPreferences.getString(AppShared.userID)!;
       _withdrawnFundData.getWithdrawnFund(userID, categoryID!).listen((event) {
         withdrawnFundsList.value =
-            event.docs.where((element) {
-              final expenseData = element.data();
+            event.where((element) {
+              final expenseData = element;
               if (expenseData.containsKey("date") &&
                   expenseData["date"] != null) {
                 final DateTime expenseDate = expenseData["date"].toDate();

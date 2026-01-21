@@ -24,7 +24,7 @@ abstract class SuppliersBillViewController extends GetxController {
 class SuppliersBillViewControllerImp extends SuppliersBillViewController {
   SupplierBillData supplierBillData = SupplierBillData();
   SupplierDeptsData supplierDeptsData = SupplierDeptsData();
-  var supplier_bills_list = [].obs;
+  var supplierBillsList = <Map<String, dynamic>>[].obs;
   Services services = Get.find();
   Statusreqest statusreqest = Statusreqest.success;
   late TextEditingController searchBillsTextController =
@@ -39,12 +39,12 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
     update();
     String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      supplierBillData.getAllBils(userID).listen((event) {
-        supplier_bills_list.value = event.docs;
-        supplier_bills_list.value =
-            supplier_bills_list.where((doc) {
-              final data = doc.data();
-              final DateTime billDate = data["bill_date"].toDate();
+      supplierBillData.getAllBills(userID).listen((event) {
+        List<Map<String, dynamic>> allBills =
+            event.map((doc) => doc).toList();
+        supplierBillsList.value =
+            allBills.where((data) {
+              final DateTime billDate = DateTime.parse(data["bill_date"]);
               if (selectedDateRange == null) {
                 return (billDate.year == startedDate.year &&
                     billDate.month == startedDate.month &&
@@ -56,7 +56,7 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
                 );
               }
             }).toList();
-        if (supplier_bills_list.isEmpty) {
+        if (supplierBillsList.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
@@ -75,9 +75,8 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
     if (search.isEmpty) {
       getSuppliersBills();
     } else {
-      supplier_bills_list.value =
-          supplier_bills_list.where((doc) {
-            final data = doc.data();
+      supplierBillsList.value =
+          supplierBillsList.where((data) {
             final supplierName = data["supplier_name"].toString().toLowerCase();
             final billId = data["bill_no"].toString().toLowerCase();
             if (supplierName.contains(search.toLowerCase()) ||
@@ -87,7 +86,7 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
               return false;
             }
           }).toList();
-      if (supplier_bills_list.isEmpty) {
+      if (supplierBillsList.isEmpty) {
         statusreqest = Statusreqest.empty;
       }
       update();
@@ -100,15 +99,15 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
       getSuppliersBills();
     } else {
       String userID = services.sharedPreferences.getString(AppShared.userID)!;
-      supplierBillData.getAllBils(userID).listen((event) {
-        supplier_bills_list.value = event.docs;
-        supplier_bills_list.value =
-            supplier_bills_list.where((doc) {
-              final data = doc.data();
+      supplierBillData.getAllBills(userID).listen((event) {
+        List<Map<String, dynamic>> allBills =
+            event.map((doc) => doc).toList();
+        supplierBillsList.value =
+            allBills.where((data) {
               final fileView = data["supplier_city"].toLowerCase();
               return fileView.contains(cityName.toLowerCase());
             }).toList();
-        if (supplier_bills_list.isEmpty) {
+        if (supplierBillsList.isEmpty) {
           statusreqest = Statusreqest.empty;
         }
         selectedSupplierCity = cityName;
@@ -209,7 +208,7 @@ class SuppliersBillViewControllerImp extends SuppliersBillViewController {
     try {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
-      await supplierDeptsData.delteBillFromDepts(billId, customerId, userID);
+      await supplierDeptsData.deleteBillFromDepts(billId, customerId, userID);
       statusreqest = Statusreqest.success;
       update();
     } catch (e) {

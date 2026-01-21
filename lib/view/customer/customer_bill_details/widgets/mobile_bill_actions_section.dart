@@ -123,7 +123,7 @@ class MobileBillActionsSection
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        height: 80,
+        height: 100,
         padding: const EdgeInsets.all(DesignTokens.spacing16),
         decoration: BoxDecoration(
           color: color.withValues(alpha: 0.1),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -29,7 +28,7 @@ class CategoreyTypeControllerImp extends CategoreyTypeController {
       TextEditingController();
   Services services = Get.find();
   String? categorey_name;
-  var categoreyTypeList = [].obs;
+  var categoreyTypeList = <Map<String, dynamic>>[].obs;
   @override
   // ignore: non_constant_identifier_names
   show_dialog() {
@@ -45,15 +44,10 @@ class CategoreyTypeControllerImp extends CategoreyTypeController {
   add_categorey_type() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     String categoreyType = _categorey_type.text;
     try {
-      categoreysData.addCategorey_type(
-        categorey_name!,
-        userID,
-        categoreyType,
-      );
+      categoreysData.addCategoryType(categorey_name!, userID, categoreyType);
       statusreqest = Statusreqest.success;
       update();
     } catch (e) {
@@ -84,14 +78,11 @@ class CategoreyTypeControllerImp extends CategoreyTypeController {
     statusreqest = Statusreqest.loading;
     update();
 
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
 
     try {
-      categoreysData.getCategoreysType(userID, categorey_name!).listen((
-        event,
-      ) {
-        categoreyTypeList.value = event.docs;
+      categoreysData.getCategoreysType(userID, categorey_name!).listen((event) {
+        categoreyTypeList.value = event;
         update();
         if (categoreyTypeList.isEmpty) {
           statusreqest = Statusreqest.empty;
@@ -114,8 +105,7 @@ class CategoreyTypeControllerImp extends CategoreyTypeController {
       getCategoreysType();
     } else {
       categoreyTypeList.value =
-          categoreyTypeList.where((doc) {
-            final data = doc.data();
+          categoreyTypeList.where((data) {
             final fileView = data["categorey_type"].toString().toLowerCase();
             return fileView.contains(search.toLowerCase());
           }).toList();
@@ -136,10 +126,9 @@ class CategoreyTypeControllerImp extends CategoreyTypeController {
 
   @override
   delete_categorey(String id) {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      categoreysData.deleteCategorey_type(userID, id);
+      categoreysData.deleteCategoryType(userID, id);
       update();
     } catch (e) {
       statusreqest = Statusreqest.faliure;

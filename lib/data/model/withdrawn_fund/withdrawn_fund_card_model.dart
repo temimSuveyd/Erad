@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class WithdrawnFundCardModel {
   DateTime? date;
@@ -15,7 +14,7 @@ class WithdrawnFundCardModel {
     this.id,
   );
 
-  WithdrawnFundCardModel.formatJson(QueryDocumentSnapshot queryToJson) {
+  WithdrawnFundCardModel.formatJson(dynamic queryToJson) {
     date = queryToJson["date"].toDate();
     amount = queryToJson["amount"];
     isRepeatWithdrawnFund = queryToJson["is_repeat_withdrawn_fund"];

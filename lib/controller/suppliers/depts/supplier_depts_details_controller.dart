@@ -57,7 +57,7 @@ class SupplierDeptsDetailsControllerImpl
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
       _supplierDeptsData.getBillById(userID, deptId!).listen((event) {
-        deptsList.value = event.docs;
+        deptsList.value = event;
         deptsList.value =
             deptsList.where((data) {
               final DateTime billDate = data['bill_date'].toDate();
@@ -95,7 +95,7 @@ class SupplierDeptsDetailsControllerImpl
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
       _supplierDeptsData.getAllPayments(userID, deptId!).listen((event) {
-        paymentsList.value = event.docs;
+        paymentsList.value = event;
         paymentsList.value =
             paymentsList.where((data) {
               final DateTime billDate = data['payment_date'].toDate();
@@ -132,10 +132,10 @@ class SupplierDeptsDetailsControllerImpl
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
       _supplierDeptsData.getDeptDetails(userID, deptId!).then((value) {
-        if (value.data()!.isEmpty) {
+        if (value!.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {
-          deptModel = DeptsModel.formatJson(value.data());
+          deptModel = DeptsModel.formatJson(value);
           statusreqest = Statusreqest.success;
         }
         update();
@@ -355,7 +355,7 @@ class SupplierDeptsDetailsControllerImpl
     try {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
-      _supplierDeptsData.delteDepts(deptId!, userID);
+      _supplierDeptsData.deleteDepts(deptId!, userID);
       statusreqest = Statusreqest.success;
       update();
     } catch (e) {
@@ -391,7 +391,7 @@ class SupplierDeptsDetailsControllerImpl
     try {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
-      _supplierDeptsData.deltePaymentFromDepts(id, deptId!, userID);
+      _supplierDeptsData.deletePaymentFromDepts(id, deptId!, userID);
       getBills();
       statusreqest = Statusreqest.success;
       update();

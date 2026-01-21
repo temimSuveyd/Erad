@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DeptsModel {
   DateTime? bill_date;
@@ -10,7 +9,7 @@ class DeptsModel {
   DeptsModel(this.bill_date, this.supplier_id, this.total_price);
   DeptsModel.formatJson(dynamic mapToJson) {
     id = mapToJson["dept_id"];
-    bill_date = (mapToJson["bill_date"] as Timestamp).toDate();
+    bill_date =  DateTime.parse(mapToJson["bill_date"]);
     supplier_id = mapToJson["supplier_id"];
     supplier_name = mapToJson["supplier_name"];
     total_price = mapToJson["total_price"].toDouble();

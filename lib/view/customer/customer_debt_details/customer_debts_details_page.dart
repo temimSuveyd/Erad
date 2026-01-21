@@ -10,6 +10,7 @@ import 'package:erad/view/customer/customer_debt_details/widgets/mobile_debt_sum
 import 'package:erad/view/customer/customer_debt_details/widgets/mobile_date_filter_section.dart';
 import 'package:erad/view/customer/customer_debt_details/widgets/mobile_bills_section.dart';
 import 'package:erad/view/customer/customer_debt_details/widgets/mobile_payments_section.dart';
+import 'package:erad/view/customer/customer_debt_details/widgets/month_selector_widget.dart';
 
 class CustomerDebtsDetailsPage
     extends GetView<CustomerDeptsDetailsControllerImp> {
@@ -52,6 +53,14 @@ class CustomerDebtsDetailsPage
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: padding),
                       child: const MobileDateFilterSection(),
+                    ),
+                  ),
+
+                  // Month selector
+                  SliverToBoxAdapter(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: padding),
+                      child: const MonthSelectorWidget(),
                     ),
                   ),
 

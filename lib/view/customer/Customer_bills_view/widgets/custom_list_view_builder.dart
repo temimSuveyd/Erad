@@ -21,10 +21,10 @@ class CustomListViewBuilder extends StatelessWidget {
             statusreqest: controller.statusreqest,
             message: "لا توجد فاتورة لهذا تاريخ",
             widget: SliverList.builder(
-              itemCount: controller.customer_bills_list.length,
+              itemCount: controller.customerBillsList.length,
               itemBuilder: (context, index) {
                 final billModel = BillModel.formatJson(
-                  controller.customer_bills_list[index],
+                  controller.customerBillsList[index],
                 );
 
                 // Use mobile card for mobile screens, desktop card for larger screens

@@ -137,7 +137,7 @@ class MobileCustomerDebtsHeader
       sum,
       debt,
     ) {
-      final data = debt.data() as Map<String, dynamic>;
+      final data = debt as Map<String, dynamic>;
       return sum + (data['dept_amount']?.toDouble() ?? 0.0);
     });
 

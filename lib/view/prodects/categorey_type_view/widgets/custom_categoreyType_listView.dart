@@ -70,13 +70,13 @@ class Custom_categoreyType_listView extends StatelessWidget {
               if (isMobile) {
                 // Use mobile card for mobile devices
                 return MobileCategoryTypeCard(
-                  title: controller.categoreyTypeList[index]["categorey_type"],
-                  id: controller.categoreyTypeList[index].id,
+                  title: controller.categoreyTypeList[index]["category_type"],
+                  id: controller.categoreyTypeList[index]['id'],
                 );
               } else {
                 // Use desktop card for larger screens
                 return Custom_categoreyType_Card(
-                  title: controller.categoreyTypeList[index]["categorey_type"],
+                  title: controller.categoreyTypeList[index]["category_type"],
                 );
               }
             },

@@ -213,7 +213,7 @@ class MobileProductsSection extends GetView<CustomerBiilAddControllerImp> {
         shrinkWrap: true,
         itemCount: controller.all_product_list.length,
         itemBuilder: (context, index) {
-          final product = controller.all_product_list[index].data();
+          final product = controller.all_product_list[index];
           return ListTile(
             dense: true,
             leading: Container(
@@ -241,7 +241,7 @@ class MobileProductsSection extends GetView<CustomerBiilAddControllerImp> {
               ).copyWith(color: AppColors.textSecondary),
             ),
             onTap: () {
-              controller.product_id = controller.all_product_list[index].id;
+              controller.product_id = controller.all_product_list[index]['id'];
               controller.product_name = product['product_name'];
               controller.setProductFromSearch(product['product_name']);
             },

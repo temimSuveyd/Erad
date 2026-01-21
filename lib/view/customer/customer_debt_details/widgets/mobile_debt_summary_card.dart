@@ -243,18 +243,10 @@ class MobileDebtSummaryCard extends GetView<CustomerDeptsDetailsControllerImp> {
   }
 
   double _calculateTotalDebts(CustomerDeptsDetailsControllerImp controller) {
-    double total = 0;
-    for (var debt in controller.deptsList) {
-      total += debt['total_price'] ?? 0;
-    }
-    return total;
+    return controller.calculateTotalDebts();
   }
 
   double _calculateTotalPayments(CustomerDeptsDetailsControllerImp controller) {
-    double total = 0;
-    for (var payment in controller.paymentsList) {
-      total += payment['total_price'] ?? 0;
-    }
-    return total;
+    return controller.calculateTotalPayments();
   }
 }

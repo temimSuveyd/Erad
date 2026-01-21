@@ -27,7 +27,7 @@ class CategoreysViewPage extends GetView<CategoreyControllerImp> {
               ? null
               : FloatingActionButton(
                 onPressed: () {
-                  // Add category functionality
+                  controller.show_dialog();
                 },
                 backgroundColor: AppColors.primary,
                 child: Icon(Icons.add, color: AppColors.white),

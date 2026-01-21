@@ -30,6 +30,12 @@ abstract class CustomerDeptsDetailsController extends GetxController {
   Future startedDate();
   void setDateRenage(DateTimeRange dateRange);
   void setPaymentDate(DateTime date);
+  void selectMonth(String monthKey);
+  Map<String, List<Map<String, dynamic>>> groupBillsByMonth();
+  Map<String, List<Map<String, dynamic>>> groupPaymentsByMonth();
+  double calculateTotalDebts();
+  double calculateTotalPayments();
+  double calculateRemainingDebt();
 }
 
 class CustomerDeptsDetailsControllerImp extends CustomerDeptsDetailsController {
@@ -42,6 +48,12 @@ class CustomerDeptsDetailsControllerImp extends CustomerDeptsDetailsController {
   double totalDept = 0.0;
   var deptsList = [].obs;
   var paymentsList = [].obs;
+  var allBillsList = [].obs; // Tüm faturalar (filtrelenmemiş)
+  var allPaymentsList = [].obs; // Tüm ödemeler (filtrelenmemiş)
+
+  // Ay bazında gruplandırma için
+  var selectedMonth = ''.obs; // Seçili ay
+  var availableMonths = <String>[].obs; // Mevcut aylar listesi
 
   DeptsModel? deptModel;
   DateTime paymentDate = DateTime.now();
@@ -56,23 +68,36 @@ class CustomerDeptsDetailsControllerImp extends CustomerDeptsDetailsController {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
       _customerDeptsData.getBillById(userID, deptId!).listen((event) {
-        deptsList.value = event.docs;
-        deptsList.value =
-            deptsList.where((data) {
-              final DateTime billDate = data['bill_date'].toDate();
-              if (selectedDateRange == null) {
-                return isDateInRange(
-                  billDate: billDate,
-                  range: startedDateRange!,
-                );
-              } else {
-                return isDateInRange(
-                  billDate: billDate,
-                  range: selectedDateRange!,
-                );
-              }
-            }).toList();
+        allBillsList.value = event; // Tüm faturaları sakla
+
+        // Eğer ay seçilmişse, sadece o ayın faturalarını göster
+        if (selectedMonth.value.isNotEmpty) {
+          deptsList.value = _filterBillsByMonth(
+            allBillsList,
+            selectedMonth.value,
+          );
+        } else {
+          // Tarih aralığı filtresi uygula
+          deptsList.value =
+              allBillsList.where((data) {
+                final DateTime billDate = data['bill_date'].toDate();
+                if (selectedDateRange == null) {
+                  return isDateInRange(
+                    billDate: billDate,
+                    range: startedDateRange!,
+                  );
+                } else {
+                  return isDateInRange(
+                    billDate: billDate,
+                    range: selectedDateRange!,
+                  );
+                }
+              }).toList();
+        }
+
+        _updateAvailableMonths();
         calculatesAmountOfRemainingDebt();
+
         if (deptsList.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {
@@ -94,22 +119,33 @@ class CustomerDeptsDetailsControllerImp extends CustomerDeptsDetailsController {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
       _customerDeptsData.getAllPayments(userID, deptId!).listen((event) {
-        paymentsList.value = event.docs;
-        paymentsList.value =
-            paymentsList.where((data) {
-              final DateTime billDate = data['payment_date'].toDate();
-              if (selectedDateRange == null) {
-                return isDateInRange(
-                  billDate: billDate,
-                  range: startedDateRange!,
-                );
-              } else {
-                return isDateInRange(
-                  billDate: billDate,
-                  range: selectedDateRange!,
-                );
-              }
-            }).toList();
+        allPaymentsList.value = event; // Tüm ödemeleri sakla
+
+        // Eğer ay seçilmişse, sadece o ayın ödemelerini göster
+        if (selectedMonth.value.isNotEmpty) {
+          paymentsList.value = _filterPaymentsByMonth(
+            allPaymentsList,
+            selectedMonth.value,
+          );
+        } else {
+          // Tarih aralığı filtresi uygula
+          paymentsList.value =
+              allPaymentsList.where((data) {
+                final DateTime billDate = data['payment_date'].toDate();
+                if (selectedDateRange == null) {
+                  return isDateInRange(
+                    billDate: billDate,
+                    range: startedDateRange!,
+                  );
+                } else {
+                  return isDateInRange(
+                    billDate: billDate,
+                    range: selectedDateRange!,
+                  );
+                }
+              }).toList();
+        }
+
         if (paymentsList.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {
@@ -128,13 +164,11 @@ class CustomerDeptsDetailsControllerImp extends CustomerDeptsDetailsController {
     statusreqest = Statusreqest.loading;
     update();
     try {
-      final String userID =
-          services.sharedPreferences.getString(AppShared.userID)!;
-      _customerDeptsData.getDeptDetails(userID, deptId!).then((value) {
-        if (value.data()!.isEmpty) {
+      _customerDeptsData.getDeptDetails(deptId!).then((value) {
+        if (value == null || value.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {
-          deptModel = DeptsModel.formatJson(value.data());
+          deptModel = DeptsModel.formatJson(value);
           statusreqest = Statusreqest.success;
         }
         update();
@@ -289,17 +323,13 @@ class CustomerDeptsDetailsControllerImp extends CustomerDeptsDetailsController {
 
   @override
   bool calculatesAmountOfRemainingDebt() {
-    double totalDepts = 0;
-    double totalPayment = 0;
-    for (var total_Depts in deptsList) {
-      totalDepts = total_Depts['total_price'] + totalDepts;
-    }
-    for (var total_payments in paymentsList) {
-      totalPayment = total_payments['total_price'] + totalPayment;
-    }
-    if (totalDepts - totalPayment <= -1 &&
-        paymentsList.isNotEmpty &&
-        deptsList.isNotEmpty) {
+    // Tüm borçları ve ödemeleri hesapla (filtrelenmemiş verilerle)
+    double totalDebts = calculateTotalDebts();
+    double totalPayments = calculateTotalPayments();
+
+    if (totalDebts - totalPayments <= -1 &&
+        allPaymentsList.isNotEmpty &&
+        allBillsList.isNotEmpty) {
       custom_snackBar(
         AppColors.primary,
         "لقد انتهى الدين",
@@ -308,7 +338,7 @@ class CustomerDeptsDetailsControllerImp extends CustomerDeptsDetailsController {
       update();
       return false;
     } else {
-      remainingDebtAamount = totalDepts - totalPayment;
+      remainingDebtAamount = totalDebts - totalPayments;
       updateDeptData();
       update();
       return true;
@@ -354,7 +384,7 @@ class CustomerDeptsDetailsControllerImp extends CustomerDeptsDetailsController {
     try {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
-      _customerDeptsData.delteDepts(deptId!, userID);
+      _customerDeptsData.deleteDepts(deptId!, userID);
       statusreqest = Statusreqest.success;
       update();
     } catch (e) {
@@ -390,7 +420,7 @@ class CustomerDeptsDetailsControllerImp extends CustomerDeptsDetailsController {
     try {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
-      _customerDeptsData.deltePaymentFromDepts(id, deptId!, userID);
+      _customerDeptsData.deletePaymentFromDepts(id, deptId!, userID);
       getBills();
       statusreqest = Statusreqest.success;
       update();
@@ -416,6 +446,159 @@ class CustomerDeptsDetailsControllerImp extends CustomerDeptsDetailsController {
   void setPaymentDate(DateTime date) {
     paymentDate = date;
     update();
+  }
+
+  // Yeni metodlar
+  @override
+  void selectMonth(String monthKey) {
+    if (selectedMonth.value == monthKey) {
+      // Aynı ay seçilirse, filtreyi kaldır
+      selectedMonth.value = '';
+      deptsList.value = allBillsList;
+      paymentsList.value = allPaymentsList;
+    } else {
+      selectedMonth.value = monthKey;
+      deptsList.value = _filterBillsByMonth(allBillsList, monthKey);
+      paymentsList.value = _filterPaymentsByMonth(allPaymentsList, monthKey);
+    }
+    update();
+  }
+
+  @override
+  Map<String, List<Map<String, dynamic>>> groupBillsByMonth() {
+    Map<String, List<Map<String, dynamic>>> grouped = {};
+
+    for (var bill in allBillsList) {
+      final DateTime billDate = bill['bill_date'].toDate();
+      final String monthKey =
+          '${billDate.year}-${billDate.month.toString().padLeft(2, '0')}';
+
+      if (!grouped.containsKey(monthKey)) {
+        grouped[monthKey] = [];
+      }
+      grouped[monthKey]!.add(bill);
+    }
+
+    return grouped;
+  }
+
+  @override
+  Map<String, List<Map<String, dynamic>>> groupPaymentsByMonth() {
+    Map<String, List<Map<String, dynamic>>> grouped = {};
+
+    for (var payment in allPaymentsList) {
+      final DateTime paymentDate = payment['payment_date'].toDate();
+      final String monthKey =
+          '${paymentDate.year}-${paymentDate.month.toString().padLeft(2, '0')}';
+
+      if (!grouped.containsKey(monthKey)) {
+        grouped[monthKey] = [];
+      }
+      grouped[monthKey]!.add(payment);
+    }
+
+    return grouped;
+  }
+
+  @override
+  double calculateTotalDebts() {
+    double total = 0.0;
+    for (var debt in allBillsList) {
+      total += (debt['total_price'] as num).toDouble();
+    }
+    return total;
+  }
+
+  @override
+  double calculateTotalPayments() {
+    double total = 0.0;
+    for (var payment in allPaymentsList) {
+      total += (payment['total_price'] as num).toDouble();
+    }
+    return total;
+  }
+
+  @override
+  double calculateRemainingDebt() {
+    return calculateTotalDebts() - calculateTotalPayments();
+  }
+
+  // Yardımcı metodlar
+  List<Map<String, dynamic>> _filterBillsByMonth(
+    List<dynamic> bills,
+    String monthKey,
+  ) {
+    return bills
+        .where((bill) {
+          final DateTime billDate = bill['bill_date'].toDate();
+          final String billMonthKey =
+              '${billDate.year}-${billDate.month.toString().padLeft(2, '0')}';
+          return billMonthKey == monthKey;
+        })
+        .cast<Map<String, dynamic>>()
+        .toList();
+  }
+
+  List<Map<String, dynamic>> _filterPaymentsByMonth(
+    List<dynamic> payments,
+    String monthKey,
+  ) {
+    return payments
+        .where((payment) {
+          final DateTime paymentDate = payment['payment_date'].toDate();
+          final String paymentMonthKey =
+              '${paymentDate.year}-${paymentDate.month.toString().padLeft(2, '0')}';
+          return paymentMonthKey == monthKey;
+        })
+        .cast<Map<String, dynamic>>()
+        .toList();
+  }
+
+  void _updateAvailableMonths() {
+    Set<String> months = {};
+
+    // Faturalardan ayları topla
+    for (var bill in allBillsList) {
+      final DateTime billDate = bill['bill_date'].toDate();
+      final String monthKey =
+          '${billDate.year}-${billDate.month.toString().padLeft(2, '0')}';
+      months.add(monthKey);
+    }
+
+    // Ödemelerden ayları topla
+    for (var payment in allPaymentsList) {
+      final DateTime paymentDate = payment['payment_date'].toDate();
+      final String monthKey =
+          '${paymentDate.year}-${paymentDate.month.toString().padLeft(2, '0')}';
+      months.add(monthKey);
+    }
+
+    availableMonths.value =
+        months.toList()..sort((a, b) => b.compareTo(a)); // En yeni ay önce
+  }
+
+  String getMonthDisplayName(String monthKey) {
+    final parts = monthKey.split('-');
+    final year = parts[0];
+    final month = int.parse(parts[1]);
+
+    const monthNames = [
+      '',
+      'يناير',
+      'فبراير',
+      'مارس',
+      'أبريل',
+      'مايو',
+      'يونيو',
+      'يوليو',
+      'أغسطس',
+      'سبتمبر',
+      'أكتوبر',
+      'نوفمبر',
+      'ديسمبر',
+    ];
+
+    return '${monthNames[month]} $year';
   }
 
   @override

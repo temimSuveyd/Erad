@@ -97,8 +97,8 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
     try {
       statusreqest = Statusreqest.loading;
       update();
-      supplierBillData.getBillProdects(userID!, bill_id!).listen((event) {
-        supplierProductList.value = event.docs;
+      supplierBillData.getBillProducts(userID!, bill_id!).listen((event) {
+        supplierProductList.value = event;
         if (supplierProductList.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {
@@ -157,9 +157,9 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
   Future getSupplierProductById(String productId) async {
     try {
       await supplierBillData
-          .getBillProdectBayId(userID!, bill_id!, productId)
+          .getBillProductById(userID!, bill_id!, productId)
           .then((value) {
-            product_numper = value["product_number"];
+            product_numper = value!["product_number"];
             product_price = value["product_price"];
           });
       statusreqest = Statusreqest.success;
@@ -327,7 +327,7 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
       await addSupplierDiscount(discount);
       total_earn = total_earn! - discount;
       total_price = total_price! - discount;
-      await supplierBillData.update_total_price(
+      await supplierBillData.updateTotalPrice(
         userID!,
         bill_id!,
         total_price!,
@@ -473,7 +473,7 @@ class SuppliersBillDetailsControllerImp extends SuppliersBillDetailsController {
           services.sharedPreferences.getString(AppShared.userID)!;
       final String supplierId = supplierBillModel!.supplier_id!;
       final String billId = supplierBillModel!.bill_id!;
-      supplierDeptsData.delteBillFromDepts(billId, supplierId, userID);
+      supplierDeptsData.deleteBillFromDepts(billId, supplierId, userID);
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();

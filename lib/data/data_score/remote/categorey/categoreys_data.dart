@@ -1,72 +1,96 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:erad/core/config/supabase_config.dart';
 
 class CategoreysData {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  // categorey
-
-  void addCategoreys(String categoreyName, String userID) {
-    _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("categoreys")
-        .doc(categoreyName)
-        .set({"categorey_name": categoreyName});
+  Future<void> addCategoreys(String categoryName, String userID) async {
+    try {
+      await SupabaseConfig.client.from('categories').insert({
+        'user_id': userID,
+        'category_name': categoryName,
+      });
+    } catch (e) {
+      print('Error adding category: $e');
+      rethrow;
+    }
   }
 
-    void deleteCategorey(String categoreyName, String userID) {
-    _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("categoreys")
-        .doc(categoreyName)
-        .delete();
+  Future<void> deleteCategorey(String categoryName, String userID) async {
+    try {
+      await SupabaseConfig.client
+          .from('categories')
+          .delete()
+          .eq('category_name', categoryName)
+          .eq('user_id', userID);
+    } catch (e) {
+      print('Error deleting category: $e');
+      rethrow;
+    }
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getCategoreys(String userID) {
-    return _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("categoreys")
-        .snapshots();
+  Stream<List<Map<String, dynamic>>> getCategoreys(String userID) {
+    return SupabaseConfig.client
+        .from('categories')
+        .stream(primaryKey: ['id'])
+        .map(
+          (data) => data.where((item) => item['user_id'] == userID).toList(),
+        );
   }
 
-
-  void addCategorey_type(
-    String categoreyName,
+  Future<void> addCategoryType(
+    String categoryName,
     String userID,
-    String categoreyType,
-  ) {
-    _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("categoreys_type")
-        .doc(categoreyType)
-        .set({
-          "categorey_type": categoreyType,
-          "categorey_name": categoreyName,
-        });
+    String categoryType,
+  ) async {
+    try {
+      // First get the category ID
+      final categoryResponse =
+          await SupabaseConfig.client
+              .from('categories')
+              .select('id')
+              .eq('user_id', userID)
+              .eq('category_name', categoryName)
+              .single();
+
+      await SupabaseConfig.client.from('category_types').insert({
+        'user_id': userID,
+        'category_id': categoryResponse['id'],
+        'category_type': categoryType,
+        'category_name': categoryName,
+      });
+    } catch (e) {
+      print('Error adding category type: $e');
+      rethrow;
+    }
   }
-  void deleteCategorey_type(
-    String userID,
-    String categoreyType,
-  ) {
-    _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("categoreys_type")
-        .doc(categoreyType)
-        .delete();
+
+  Future<void> deleteCategoryType(String userID, String categoryType) async {
+    try {
+      await SupabaseConfig.client
+          .from('category_types')
+          .delete()
+          .eq('category_type', categoryType)
+          .eq('user_id', userID);
+    } catch (e) {
+      print('Error deleting category type: $e');
+      rethrow;
+    }
   }
-  Stream<QuerySnapshot<Map<String, dynamic>>> getCategoreysType(
+
+  Stream<List<Map<String, dynamic>>> getCategoreysType(
     String userID,
-    String categoreyName,
+    String categoryName,
   ) {
-    return _firestore
-        .collection("users")
-        .doc(userID)
-        .collection("categoreys_type")
-        .where("categorey_name", isEqualTo: categoreyName)
-        .snapshots();
+    return SupabaseConfig.client
+        .from('category_types')
+        .stream(primaryKey: ['id'])
+        .map(
+          (data) =>
+              data
+                  .where(
+                    (item) =>
+                        item['user_id'] == userID &&
+                        item['category_name'] == categoryName,
+                  )
+                  .toList(),
+        );
   }
 }

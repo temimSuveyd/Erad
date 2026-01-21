@@ -1,10 +1,10 @@
-import 'package:firebase_core/firebase_core.dart';
+import 'package:erad/view/login/login_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:erad/core/services/app_services.dart';
-import 'package:erad/firebase_options.dart';
+import 'package:erad/core/config/supabase_config.dart';
 import 'package:erad/routes.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -20,21 +20,12 @@ void main() async {
     debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   }
 
-  // Initialize Firebase only for supported platforms
-  if (defaultTargetPlatform == TargetPlatform.android ||
-      defaultTargetPlatform == TargetPlatform.iOS ||
-      kIsWeb) {
-    try {
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
-    } catch (e) {
-      debugPrint('Firebase initialization error: $e');
-    }
-  } else {
-    debugPrint(
-      'Firebase not supported on this platform, running in offline mode',
-    );
+  // Initialize Supabase
+  try {
+    await SupabaseConfig.initialize();
+    debugPrint('Supabase initialized successfully');
+  } catch (e) {
+    debugPrint('Supabase initialization error: $e');
   }
 
   await initailservieses();

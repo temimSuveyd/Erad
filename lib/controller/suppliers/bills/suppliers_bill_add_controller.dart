@@ -58,7 +58,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   // Supplier data
   SuppliersData suppliersData = SuppliersData();
   Map<String, dynamic>? supplierData;
-  var SuppliersList = [].obs;
+  var suppliersList = <Map<String, dynamic>>[].obs;
   List<DropdownMenuItem<String>>? suppliers_list_dropdownItrm;
   String? supplier_name;
   String? supplier_city;
@@ -131,20 +131,20 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   }
 
   @override
-  getSupplierById() {
+  void getSupplierById() {
     statusreqest = Statusreqest.loading;
     update();
     String userID = services.sharedPreferences.getString(AppShared.userID)!;
 
     try {
       suppliersData.getSupplierByID(userID, supplier_id!).listen((event) {
-        supplierData = event.data();
-        supplier_city = supplierData!["supplier_city"];
-        supplier_name = supplierData!["supplier_name"];
-        if (supplierData!.isEmpty) {
-          statusreqest = Statusreqest.empty;
-        } else {
+        if (event!.isNotEmpty) {
+          supplierData = event;
+          supplier_city = supplierData!["supplier_city"];
+          supplier_name = supplierData!["supplier_name"];
           statusreqest = Statusreqest.success;
+        } else {
+          statusreqest = Statusreqest.empty;
         }
         update();
       });
@@ -174,18 +174,19 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   }
 
   @override
-  getAllSuppliers() {
+  void getAllSuppliers() {
     statusreqest = Statusreqest.loading;
     update();
     String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       suppliersData.getAllSuppliers(userID).listen((event) {
-        SuppliersList.value = event.docs;
+        // Convert QuerySnapshot to List<Map<String, dynamic>>
+        suppliersList.assignAll(event.map((doc) => doc).toList());
         suppliers_list_dropdownItrm = convertToDropdownItems(
-          event.docs,
+          suppliersList,
           'supplier_name',
         );
-        if (SuppliersList.isEmpty) {
+        if (suppliersList.isEmpty) {
           statusreqest = Statusreqest.faliure;
         } else {
           statusreqest = Statusreqest.success;
@@ -217,12 +218,12 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   // -------------------------------------------------------------------------------product data
 
   @override
-  getAllProducts() {
+  void getAllProducts() {
     statusreqest = Statusreqest.loading;
     String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       _productData.getAllproduct(userID).listen((event) {
-        all_product_list.value = event.docs;
+        all_product_list.value = event;
         if (all_product_list.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {
@@ -240,7 +241,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   }
 
   @override
-  searchForProduct() {
+  void searchForProduct() {
     if (!show_search_popupMenu) {
       show_search_popupMenu = true;
       update();
@@ -250,8 +251,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
       getAllProducts();
     } else {
       all_product_list.value =
-          all_product_list.where((doc) {
-            final data = doc.data();
+          all_product_list.where((data) {
             final fileView = data["product_name"].toString().toLowerCase();
             return fileView.contains(search.toLowerCase());
           }).toList();
@@ -290,15 +290,17 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   }
 
   @override
-  getProductById(String productId) async {
+  Future<void> getProductById(String productId) async {
     try {
       String userID = services.sharedPreferences.getString(AppShared.userID)!;
       final productData = await _productData.getBrandsTypeBayId(
         userID,
         productId,
       );
-      product_price = productData["product_sales_price"];
-      prodect_profits = productData["product_profits"];
+      if (productData != null) {
+        product_price = productData["product_sales_price"];
+        prodect_profits = productData["product_profits"];
+      }
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();
@@ -306,7 +308,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
   }
 
   @override
-  getBillProdects() {
+  void getBillProdects() {
     if (bill_id == null) {
     } else {
       statusreqest = Statusreqest.loading;
@@ -314,8 +316,8 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
 
       String userID = services.sharedPreferences.getString(AppShared.userID)!;
       try {
-        supplierBillData.getBillProdects(userID, bill_id!).listen((event) {
-          bill_prodects_list.value = event.docs;
+        supplierBillData.getBillProducts(userID, bill_id!).listen((event) {
+          bill_prodects_list.value = event;
           if (bill_prodects_list.isEmpty) {
             statusreqest = Statusreqest.notAdded;
           } else {
@@ -504,7 +506,7 @@ class SupplierBiilAddControllerImp extends SupplieraddBiilController {
         FocusScope.of(Get.context!).requestFocus(focusNode2);
       });
       product_name = product_name;
-      serach_for_product_controller.text = product_name!;
+      serach_for_product_controller.text = product_name;
     }
     show_search_popupMenu = false;
     update();

@@ -149,11 +149,8 @@ class MobileBillForm extends GetView<CustomerBiilAddControllerImp> {
                       ),
                     ],
                     onChanged: (value) => controller.setPaymentType(value),
-                    hint:
-                        controller.bill_payment_type == "Religion"
-                            ? "دَين"
-                            : "نقدي",
-                    value: "",
+                    hint: "اختر طريقة الدفع",
+                    value: controller.bill_payment_type ?? "",
                   ),
                 ),
 
@@ -237,9 +234,9 @@ class MobileBillForm extends GetView<CustomerBiilAddControllerImp> {
     showDatePicker(
       context: context,
       initialDate: controller.bill_add_date,
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2030),
-      locale: const Locale('ar'),
+      firstDate: DateTime(2026),
+      lastDate: DateTime(2050),
+      // locale: const Locale('ar'),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(

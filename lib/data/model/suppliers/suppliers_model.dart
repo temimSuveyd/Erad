@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SuppliersModel {
   String? supplier_name;
@@ -13,7 +12,7 @@ class SuppliersModel {
     this.supplier_phone,
   );
 
-  SuppliersModel.formatJson(QueryDocumentSnapshot mapToJson) {
+  SuppliersModel.formatJson(dynamic mapToJson) {
     supplier_city = mapToJson["supplier_city"];
     supplier_name = mapToJson["supplier_name"];
     supplier_id = mapToJson.id;

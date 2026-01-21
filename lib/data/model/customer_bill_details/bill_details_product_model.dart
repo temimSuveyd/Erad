@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BillDetailsProductsModel {
   String? product_name;
@@ -8,7 +7,7 @@ class BillDetailsProductsModel {
   String ? id ;
 
   BillDetailsProductsModel(this.product_name, this.product_number, this.product_price, this.id);
-  BillDetailsProductsModel.formatJson(DocumentSnapshot mapToJson) {
+  BillDetailsProductsModel.formatJson(dynamic mapToJson) {
     product_name = mapToJson["product_name"];
     product_price = mapToJson["product_price"];
     product_number = mapToJson["product_number"];

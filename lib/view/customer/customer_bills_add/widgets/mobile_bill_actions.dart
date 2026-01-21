@@ -102,28 +102,30 @@ class MobileBillActions extends GetView<CustomerBiilAddControllerImp> {
         Row(
           children: [
             // Save button
-            Expanded(
-              child: _buildActionButton(
-                context,
-                label: 'حفظ الفاتورة',
-                icon: Icons.save_outlined,
-                onPressed: _canSave() ? () => controller.saveBillData() : null,
-                backgroundColor: AppColors.success,
-                foregroundColor: AppColors.white,
+            if (!controller.is_saved)
+              Expanded(
+                child: _buildActionButton(
+                  context,
+                  label: 'حفظ الفاتورة',
+                  icon: Icons.save_outlined,
+                  onPressed:
+                      _canSave() ? () => controller.saveBillData() : null,
+                  backgroundColor: AppColors.success,
+                  foregroundColor: AppColors.white,
+                ),
               ),
-            ),
-            const SizedBox(width: DesignTokens.spacing12),
-            // Print button
-            Expanded(
-              child: _buildActionButton(
-                context,
-                label: 'طباعة',
-                icon: Icons.print_outlined,
-                onPressed: _canPrint() ? () => controller.printPdf() : null,
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.white,
-              ),
-            ),
+            // const SizedBox(width: DesignTokens.spacing12),
+            // // Print button
+            // Expanded(
+            //   child: _buildActionButton(
+            //     context,
+            //     label: 'طباعة',
+            //     icon: Icons.print_outlined,
+            //     onPressed: _canPrint() ? () => controller.printPdf() : null,
+            //     backgroundColor: AppColors.primary,
+            //     foregroundColor: AppColors.white,
+            //   ),
+            // ),
           ],
         ),
 
@@ -132,30 +134,30 @@ class MobileBillActions extends GetView<CustomerBiilAddControllerImp> {
         // Secondary actions row
         Row(
           children: [
-            // Create PDF button
-            Expanded(
-              child: _buildActionButton(
-                context,
-                label: 'إنشاء PDF',
-                icon: Icons.picture_as_pdf_outlined,
-                onPressed:
-                    controller.is_saved ? () => controller.createPdf() : null,
-                backgroundColor: AppColors.info,
-                foregroundColor: AppColors.white,
-              ),
-            ),
-            const SizedBox(width: DesignTokens.spacing12),
-            // Delete button
-            Expanded(
-              child: _buildActionButton(
-                context,
-                label: 'حذف',
-                icon: Icons.delete_outline,
-                onPressed: () => controller.showDleteBillDialog(),
-                backgroundColor: AppColors.error,
-                foregroundColor: AppColors.white,
-              ),
-            ),
+            // // Create PDF button
+            // Expanded(
+            //   child: _buildActionButton(
+            //     context,
+            //     label: 'إنشاء PDF',
+            //     icon: Icons.picture_as_pdf_outlined,
+            //     onPressed:
+            //         controller.is_saved ? () => controller.createPdf() : null,
+            //     backgroundColor: AppColors.info,
+            //     foregroundColor: AppColors.white,
+            //   ),
+            // ),
+            // const SizedBox(width: DesignTokens.spacing12),
+            // // Delete button
+            // Expanded(
+            //   child: _buildActionButton(
+            //     context,
+            //     label: 'حذف',
+            //     icon: Icons.delete_outline,
+            //     onPressed: () => controller.showDleteBillDialog(),
+            //     backgroundColor: AppColors.error,
+            //     foregroundColor: AppColors.white,
+            //   ),
+            // ),
           ],
         ),
 

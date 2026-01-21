@@ -79,7 +79,7 @@ class ExpensesCategoryControllerImp extends ExpensesDetailsController {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
       _expensesData.getExpensesCategory(userID).listen((event) {
-        expensesList.value = event.docs;
+        expensesList.value = event;
         if (expensesList.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {

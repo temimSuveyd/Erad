@@ -28,15 +28,7 @@ class CustomDeptsListView extends StatelessWidget {
                 );
 
                 if (isMobile) {
-                  // Convert DeptsModel to CustomerDebtsModel for mobile card
-                  final debtModel = CustomerDebtsModel(
-                    bill_id: deptModel.id,
-                    customer_name: deptModel.customer_name,
-                    customer_city: deptModel.customer_city,
-                    dept_amount: deptModel.total_price,
-                    bill_date: deptModel.bill_date,
-                  );
-                  return MobileCustomerDebtCard(debtModel: debtModel);
+                  return MobileCustomerDebtCard(debtModel: deptModel);
                 } else {
                   return Row(
                     children: [Custom_depts_view_card(deptModel: deptModel)],

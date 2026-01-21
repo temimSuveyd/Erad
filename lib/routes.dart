@@ -1,4 +1,6 @@
 import 'package:erad/core/middleWare/app_middleware.dart';
+import 'package:erad/bindings/customer_bills_view_binding.dart';
+import 'package:erad/bindings/customer_debts_view_binding.dart';
 import 'package:erad/view/customer/customer_bills_add/customer_bill_add.dart';
 import 'package:erad/view/expenses/expenses_category/expenses_category.dart';
 import 'package:erad/view/expenses/expenses_view/expenses_page.dart';
@@ -70,6 +72,7 @@ List<GetPage<dynamic>>? getPages = [
   GetPage(
     name: AppRoutes.customer_bills_view_page,
     page: () => CustomerBillsViewPage(),
+    binding: CustomerBillsViewBinding(),
     transition: Transition.leftToRight,
     transitionDuration: Duration(milliseconds: 350),
   ),
@@ -82,6 +85,7 @@ List<GetPage<dynamic>>? getPages = [
   GetPage(
     name: AppRoutes.customer_debts_view_page,
     page: () => CustomerDebtsViewPage(),
+    binding: CustomerDebtsViewBinding(),
     transition: Transition.leftToRight,
     transitionDuration: Duration(milliseconds: 350),
   ),

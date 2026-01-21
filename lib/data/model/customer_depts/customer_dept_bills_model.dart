@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class DeptBillsModel {
   String? billId;
   double? totalPrice;
@@ -15,7 +13,7 @@ class DeptBillsModel {
     this.billStatus,
   });
 
-  DeptBillsModel.fromJson(DocumentSnapshot json) {
+  DeptBillsModel.fromJson(dynamic json) {
     billId = json['bill_id'];
     totalPrice = json['total_price'];
     billDate = json['bill_date'].toDate();

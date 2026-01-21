@@ -41,12 +41,26 @@ class MobilePaymentsSection extends GetView<CustomerDeptsDetailsControllerImp> {
                     ),
                     const SizedBox(width: DesignTokens.spacing12),
                     Expanded(
-                      child: Text(
-                        'الدفعات المسددة',
-                        style: DesignTokens.getHeadlineMedium(context).copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'الدفعات المسددة',
+                            style: DesignTokens.getHeadlineMedium(
+                              context,
+                            ).copyWith(
+                              color: AppColors.textPrimary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          if (controller.selectedMonth.value.isNotEmpty)
+                            Text(
+                              'شهر ${controller.getMonthDisplayName(controller.selectedMonth.value)}',
+                              style: DesignTokens.getBodySmall(
+                                context,
+                              ).copyWith(color: AppColors.textSecondary),
+                            ),
+                        ],
                       ),
                     ),
                     Container(

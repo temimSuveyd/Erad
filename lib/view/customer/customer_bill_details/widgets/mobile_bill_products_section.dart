@@ -112,12 +112,12 @@ class MobileBillProductsSection
     dynamic product,
     CustomerBillDetailsControllerImp controller,
   ) {
-    final productData = product.data() as Map<String, dynamic>;
+    final productData = product as Map<String, dynamic>;
     final productName = productData['product_name']?.toString() ?? '';
     final productNumber = productData['product_number']?.toString() ?? '0';
     final productPrice = productData['product_price']?.toString() ?? '0';
     final totalPrice = productData['total_product_price']?.toString() ?? '0';
-    final productId = product.id;
+    final productId = product['id'];
 
     return Container(
       padding: const EdgeInsets.all(DesignTokens.spacing16),

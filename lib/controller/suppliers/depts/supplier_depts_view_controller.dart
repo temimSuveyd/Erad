@@ -32,7 +32,7 @@ class SupplierDeptsViewControllerImp extends SupplierDeptsViewController {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
       _supplierDeptsData.getAllDepts(userID).listen((event) {
-        supplierDeptsList.value = event.docs;
+        supplierDeptsList.value = event;
         if (supplierDeptsList.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {
@@ -78,7 +78,7 @@ class SupplierDeptsViewControllerImp extends SupplierDeptsViewController {
     } else {
       String userID = services.sharedPreferences.getString(AppShared.userID)!;
       _supplierDeptsData.getAllDepts(userID).listen((event) {
-        supplierDeptsList.value = event.docs;
+        supplierDeptsList.value = event;
         supplierDeptsList.value =
             supplierDeptsList.where((doc) {
               final data = doc.data();

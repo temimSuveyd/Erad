@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ExpensesCardModel {
   DateTime? date;
@@ -17,7 +16,7 @@ class ExpensesCardModel {
     this.id,
   );
 
-  ExpensesCardModel.formatJson(QueryDocumentSnapshot queryToJson) {
+  ExpensesCardModel.formatJson(dynamic queryToJson) {
     date = queryToJson["date"].toDate();
     title = queryToJson["title"];
     amount = queryToJson["amount"];

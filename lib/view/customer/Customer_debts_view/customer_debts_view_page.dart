@@ -16,8 +16,6 @@ class CustomerDebtsViewPage extends GetView<CustomerDeptsViewControllerImp> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(CustomerDeptsViewControllerImp());
-
     final isMobile = DesignTokens.isMobile(context);
     final padding = DesignTokens.getResponsiveSpacing(context);
 

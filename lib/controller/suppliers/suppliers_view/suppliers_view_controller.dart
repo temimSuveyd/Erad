@@ -82,7 +82,7 @@ class SuppliersControllerImp extends SuppliersController {
     String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       suppliersData.getAllSuppliers(userID).listen((event) {
-        suppliersList.value = event.docs;
+        suppliersList.value = event;
         if (suppliersList.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {
@@ -169,8 +169,7 @@ class SuppliersControllerImp extends SuppliersController {
       getSuppliers();
     } else {
       suppliersList.value =
-          suppliersList.where((doc) {
-            final data = doc.data();
+          suppliersList.where((data) {
             final fileView = data["supplier_name"].toLowerCase();
             return fileView.contains(search.toLowerCase());
           }).toList();
@@ -190,11 +189,10 @@ class SuppliersControllerImp extends SuppliersController {
       String userID = services.sharedPreferences.getString(AppShared.userID)!;
       try {
         suppliersData.getAllSuppliers(userID).listen((event) {
-          var allSuppliers = event.docs;
+          var allSuppliers = event;
 
           var filteredList =
-              allSuppliers.where((doc) {
-                final data = doc.data();
+              allSuppliers.where((data) {
                 final supplierCity =
                     data["supplier_city"]?.toString().toLowerCase() ?? '';
                 final searchCity = cityName.toLowerCase();

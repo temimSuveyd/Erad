@@ -24,7 +24,7 @@ abstract class CustomerBillViewController extends GetxController {
 class CustomerBillViewControllerImp extends CustomerBillViewController {
   CustomerBillData customerBillData = CustomerBillData();
   CustomerDeptsData customerDeptsData = CustomerDeptsData();
-  var customer_bills_list = [].obs;
+  var customerBillsList = <Map<String, dynamic>>[].obs;
   Services services = Get.find();
   Statusreqest statusreqest = Statusreqest.success;
   late TextEditingController searchBillsTextController =
@@ -39,12 +39,11 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
     update();
     String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
-      customerBillData.getAllBils(userID).listen((event) {
-        customer_bills_list.value = event.docs;
-        customer_bills_list.value =
-            customer_bills_list.where((doc) {
-              final data = doc.data();
-              final DateTime billDate = data["bill_date"].toDate();
+      customerBillData.getAllBills(userID).listen((event) {
+        customerBillsList.value = event;
+        customerBillsList.value =
+            customerBillsList.where((data) {
+              final DateTime billDate = DateTime.parse(data["bill_date"]);
               if (selectedDateRange == null) {
                 return (billDate.year == startedDate.year &&
                     billDate.month == startedDate.month &&
@@ -56,7 +55,7 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
                 );
               }
             }).toList();
-        if (customer_bills_list.isEmpty) {
+        if (customerBillsList.isEmpty) {
           statusreqest = Statusreqest.empty;
         } else {
           statusreqest = Statusreqest.success;
@@ -75,11 +74,9 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
     if (search.isEmpty) {
       getCustomersBills();
     } else {
-      customer_bills_list.value =
-          customer_bills_list.where((doc) {
-            final data = doc.data();
+      customerBillsList.value =
+          customerBillsList.where((data) {
             final customerName = data["customer_name"].toString().toLowerCase();
-
             final billId = data["bill_no"].toString().toLowerCase();
             if (customerName.contains(search.toLowerCase()) ||
                 billId.contains(search.toLowerCase())) {
@@ -88,7 +85,7 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
               return false;
             }
           }).toList();
-      if (customer_bills_list.isEmpty) {
+      if (customerBillsList.isEmpty) {
         statusreqest = Statusreqest.empty;
       }
       update();
@@ -102,15 +99,14 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
     } else {
       String userID = services.sharedPreferences.getString(AppShared.userID)!;
 
-      customerBillData.getAllBils(userID).listen((event) {
-        customer_bills_list.value = event.docs;
-        customer_bills_list.value =
-            customer_bills_list.where((doc) {
-              final data = doc.data();
+      customerBillData.getAllBills(userID).listen((event) {
+        customerBillsList.value = event;
+        customerBillsList.value =
+            customerBillsList.where((data) {
               final fileView = data["customer_city"].toLowerCase();
               return fileView.contains(cityName.toLowerCase());
             }).toList();
-        if (customer_bills_list.isEmpty) {
+        if (customerBillsList.isEmpty) {
           statusreqest = Statusreqest.empty;
         }
         selectedCustomerCity = cityName;
@@ -218,7 +214,7 @@ class CustomerBillViewControllerImp extends CustomerBillViewController {
     try {
       final String userID =
           services.sharedPreferences.getString(AppShared.userID)!;
-      await customerDeptsData.delteBillFromDepts(billId, customerId, userID);
+      await customerDeptsData.deleteBillFromDepts(billId, customerId, userID);
       statusreqest = Statusreqest.success;
       update();
     } catch (e) {
