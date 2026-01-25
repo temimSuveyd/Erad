@@ -2,10 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:erad/core/class/handling_data.dart';
+import 'package:erad/core/constans/colors.dart';
 import 'package:erad/core/constans/routes.dart';
 import 'package:erad/core/constans/sharedPreferences.dart';
 import 'package:erad/core/function/handling_signin_errors.dart';
 import 'package:erad/core/services/app_services.dart';
+import 'package:erad/core/utils/controller_utils.dart';
 import 'package:erad/data/data_score/remote/user_data.dart';
 import 'package:erad/view/custom_widgets/custom_snackbar.dart';
 
@@ -17,11 +19,11 @@ abstract class LoginController extends GetxController {
   void changeSaveLogin();
 }
 
-class LoginControllerImp extends LoginController {
+class LoginControllerImp extends LoginController with ControllerDisposeMixin {
   UserData userData = UserData();
-  TextEditingController user_email = TextEditingController();
-  TextEditingController user_password = TextEditingController();
-  TextEditingController company_name = TextEditingController();
+  late final TextEditingController user_email = createTextController();
+  late final TextEditingController user_password = createTextController();
+  late final TextEditingController company_name = createTextController();
   GlobalKey<FormState> formState = GlobalKey<FormState>();
   Statusreqest statusreqest = Statusreqest.success;
   Services services = Get.find();
@@ -31,11 +33,38 @@ class LoginControllerImp extends LoginController {
   @override
   login() async {
     var validator = formState.currentState;
-    if (validator!.validate()) {
+    if (validator == null) return;
+    
+    if (validator.validate()) {
       statusreqest = Statusreqest.loading;
       update();
+      
       String email = user_email.text.trim();
       String password = user_password.text.trim();
+      String companyName = company_name.text.trim();
+      
+      // Additional validation
+      if (companyName.isEmpty) {
+        statusreqest = Statusreqest.success;
+        update();
+        custom_snackBar(null, null, "الرجاء إدخال اسم الشركة");
+        return;
+      }
+      
+      if (email.isEmpty) {
+        statusreqest = Statusreqest.success;
+        update();
+        custom_snackBar(null, null, "الرجاء إدخال البريد الإلكتروني");
+        return;
+      }
+      
+      if (password.isEmpty) {
+        statusreqest = Statusreqest.success;
+        update();
+        custom_snackBar(null, null, "الرجاء إدخال كلمة المرور");
+        return;
+      }
+      
       try {
         await auth.signInWithEmailAndPassword(email: email, password: password);
         userData.add_user(email);
@@ -48,9 +77,13 @@ class LoginControllerImp extends LoginController {
         statusreqest = Statusreqest.success;
         update();
         return handling_sigin_errors(e);
+      } catch (e) {
+        statusreqest = Statusreqest.success;
+        update();
+        custom_snackBar(AppColors.error, "خطأ", "حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى");
       }
     } else {
-      custom_snackBar();
+      custom_snackBar(null, null, "الرجاء ملء جميع الحقول المطلوبة");
     }
   }
 

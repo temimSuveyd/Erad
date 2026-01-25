@@ -1,4 +1,3 @@
-
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:erad/core/class/handling_data.dart';
@@ -6,6 +5,7 @@ import 'package:erad/core/constans/sharedPreferences.dart';
 import 'package:erad/core/services/app_services.dart';
 import 'package:erad/data/data_score/remote/brands/brands_data.dart';
 import 'package:erad/view/prodects/brands_type_view/widgets/custom_add_brands_type_dialog.dart';
+import 'package:erad/view/prodects/brands_type_view/widgets/custom_edit_brands_type_dialog.dart';
 import 'package:erad/view/custom_widgets/custom_delete_dialog.dart';
 import 'package:erad/view/custom_widgets/custom_snackbar.dart';
 
@@ -68,8 +68,7 @@ class BrandsTypeControllerImp extends BrandsTypeController {
   add_brands_type() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
 
     if (product_size_controller.text.isNotEmpty ||
         product_buying_controller.text.isNotEmpty ||
@@ -105,16 +104,10 @@ class BrandsTypeControllerImp extends BrandsTypeController {
   get_brands_type() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       brandData
-          .getBrandsType(
-            userID,
-            categorey_type!,
-            categorey_name!,
-            brand_name!,
-          )
+          .getBrandsType(userID, categorey_type!, categorey_name!, brand_name!)
           .listen((event) {
             brandsTypeList.value = event.docs;
             if (brandsTypeList.isEmpty) {
@@ -158,7 +151,7 @@ class BrandsTypeControllerImp extends BrandsTypeController {
     String size,
     String prandName,
   ) {
-    custom_add_brands_type_dialog(
+    customEditBrandsTypeDialog(
       () {
         editBrandsType(salesPice, buiyngPrice, size, prandName);
         Get.back();
@@ -166,8 +159,8 @@ class BrandsTypeControllerImp extends BrandsTypeController {
       product_buying_controller,
       product_sales_price_controller,
       product_size_controller,
-      salesPice,
       buiyngPrice,
+      salesPice,
       size,
       key,
     );
@@ -182,8 +175,7 @@ class BrandsTypeControllerImp extends BrandsTypeController {
   ) {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     String productBuingPrice =
         product_buying_controller.text.isEmpty
             ? buiyngPrice
@@ -216,8 +208,7 @@ class BrandsTypeControllerImp extends BrandsTypeController {
 
   @override
   deleteBrandsType(String productName) {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       brandData.deleteBrandsType(userID, productName);
     } catch (e) {

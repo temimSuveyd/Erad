@@ -1,5 +1,6 @@
 import 'package:erad/core/constans/colors.dart';
 import 'package:erad/core/constans/images.dart';
+import 'package:erad/core/widgets/safe_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -24,7 +25,12 @@ AppBar Custom_home_appBar() {
       SizedBox(
         height: 45,
         width: 45,
-        child: Image.asset(AppImages.logo, fit: BoxFit.cover),
+        child: AppImages.logo.toSafeImage(
+          fit: BoxFit.cover,
+          fallbackIcon: Icons.business,
+          fallbackColor: AppColors.white,
+          iconSize: 32,
+        ),
       ),
       SizedBox(width: 10),
       Text(

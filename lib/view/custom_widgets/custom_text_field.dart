@@ -1,51 +1,111 @@
 import 'package:flutter/material.dart';
 import 'package:erad/core/constans/colors.dart';
+import 'package:get/get.dart';
 
 class Custom_textfield extends StatelessWidget {
   const Custom_textfield({
     super.key,
     required this.hintText,
-    required this.suffixIcon,
+    this.prefixIcon,
+    this.suffixIcon,
     required this.validator,
-    required this.controller,
+    this.controller,
     required this.onChanged,
-    this.maxLines, this.height,
+    this.maxLines = 1,
+    this.height,
+    this.keyboardType,
+    this.textInputAction,
+    this.enabled = true,
+    this.readOnly = false,
   });
+  
   final String hintText;
-  final IconData suffixIcon;
+  final IconData? prefixIcon;
+  final IconData? suffixIcon;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
-  final void Function(String) onChanged;
-  final int? maxLines;
+  final void Function(String)? onChanged;
+  final int maxLines;
   final double? height;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final bool enabled;
+  final bool readOnly;
+  
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 250,
-      height: height??42,
+      width: Get.width * 0.3,
+      height: height ?? (maxLines > 1 ? null : 56),
       child: TextFormField(
-        onChanged: (value) {
-          onChanged(value);
-        },
-        maxLines: maxLines??1,
-        style: TextStyle(color: AppColors.grey, fontSize: 21),
         controller: controller,
         validator: validator,
+        onChanged: onChanged,
+        maxLines: maxLines,
+        keyboardType: keyboardType,
+        textInputAction: textInputAction,
+        enabled: enabled,
+        readOnly: readOnly,
+        style: TextStyle(
+          color: enabled ? AppColors.textPrimary : AppColors.textTertiary,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
         decoration: InputDecoration(
-          prefixIcon: Icon(suffixIcon, color: AppColors.grey),
           hintText: hintText,
-          hintStyle: TextStyle(fontSize: 18, color: AppColors.grey),
+          hintStyle: TextStyle(
+            fontSize: 16,
+            color: AppColors.textTertiary,
+            fontWeight: FontWeight.w400,
+          ),
+          prefixIcon: prefixIcon != null 
+            ? Icon(prefixIcon, color: AppColors.textSecondary)
+            : null,
+          suffixIcon: suffixIcon != null 
+            ? Icon(suffixIcon, color: AppColors.textSecondary)
+            : null,
+          filled: true,
+          fillColor: enabled 
+            ? AppColors.surface 
+            : AppColors.surfaceVariant.withOpacity(0.5),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: AppColors.textTertiary.withOpacity(0.3),
+              width: 1,
+            ),
+          ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColors.primary, width: 2),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: AppColors.primary,
+              width: 2,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: AppColors.error,
+              width: 1,
+            ),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: AppColors.error,
+              width: 2,
+            ),
           ),
           disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColors.primary, width: 2),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: AppColors.textTertiary.withOpacity(0.2),
+              width: 1,
+            ),
           ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColors.grey, width: 2),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: maxLines > 1 ? 16 : 18,
           ),
         ),
       ),

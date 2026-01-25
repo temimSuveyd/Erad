@@ -14,7 +14,29 @@ class CategoreysData {
         .set({"categorey_name": categoreyName});
   }
 
-    void deleteCategorey(String categoreyName, String userID) {
+  void updateCategorey(
+    String oldCategoreyName,
+    String newCategoreyName,
+    String userID,
+  ) {
+    // Delete old document
+    _firestore
+        .collection("users")
+        .doc(userID)
+        .collection("categoreys")
+        .doc(oldCategoreyName)
+        .delete();
+
+    // Create new document with updated name
+    _firestore
+        .collection("users")
+        .doc(userID)
+        .collection("categoreys")
+        .doc(newCategoreyName)
+        .set({"categorey_name": newCategoreyName});
+  }
+
+  void deleteCategorey(String categoreyName, String userID) {
     _firestore
         .collection("users")
         .doc(userID)
@@ -31,7 +53,6 @@ class CategoreysData {
         .snapshots();
   }
 
-
   void addCategorey_type(
     String categoreyName,
     String userID,
@@ -47,10 +68,34 @@ class CategoreysData {
           "categorey_name": categoreyName,
         });
   }
-  void deleteCategorey_type(
+
+  void updateCategoreyType(
+    String oldCategoreyType,
+    String newCategoreyType,
+    String categoreyName,
     String userID,
-    String categoreyType,
   ) {
+    // Delete old document
+    _firestore
+        .collection("users")
+        .doc(userID)
+        .collection("categoreys_type")
+        .doc(oldCategoreyType)
+        .delete();
+
+    // Create new document with updated name
+    _firestore
+        .collection("users")
+        .doc(userID)
+        .collection("categoreys_type")
+        .doc(newCategoreyType)
+        .set({
+          "categorey_type": newCategoreyType,
+          "categorey_name": categoreyName,
+        });
+  }
+
+  void deleteCategorey_type(String userID, String categoreyType) {
     _firestore
         .collection("users")
         .doc(userID)
@@ -58,6 +103,7 @@ class CategoreysData {
         .doc(categoreyType)
         .delete();
   }
+
   Stream<QuerySnapshot<Map<String, dynamic>>> getCategoreysType(
     String userID,
     String categoreyName,

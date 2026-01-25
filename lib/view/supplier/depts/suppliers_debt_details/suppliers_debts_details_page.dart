@@ -29,18 +29,20 @@ class SupplierDebtsDetailsPage
           Row(
             children: [
               GetBuilder<SupplierDeptsDetailsControllerImpl>(
-                builder: (controller) => Custom_set_date_button(
-                  hintText: controller.selectedDateRange == null
-                      ? "${controller.startedDateRange?.start.year}/${controller.startedDateRange?.start.month}/${controller.startedDateRange?.start.day} - ${controller.startedDateRange?.end.year}/${controller.startedDateRange?.end.month}/${controller.startedDateRange?.end.day}"
-                      : "${controller.selectedDateRange!.start.year}/${controller.selectedDateRange!.start.month}/${controller.selectedDateRange!.start.day} - ${controller.selectedDateRange!.end.year}/${controller.selectedDateRange!.end.month}/${controller.selectedDateRange!.end.day}",
-                  onPressed: () {
-                    show_date_range_picker(context).then((dateRange) {
-                      if (dateRange != null) {
-                        controller.setDateRenage(dateRange);
-                      }
-                    });
-                  },
-                ),
+                builder:
+                    (controller) => Custom_set_date_button(
+                      hintText:
+                          controller.selectedDateRange == null
+                              ? "${controller.startedDateRange?.start.year}/${controller.startedDateRange?.start.month}/${controller.startedDateRange?.start.day} - ${controller.startedDateRange?.end.year}/${controller.startedDateRange?.end.month}/${controller.startedDateRange?.end.day}"
+                              : "${controller.selectedDateRange!.start.year}/${controller.selectedDateRange!.start.month}/${controller.selectedDateRange!.start.day} - ${controller.selectedDateRange!.end.year}/${controller.selectedDateRange!.end.month}/${controller.selectedDateRange!.end.day}",
+                      onPressed: () {
+                        show_date_range_picker(context).then((dateRange) {
+                          if (dateRange != null) {
+                            controller.setDateRenage(dateRange);
+                          }
+                        });
+                      },
+                    ),
               ),
             ],
           ),
@@ -50,75 +52,73 @@ class SupplierDebtsDetailsPage
           SizedBox(height: 50),
 
           GetBuilder<SupplierDeptsDetailsControllerImpl>(
-            builder: (controller) => HandlingDataView(
-              onPressed: () => controller.getDeptDetails(),
-              statusreqest: controller.statusreqest,
-              widget: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 20,
-                children: [
-                  Column(
-                    spacing: 20,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Custom_debt_payment_type_heder(
-                        titles_list: [
-                          Custom_date_text_container(
-                            title: "رقم الفاتورة",
-                            width: 200,
-                          ),
-                          Custom_date_text_container(
-                            title: "تاريخ الفاتورة",
-                            width: 135,
-                          ),
-                          Custom_date_text_container(
-                            title: "إجمالي السعر",
-                            width: 200,
-                          ),
-                        ],
-                        width: Get.width / 2 * 1.080,
-                      ),
-                      Custom_debts_bills_listView(),
-                    ],
-                  ),
-                  Column(
-                    spacing: 20,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Custom_debt_payment_type_heder(
-                            titles_list: [
-                              Custom_date_text_container(
-                                title: "تاريخ الدفعة",
-                                width: 130,
-                              ),
-                              Custom_date_text_container(
-                                title: "إجمالي مبلغ",
-                                width: 190,
-                              ),
-                            ],
-                            width: Get.width / 2 - 350,
-                          ),
-                          SizedBox(width: 5),
-                          SizedBox(
-                            height: 40,
-                            child: Custom_button(
-                              icon: Icons.add,
-                              title: "أضف دفعة",
-                              onPressed: () => controller.showAddPaymentDialog(),
-                              color: AppColors.primary,
+            builder:
+                (controller) => Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 20,
+                  children: [
+                    Column(
+                      spacing: 20,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Custom_debt_payment_type_heder(
+                          titles_list: [
+                            Custom_date_text_container(
+                              title: "رقم الفاتورة",
+                              width: 200,
                             ),
-                          ),
-                        ],
-                      ),
-                      Custom_debt_payments_listView(),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+                            Custom_date_text_container(
+                              title: "تاريخ الفاتورة",
+                              width: 135,
+                            ),
+                            Custom_date_text_container(
+                              title: "إجمالي السعر",
+                              width: 200,
+                            ),
+                          ],
+                          width: Get.width / 2 * 1.080,
+                        ),
+                        Custom_debts_bills_listView(),
+                      ],
+                    ),
+                    Column(
+                      spacing: 20,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Custom_debt_payment_type_heder(
+                              titles_list: [
+                                Custom_date_text_container(
+                                  title: "تاريخ الدفعة",
+                                  width: 130,
+                                ),
+                                Custom_date_text_container(
+                                  title: "إجمالي مبلغ",
+                                  width: 190,
+                                ),
+                              ],
+                              width: Get.width / 2 - 350,
+                            ),
+                            SizedBox(width: 5),
+                            SizedBox(
+                              height: 40,
+                              child: Custom_button(
+                                icon: Icons.add,
+                                title: "أضف دفعة",
+                                onPressed:
+                                    () => controller.showAddPaymentDialog(),
+                                color: AppColors.primary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Custom_debt_payments_listView(),
+                      ],
+                    ),
+                  ],
+                ),
           ),
         ],
       ),

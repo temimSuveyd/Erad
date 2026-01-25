@@ -12,11 +12,24 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(HomeControllerImp());
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
       appBar: Custom_home_appBar(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40,vertical: 30),
-        child: Custom_home_gridViewBuilder(),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppColors.background,
+              AppColors.surfaceVariant.withOpacity(0.3),
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Custom_home_gridViewBuilder(),
+          ),
+        ),
       ),
     );
   }

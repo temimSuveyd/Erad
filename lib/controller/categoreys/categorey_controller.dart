@@ -1,4 +1,3 @@
-
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:erad/core/class/handling_data.dart';
@@ -7,6 +6,7 @@ import 'package:erad/core/constans/sharedPreferences.dart';
 import 'package:erad/core/services/app_services.dart';
 import 'package:erad/data/data_score/remote/categorey/categoreys_data.dart';
 import 'package:erad/view/prodects/categoreys_view/widgets/custom_add_categorey_dialog.dart';
+import 'package:erad/view/prodects/categoreys_view/widgets/custom_edit_categorey_dialog.dart';
 import 'package:erad/view/custom_widgets/custom_delete_dialog.dart';
 
 abstract class CategoreyController extends GetxController {
@@ -22,12 +22,20 @@ abstract class CategoreyController extends GetxController {
   show_delete_dialog(String id);
   // ignore: non_constant_identifier_names
   delete_categorey(String id);
+  // ignore: non_constant_identifier_names
+  show_edit_dialog(String currentName);
+  // ignore: non_constant_identifier_names
+  edit_categorey(String oldName);
 }
 
 class CategoreyControllerImp extends CategoreyController {
   Statusreqest statusreqest = Statusreqest.success;
   // ignore: non_constant_identifier_names
-  final TextEditingController _categorey_name_controller = TextEditingController();
+  final TextEditingController _categorey_name_controller =
+      TextEditingController();
+  // ignore: non_constant_identifier_names
+  final TextEditingController _edit_categorey_name_controller =
+      TextEditingController();
   // ignore: non_constant_identifier_names
   TextEditingController serach_for_categorey_controller =
       TextEditingController();
@@ -58,8 +66,7 @@ class CategoreyControllerImp extends CategoreyController {
   add_categorey() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     String categoreyName = _categorey_name_controller.text;
     try {
       categoreysData.addCategoreys(categoreyName, userID);
@@ -85,8 +92,7 @@ class CategoreyControllerImp extends CategoreyController {
   getCategoreys() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       categoreysData.getCategoreys(userID).listen((event) {
         categoreys_list.value = event.docs;
@@ -125,11 +131,11 @@ class CategoreyControllerImp extends CategoreyController {
     }
     update();
   }
-   @override
+
+  @override
   // ignore: non_constant_identifier_names
   delete_categorey(String id) {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       categoreysData.deleteCategorey(id, userID);
     } catch (e) {
@@ -137,6 +143,7 @@ class CategoreyControllerImp extends CategoreyController {
       update();
     }
   }
+
   @override
   // ignore: non_constant_identifier_names
   show_delete_dialog(String id) {
@@ -146,10 +153,51 @@ class CategoreyControllerImp extends CategoreyController {
   }
 
   @override
+  // ignore: non_constant_identifier_names
+  show_edit_dialog(String currentName) {
+    customEditCategoreyDialog(
+      () {
+        edit_categorey(currentName);
+        Get.back();
+      },
+      _edit_categorey_name_controller,
+      currentName,
+      (String? validator) {
+        if (validator == null || validator.isEmpty) {
+          return 'يرجى إدخال اسم الفئة';
+        }
+        return null;
+      },
+    );
+  }
+
+  @override
+  // ignore: non_constant_identifier_names
+  edit_categorey(String oldName) {
+    statusreqest = Statusreqest.loading;
+    update();
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
+    String newCategoreyName = _edit_categorey_name_controller.text;
+
+    if (newCategoreyName.isNotEmpty && newCategoreyName != oldName) {
+      try {
+        categoreysData.updateCategorey(oldName, newCategoreyName, userID);
+        _edit_categorey_name_controller.clear();
+        statusreqest = Statusreqest.success;
+        update();
+      } catch (e) {
+        statusreqest = Statusreqest.faliure;
+        update();
+      }
+    } else {
+      statusreqest = Statusreqest.success;
+      update();
+    }
+  }
+
+  @override
   void onInit() {
     getCategoreys();
     super.onInit();
   }
-
- 
 }

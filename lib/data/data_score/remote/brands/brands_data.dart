@@ -22,6 +22,34 @@ class BrandsData {
         });
   }
 
+  void updateBrand(
+    String oldBrandName,
+    String newBrandName,
+    String categoreyName,
+    String categoreyType,
+    String userID,
+  ) {
+    // Delete old document
+    _firestore
+        .collection("users")
+        .doc(userID)
+        .collection("brands")
+        .doc(oldBrandName)
+        .delete();
+
+    // Create new document with updated name
+    _firestore
+        .collection("users")
+        .doc(userID)
+        .collection("brands")
+        .doc(newBrandName)
+        .set({
+          "brand_name": newBrandName,
+          "categorey_name": categoreyName,
+          "categorey_type": categoreyType,
+        });
+  }
+
   void deleteBramd(String userID, String brandName) {
     _firestore
         .collection("users")

@@ -6,6 +6,7 @@ import 'package:erad/core/constans/sharedPreferences.dart';
 import 'package:erad/core/services/app_services.dart';
 import 'package:erad/data/data_score/remote/brands/brands_data.dart';
 import 'package:erad/view/prodects/brands_view/widgets/custom_brands_add_diaolg.dart';
+import 'package:erad/view/prodects/brands_view/widgets/custom_edit_brands_dialog.dart';
 import 'package:erad/view/custom_widgets/custom_delete_dialog.dart';
 
 abstract class BrandsController extends GetxController {
@@ -17,11 +18,14 @@ abstract class BrandsController extends GetxController {
   searchForBrands();
   show_delete_dialog(String id);
   delete_brand(String id);
+  show_edit_dialog(String currentName);
+  edit_brand(String oldName);
 }
 
 class BrandsControllerImp extends BrandsController {
   Statusreqest statusreqest = Statusreqest.success;
   final TextEditingController _brand_name = TextEditingController();
+  final TextEditingController _edit_brand_name = TextEditingController();
   TextEditingController serach_for_brands_controller = TextEditingController();
 
   BrandsData brandsData = BrandsData();
@@ -50,16 +54,10 @@ class BrandsControllerImp extends BrandsController {
   add_categorey() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     String brandName = _brand_name.text;
     try {
-      brandsData.addBrand(
-        categorey_name!,
-        userID,
-        categorey_type!,
-        brandName,
-      );
+      brandsData.addBrand(categorey_name!, userID, categorey_type!, brandName);
       _brand_name.clear();
       statusreqest = Statusreqest.success;
       update();
@@ -74,22 +72,21 @@ class BrandsControllerImp extends BrandsController {
     statusreqest = Statusreqest.loading;
     update();
 
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
 
     try {
-      brandsData.getBrands(userID, categorey_type!, categorey_name!).listen(
-        (event) {
-          brandsList.value = event.docs;
-          if (brandsList.isEmpty) {
-            statusreqest = Statusreqest.empty;
-            update();
-          } else {
-            statusreqest = Statusreqest.success;
-            update();
-          }
-        },
-      );
+      brandsData.getBrands(userID, categorey_type!, categorey_name!).listen((
+        event,
+      ) {
+        brandsList.value = event.docs;
+        if (brandsList.isEmpty) {
+          statusreqest = Statusreqest.empty;
+          update();
+        } else {
+          statusreqest = Statusreqest.success;
+          update();
+        }
+      });
     } catch (e) {
       statusreqest = Statusreqest.faliure;
       update();
@@ -139,9 +136,57 @@ class BrandsControllerImp extends BrandsController {
 
   @override
   // ignore: non_constant_identifier_names
+  show_edit_dialog(String currentName) {
+    customEditBrandsDialog(
+      () {
+        edit_brand(currentName);
+        Get.back();
+      },
+      _edit_brand_name,
+      currentName,
+      (String? validator) {
+        if (validator == null || validator.isEmpty) {
+          return 'يرجى إدخال اسم العلامة التجارية';
+        }
+        return null;
+      },
+    );
+  }
+
+  @override
+  // ignore: non_constant_identifier_names
+  edit_brand(String oldName) {
+    statusreqest = Statusreqest.loading;
+    update();
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
+    String newBrandName = _edit_brand_name.text;
+
+    if (newBrandName.isNotEmpty && newBrandName != oldName) {
+      try {
+        brandsData.updateBrand(
+          oldName,
+          newBrandName,
+          categorey_name!,
+          categorey_type!,
+          userID,
+        );
+        _edit_brand_name.clear();
+        statusreqest = Statusreqest.success;
+        update();
+      } catch (e) {
+        statusreqest = Statusreqest.faliure;
+        update();
+      }
+    } else {
+      statusreqest = Statusreqest.success;
+      update();
+    }
+  }
+
+  @override
+  // ignore: non_constant_identifier_names
   delete_brand(String id) {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       brandsData.deleteBramd(userID, id);
     } catch (e) {

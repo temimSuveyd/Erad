@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:erad/core/class/handling_data.dart';
 import 'package:erad/core/constans/sharedPreferences.dart';
 import 'package:erad/core/function/add_monthly.dart';
@@ -191,12 +193,8 @@ class ReportsControllerImpl extends ReportsController {
         services.sharedPreferences.getString(AppShared.userID)!;
     try {
       customerDeptsData.getAllDepts(userID).listen((event) {
-        final filteredDocs =
-            event.docs.where((doc) {
-              final docDate = doc['bill_date']?.toDate();
-              return docDate != null && docDate.year == selectedDate.year;
-            }).toList();
-        customerDeptsList.value = filteredDocs;
+        customerDeptsList.value = event.docs;
+        log(customerDeptsList.toString());
         calculatingTotalCustomerDepts();
         statusreqest = Statusreqest.success;
         update();
@@ -215,12 +213,7 @@ class ReportsControllerImpl extends ReportsController {
         services.sharedPreferences.getString(AppShared.userID)!;
     try {
       supplierDeptsData.getAllDepts(userID).listen((event) {
-        final filteredDocs =
-            event.docs.where((doc) {
-              final docDate = doc['bill_date']?.toDate();
-              return docDate != null && docDate.year == selectedDate.year;
-            }).toList();
-        supplierDeptsList.value = filteredDocs;
+        supplierDeptsList.value = event.docs;
         calculatingTotalSupplierDepts();
         statusreqest = Statusreqest.success;
         update();

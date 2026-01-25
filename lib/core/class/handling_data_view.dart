@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:erad/core/class/handling_data.dart';
 import 'package:erad/core/constans/colors.dart';
 import 'package:erad/core/constans/images.dart';
+import 'package:erad/core/widgets/safe_image.dart';
 import 'package:erad/view/custom_widgets/custom_add_button.dart';
 import 'package:lottie/lottie.dart';
 
@@ -26,7 +27,12 @@ class HandlingDataView extends StatelessWidget {
           width: 200,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: [LottieBuilder.asset(AppImages.loadingAnimation)],
+            children: [
+              SafeImage(
+                imagePath: AppImages.loadingAnimation,
+                fallback: const CircularProgressIndicator(),
+              ),
+            ],
           ),
         ),
       );
@@ -109,7 +115,13 @@ class HandlingDataView extends StatelessWidget {
               SizedBox(
                 height: 100,
                 width: 100,
-                child: Image.asset(AppImages.noInternet),
+                child: AppImages.noInternet.toSafeImage(
+                  height: 100,
+                  width: 100,
+                  fallbackIcon: Icons.wifi_off,
+                  fallbackColor: AppColors.error,
+                  iconSize: 60,
+                ),
               ),
               Text(
                 "تم قطع اتصال الإنترنت",

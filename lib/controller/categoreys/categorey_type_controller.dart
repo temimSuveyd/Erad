@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -8,6 +7,7 @@ import 'package:erad/core/constans/sharedPreferences.dart';
 import 'package:erad/core/services/app_services.dart';
 import 'package:erad/data/data_score/remote/categorey/categoreys_data.dart';
 import 'package:erad/view/prodects/categorey_type_view/widgets/custom_add_categorey_type_dialog.dart';
+import 'package:erad/view/prodects/categorey_type_view/widgets/custom_edit_categorey_type_dialog.dart';
 import 'package:erad/view/custom_widgets/custom_delete_dialog.dart';
 
 abstract class CategoreyTypeController extends GetxController {
@@ -19,12 +19,15 @@ abstract class CategoreyTypeController extends GetxController {
   searchForCategoreys_type();
   show_delete_dialog(String id);
   delete_categorey(String id);
+  show_edit_dialog(String currentName);
+  edit_categorey_type(String oldName);
 }
 
 class CategoreyTypeControllerImp extends CategoreyTypeController {
   Statusreqest statusreqest = Statusreqest.success;
   CategoreysData categoreysData = CategoreysData();
   final TextEditingController _categorey_type = TextEditingController();
+  final TextEditingController _edit_categorey_type = TextEditingController();
   TextEditingController serach_for_categorey_type_controller =
       TextEditingController();
   Services services = Get.find();
@@ -45,15 +48,10 @@ class CategoreyTypeControllerImp extends CategoreyTypeController {
   add_categorey_type() {
     statusreqest = Statusreqest.loading;
     update();
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     String categoreyType = _categorey_type.text;
     try {
-      categoreysData.addCategorey_type(
-        categorey_name!,
-        userID,
-        categoreyType,
-      );
+      categoreysData.addCategorey_type(categorey_name!, userID, categoreyType);
       statusreqest = Statusreqest.success;
       update();
     } catch (e) {
@@ -84,13 +82,10 @@ class CategoreyTypeControllerImp extends CategoreyTypeController {
     statusreqest = Statusreqest.loading;
     update();
 
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
 
     try {
-      categoreysData.getCategoreysType(userID, categorey_name!).listen((
-        event,
-      ) {
+      categoreysData.getCategoreysType(userID, categorey_name!).listen((event) {
         categoreyTypeList.value = event.docs;
         update();
         if (categoreyTypeList.isEmpty) {
@@ -135,9 +130,44 @@ class CategoreyTypeControllerImp extends CategoreyTypeController {
   }
 
   @override
+  show_edit_dialog(String currentName) {
+    customEditCategoreyTypeDialog(_edit_categorey_type, currentName, () {
+      edit_categorey_type(currentName);
+      Get.back();
+    });
+  }
+
+  @override
+  edit_categorey_type(String oldName) {
+    statusreqest = Statusreqest.loading;
+    update();
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
+    String newCategoreyType = _edit_categorey_type.text;
+
+    if (newCategoreyType.isNotEmpty && newCategoreyType != oldName) {
+      try {
+        categoreysData.updateCategoreyType(
+          oldName,
+          newCategoreyType,
+          categorey_name!,
+          userID,
+        );
+        _edit_categorey_type.clear();
+        statusreqest = Statusreqest.success;
+        update();
+      } catch (e) {
+        statusreqest = Statusreqest.faliure;
+        update();
+      }
+    } else {
+      statusreqest = Statusreqest.success;
+      update();
+    }
+  }
+
+  @override
   delete_categorey(String id) {
-    String userID =
-        services.sharedPreferences.getString(AppShared.userID)!;
+    String userID = services.sharedPreferences.getString(AppShared.userID)!;
     try {
       categoreysData.deleteCategorey_type(userID, id);
       update();

@@ -37,6 +37,8 @@ class SupplierDeptsDetailsControllerImpl
   final addPaymentController = TextEditingController();
   final SupplierDeptsData _supplierDeptsData = SupplierDeptsData();
   Statusreqest statusreqest = Statusreqest.success;
+  Statusreqest billsStatus = Statusreqest.success;
+  Statusreqest paymentsStatus = Statusreqest.success;
   Services services = Get.find();
   String? deptId;
   double remainingDebtAamount = 0.0;
@@ -51,7 +53,7 @@ class SupplierDeptsDetailsControllerImpl
 
   @override
   getBills() {
-    statusreqest = Statusreqest.loading;
+    billsStatus = Statusreqest.loading;
     update();
     try {
       final String userID =
@@ -75,21 +77,21 @@ class SupplierDeptsDetailsControllerImpl
             }).toList();
         calculatesAmountOfRemainingDebt();
         if (deptsList.isEmpty) {
-          statusreqest = Statusreqest.empty;
+          billsStatus = Statusreqest.empty;
         } else {
-          statusreqest = Statusreqest.success;
+          billsStatus = Statusreqest.success;
         }
         update();
       });
     } catch (e) {
-      statusreqest = Statusreqest.success;
+      billsStatus = Statusreqest.faliure;
       update();
     }
   }
 
   @override
   getPayments() {
-    statusreqest = Statusreqest.loading;
+    paymentsStatus = Statusreqest.loading;
     update();
     try {
       final String userID =
@@ -112,14 +114,14 @@ class SupplierDeptsDetailsControllerImpl
               }
             }).toList();
         if (paymentsList.isEmpty) {
-          statusreqest = Statusreqest.empty;
+          paymentsStatus = Statusreqest.empty;
         } else {
-          statusreqest = Statusreqest.success;
+          paymentsStatus = Statusreqest.success;
         }
         update();
       });
     } catch (e) {
-      statusreqest = Statusreqest.success;
+      paymentsStatus = Statusreqest.faliure;
       update();
     }
   }

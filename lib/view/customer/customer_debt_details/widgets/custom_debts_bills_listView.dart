@@ -1,4 +1,5 @@
 import 'package:erad/controller/customers/depts/customer_dept_details_controller.dart';
+import 'package:erad/core/class/handling_data_view.dart';
 import 'package:erad/data/model/customer_depts/customer_dept_bills_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:erad/view/customer/customer_debt_details/widgets/custom_debts_bills_card.dart';
@@ -11,11 +12,14 @@ class Custom_debts_bills_listView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<CustomerDeptsDetailsControllerImp>(
       builder:
-          (controller) => Column(
+          (controller) => HandlingDataView(
+            statusreqest: controller.billsStatus,
+            onPressed: () => controller.getBills(),
+            widget: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 ...List.generate(
-                controller.deptsList.length,
+                  controller.deptsList.length,
                   (index) => Custom_debts_bills_card(
                     deptsBillsModel: DeptBillsModel.fromJson(
                       controller.deptsList[index],
@@ -24,6 +28,7 @@ class Custom_debts_bills_listView extends StatelessWidget {
                 ),
               ],
             ),
+          ),
     );
   }
 }
